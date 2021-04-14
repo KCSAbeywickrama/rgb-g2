@@ -4,7 +4,7 @@
 
 <pre>
 +--------+----------------------+---------+  
-| Branch |         Name         | Index   |  
+| Branch |         Name         |  Index  |  
 +--------+----------------------+---------+  
 |  12X   | Abeysinghe A.L.R     | 190012X |  
 |  14F   | Abeysinghe W.A.M.S.Y | 190014F |  
