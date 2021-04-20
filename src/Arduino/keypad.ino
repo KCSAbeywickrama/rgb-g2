@@ -5,15 +5,6 @@ char keys[4][4] = {
     {'4', '5', '6', 'B'},
     {'7', '8', '9', 'C'},
     {'*', '0', '#', 'D'}};
-void setup()
-{
-    Serial.begin(9600);
-    Serial.println(20);
-}
-void loop()
-{
-    readKey();
-}
 
 char readKey()
 {
