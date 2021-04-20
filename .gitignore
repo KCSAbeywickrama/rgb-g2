@@ -2,6 +2,6 @@
 !*/
 !simulation/Project.pdsprj
 !simulation/ARDUINO UNO/main.ino
-
+!src/**
 !.gitignore
 !README.md
