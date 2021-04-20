@@ -1,4 +1,4 @@
-int pins[] = {2, 3, 4, 5, 6, 7, 8, 9};
+int pins[] = {2, 3, 4, 5, 6, 7, 8, 12};
 
 char keys[4][4] = {
     {'1', '2', '3', 'A'},
@@ -20,9 +20,8 @@ char readKey()
 
     if (row && col)
     {
-        char ch = keys[getPos(row) - 1][getPos(col) - 1];
-        Serial.println(ch);
-        delay(500);
+        char ch = keys[getPos(row) - 1][getPos(col) - 1];       
+        delay(300);
         return ch;
     }
 

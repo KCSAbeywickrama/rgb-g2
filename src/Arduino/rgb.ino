@@ -1,4 +1,9 @@
+#define OK '#'
+#define MODE '*'
+
 byte rgbLed[] = {9, 10, 11};
+char rgbChars[] = {'R', 'G', 'B'};
+
 void writeRGB(int *rgbValues)
 {
     for (byte i; i < 3; i++)
@@ -8,6 +13,9 @@ void writeRGB(int *rgbValues)
 }
 void showRGB()
 {
+    // int rgbValues[] = {255, 255, 255};
+    // writeRGB(rgbValues);
+    // return;
     char ch;
     int rgbValues[3];
 
@@ -16,7 +24,7 @@ void showRGB()
         int j = 0;
         int value = 0;
 
-        Serial.print("Enter ");
+        Serial.print("\nEnter ");
         Serial.print(rgbChars[i]);
         Serial.print(": ");
         while (1)
@@ -42,12 +50,13 @@ void showRGB()
     for (int i = 0; i < 3; i++)
     {
         Serial.print(rgbChars[i]);
+        Serial.print(":");
         Serial.print(rgbValues[i]);
         Serial.print(" ");
     }
 
     writeRGB(rgbValues);
 
-    while (keypad.getKey() != OK)
+    while (readKey() != OK)
         ;
 }
