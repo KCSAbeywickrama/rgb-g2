@@ -1,10 +1,10 @@
 int pins[] = {2, 3, 4, 5, 6, 7, 8, 9};
 
 char keys[4][4] = {
-    {'1', '2', '3','A'},
-    {'4', '5', '6','B'},
-    {'7', '8', '9','C'},
-    {'*', '0', '#','D'}};
+    {'1', '2', '3', 'A'},
+    {'4', '5', '6', 'B'},
+    {'7', '8', '9', 'C'},
+    {'*', '0', '#', 'D'}};
 void setup()
 {
     Serial.begin(9600);
@@ -27,21 +27,26 @@ char readKey()
     writePORT(0b11110000);
     byte col = ~(readPORT() >> 4) & 0b00001111;
 
-    Serial.print(getPos(row));
-    Serial.print('|');
-    Serial.println(getPos(col));
+    if (row && col)
+    {
+        char ch = keys[getPos(row) - 1][getPos(col) - 1];
+        Serial.println(ch);
+        delay(500);
+        return ch;
+    }
 
-    delay(100);
+    return 0;
 }
 
-byte getPos(byte value){
-    byte pos=0;
+byte getPos(byte value)
+{
+    byte pos = 0;
     while (value)
     {
-        value/=2;
+        value /= 2;
         pos++;
-    }  
-    return pos;  
+    }
+    return pos;
 }
 
 void setDDR(byte value)
