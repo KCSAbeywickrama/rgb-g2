@@ -21,7 +21,7 @@ char readKey()
     if (row && col)
     {
         char ch = keys[getPos(row) - 1][getPos(col) - 1];       
-        delay(300);
+        delay(400);
         return ch;
     }
 
