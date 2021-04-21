@@ -6,20 +6,9 @@ char rgbChars[] = {'R', 'G', 'B'};
 
 void writeRGB(int *rgbValues)
 {
-
-    for (int i = 0; i < 3; i++)
+    for (byte i = 0; i < 3; i++)
     {
-        Serial.print(rgbChars[i]);
-        Serial.print(":");
-        
-        Serial.print(rgbValues[i]); 
-        Serial.print(" ");
         analogWrite(rgbLed[i], rgbValues[i]);
-    }
-
-    for (byte i; i < 3; i++)
-    {
-       
     }
 }
 void showRGB()
@@ -56,7 +45,14 @@ void showRGB()
     }
 
     Serial.println();
+    for (int i = 0; i < 3; i++)
+    {
+        Serial.print(rgbChars[i]);
+        Serial.print(":");
 
+        Serial.print(rgbValues[i]);
+        Serial.print(" ");
+    }
     writeRGB(rgbValues);
 
     while (readKey() != OK)
