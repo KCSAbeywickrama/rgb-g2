@@ -1,5 +1,6 @@
 int pins[] = {2, 3, 4, 5, 6, 7, 8, 12};
-
+unsigned long prevMillis = 0;
+unsigned int debounce = 300;
 char keys[4][4] = {
     {'1', '2', '3', 'A'},
     {'4', '5', '6', 'B'},
@@ -20,9 +21,13 @@ char readKey()
 
     if (row && col)
     {
-        char ch = keys[getPos(row) - 1][getPos(col) - 1];       
-        delay(400);
-        return ch;
+        unsigned long currMillis = millis();
+        if (currMillis - prevMillis > debounce)
+        {
+            char ch = keys[getPos(row) - 1][getPos(col) - 1];
+            prevMillis=currMillis;
+            return ch;
+        }
     }
 
     return 0;
