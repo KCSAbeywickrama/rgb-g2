@@ -21,8 +21,8 @@ unsigned int analogAvgRead(byte pin, byte samples)
     }
     unsigned int mean = X / samples;
     unsigned long s = sqrt(Y / samples - pow(mean, 2));
-    Serial.print(s);
-    Serial.print('|');
+    // Serial.print(s);
+    // Serial.print('|');
     return mean;
 }
 
@@ -54,19 +54,9 @@ void readAvgSensor(int *readings,byte samples)
 
 void showReadings()
 {
-    readAvgSensor(readings,3);
-    Serial.println();
-    for (int reading : readings)
-    {
-        Serial.print(reading);
-        Serial.print(',');
-    }
-    Serial.println();
-    readings[0] = 0;
-    readings[1] = 0;
-    readings[2] = 0;
+   
     readSensor(readings);
-    Serial.println();
+ 
     for (int reading : readings)
     {
         Serial.print(reading);
