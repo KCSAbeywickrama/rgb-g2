@@ -1,4 +1,4 @@
-byte sensorLeds[] = {A3, A4, A5};
+byte sensorLeds[] = {A4, A3, A5};
 byte sensorLdr = A2;
 int i = 0;
 int readings[] = {0, 0, 0};
@@ -20,7 +20,7 @@ unsigned int analogAvgRead(byte pin, byte samples)
         Y += pow(x, 2);
     }
     unsigned int mean = X / samples;
-    unsigned long s = sqrt(Y / samples - pow(mean, 2));
+    // unsigned long s = sqrt(Y / samples - pow(mean, 2));
     // Serial.print(s);
     // Serial.print('|');
     return mean;
