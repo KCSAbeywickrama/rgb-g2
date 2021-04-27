@@ -2,7 +2,7 @@ byte sensorLeds[] = {A3, A4, A5};
 byte sensorLdr = A2;
 int i = 0;
 int readings[] = {0, 0, 0};
-int calib_data[][] = {{0, 0, 0}, {0, 0, 0};
+int calib_data[2][3]={{396,378,324},{79,108,88}};
 
 void initSensor()
 {
@@ -31,6 +31,7 @@ unsigned int analogAvgRead(byte pin, byte samples)
 
 void readSensor(int *readings)
 {
+    Serial.println("Reading . . .");
     for (int i = 0; i < 3; i++)
     {
         digitalWrite(sensorLeds[i], 1);
@@ -39,10 +40,10 @@ void readSensor(int *readings)
         digitalWrite(sensorLeds[i], 0);
     }
 
-    Serial.println("Sensor Readings");
-    for (int reading : readings)
+    Serial.println("Readings");
+    for (int i=0;i<3;i++)
     {
-        Serial.print(reading);
+        Serial.print(readings[i]);
         Serial.print(',');
     }
     Serial.println();
@@ -63,7 +64,7 @@ void showReadings()
 
 void blink()
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 10; i++)
     {
         digitalWrite(13, 1);
         delay(500);
@@ -74,7 +75,8 @@ void blink()
 
 void calib()
 {
-    blink();
+    Serial.println("Place on White");
+    blink();    
     readSensor(calib_data[0]);
 
     Serial.println("calib_data[0]");
@@ -83,7 +85,8 @@ void calib()
         Serial.print(reading);
         Serial.print(',');
     }
-    Serial.println();
+
+    Serial.println("\nPlace on Black");
 
     blink();
     readSensor(calib_data[1]);
