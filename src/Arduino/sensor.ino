@@ -55,7 +55,7 @@ void showReadings()
 {
 
     readSensor(readings);
-    return;
+
     readSensor(readings);
     readSensor(readings);
     Serial.println("Delay");
