@@ -2,9 +2,11 @@ byte sensorLeds[] = {A3, A4, A5};
 byte sensorLdr = A2;
 int i = 0;
 int readings[] = {0, 0, 0};
+int calib_data[][] = {{0, 0, 0}, {0, 0, 0};
 
 void initSensor()
 {
+    pinMode(13, OUTPUT);
     for (byte pin : sensorLeds)
         pinMode(pin, OUTPUT);
 }
@@ -36,29 +38,58 @@ void readSensor(int *readings)
         readings[i] = analogAvgRead(sensorLdr, 30);
         digitalWrite(sensorLeds[i], 0);
     }
-}
 
-// void readAvgSensor(int *readings,byte samples)
-// {
-//     readings[0] = 0;
-//     readings[1] = 0;
-//     readings[2] = 0;
-//     for (int i = 0; i < samples; i++)
-//     {
-//         readSensor(readings);
-//     }
-//     for (int i = 0; i < 3; i++)
-//     {
-//         readings[i] /= samples;
-//     }
-// }
+    Serial.println("Sensor Readings");
+    for (int reading : readings)
+    {
+        Serial.print(reading);
+        Serial.print(',');
+    }
+    Serial.println();
+}
 
 void showReadings()
 {
-   
+
     readSensor(readings);
- 
+
     for (int reading : readings)
+    {
+        Serial.print(reading);
+        Serial.print(',');
+    }
+    Serial.println();
+}
+
+void blink()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        digitalWrite(13, 1);
+        delay(500);
+        digitalWrite(13, 0);
+        delay(500);
+    }
+}
+
+void calib()
+{
+    blink();
+    readSensor(calib_data[0]);
+
+    Serial.println("calib_data[0]");
+    for (int reading : calib_data[0])
+    {
+        Serial.print(reading);
+        Serial.print(',');
+    }
+    Serial.println();
+
+    blink();
+    readSensor(calib_data[1]);
+
+    Serial.println("calib_data[1]");
+    for (int reading : calib_data[1])
     {
         Serial.print(reading);
         Serial.print(',');
