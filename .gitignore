@@ -1,4 +1,6 @@
 *
 !*/
+!Testing/**/*.ino
+!Testing/**/*.pdsprj
 !.gitignore
 !README.md
