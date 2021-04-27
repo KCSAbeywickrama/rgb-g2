@@ -6,9 +6,6 @@ void setup()
 }
 
 void loop()
-{
-   
-//    calib();
-readColors();
-   
+{ 
+readColors();   
 }

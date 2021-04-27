@@ -131,7 +131,6 @@ void calc(int *readings, int *colors)
         else if (colors[i] < 0)
             colors[i] = 0;
     }
-    //
 }
 
 void readColors()
