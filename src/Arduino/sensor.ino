@@ -1,7 +1,8 @@
-byte sensorLeds[] = {A4, A3, A5};
+byte sensorLeds[] = {A3, A4, A5};
 byte sensorLdr = A2;
 int i = 0;
 int readings[] = {0, 0, 0};
+
 void initSensor()
 {
     for (byte pin : sensorLeds)
@@ -37,20 +38,20 @@ void readSensor(int *readings)
     }
 }
 
-void readAvgSensor(int *readings,byte samples)
-{
-    readings[0] = 0;
-    readings[1] = 0;
-    readings[2] = 0;
-    for (int i = 0; i < samples; i++)
-    {
-        readSensor(readings);
-    }
-    for (int i = 0; i < 3; i++)
-    {
-        readings[i] /= samples;
-    }
-}
+// void readAvgSensor(int *readings,byte samples)
+// {
+//     readings[0] = 0;
+//     readings[1] = 0;
+//     readings[2] = 0;
+//     for (int i = 0; i < samples; i++)
+//     {
+//         readSensor(readings);
+//     }
+//     for (int i = 0; i < 3; i++)
+//     {
+//         readings[i] /= samples;
+//     }
+// }
 
 void showReadings()
 {
