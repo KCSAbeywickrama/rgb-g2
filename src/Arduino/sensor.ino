@@ -33,7 +33,7 @@ unsigned int analogAvgRead(byte pin, byte samples)
 void readSensor(int *readings)
 {
     // Serial.println("Reading . . .");
-    delay(500);
+    warm();
     for (int i = 0; i < 3; i++)
     {
         digitalWrite(sensorLeds[i], 1);
@@ -70,6 +70,15 @@ void showReadings()
     delay(5000);
     readSensor(readings);
     Serial.println("end");
+}
+void warm(){
+ for (int i = 0; i < 3; i++)
+    {
+        digitalWrite(sensorLeds[i], 1);
+        delay(200);
+        int j = analogAvgRead(sensorLdr, 30);
+        digitalWrite(sensorLeds[i], 0);
+    }
 }
 
 void blink()
