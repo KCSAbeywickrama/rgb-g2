@@ -145,7 +145,7 @@ void print_triplet(int *triplet)
     Serial.println();
 }
 
-void showDataSet()
+void show_dataset()
 {
     int color_sets[][3] = {
         {255, 0, 0},
@@ -161,4 +161,5 @@ void showDataSet()
         {50, 150, 220},
         {100, 30, 110}
     }
+    
 }
