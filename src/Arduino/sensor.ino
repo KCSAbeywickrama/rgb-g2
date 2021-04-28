@@ -43,7 +43,7 @@ void readSensor(int *readings)
     }
 
     Serial.println("Readings");
-    print_triplet(readings);    
+    printTriplet(readings);    
 }
 
 void showReadings()
@@ -95,13 +95,13 @@ void calib()
     blink();
     readSensor(calib_data[0]);
     Serial.println("calib_data[0]");
-    print_triplet(calib_data[0]);    
+    printTriplet(calib_data[0]);    
 
     Serial.println("\nPlace on Black");
     blink();
     readSensor(calib_data[1]);
     Serial.println("calib_data[1]");
-    print_triplet(calib_data[1]);
+    printTriplet(calib_data[1]);
 }
 
 void calc(int *readings, int *colors)
@@ -121,10 +121,10 @@ void readColors()
     delay(500);
     readSensor(readings);
     calc(readings, colors);
-    send_to_colordisplay(colors);
+    sendToColorDisp(colors);
 }
 
-void send_to_colordisplay(int *colors)
+void sendToColorDisp(int *colors)
 {
     for (int i = 0; i < 3; i++)
     {
@@ -135,7 +135,7 @@ void send_to_colordisplay(int *colors)
     Serial.println("---------");
 }
 
-void print_triplet(int *triplet)
+void printTriplet(int *triplet)
 {
     Serial.print(triplet[0]);
     Serial.print(',');
@@ -145,7 +145,7 @@ void print_triplet(int *triplet)
     Serial.println();
 }
 
-void show_dataset()
+void showDataset()
 {
     int color_sets[][3] = {
         {255, 0, 0},
@@ -160,6 +160,8 @@ void show_dataset()
         {255, 127, 0},
         {50, 150, 220},
         {100, 30, 110}
-    }
+    };
+
+    
     
 }
