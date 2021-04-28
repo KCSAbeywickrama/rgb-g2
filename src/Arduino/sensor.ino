@@ -1,9 +1,9 @@
-byte sensorLeds[] = {A3, A4, A5};
+byte sensorLeds[3] = {A3, A4, A5};
 byte sensorLdr = A2;
 int i = 0;
-int readings[] = {0, 0, 0};
-int colors[] = {0, 0, 0};
-int calib_data[2][3] = {{482, 396, 332}, {165, 136, 102}};
+int readings[3] = {0, 0, 0};
+int colors[3] = {0, 0, 0};
+int calibData[2][3] = {{482, 396, 332}, {165, 136, 102}};
 
 void initSensor()
 {
@@ -32,7 +32,7 @@ unsigned int analogAvgRead(byte pin, byte samples)
 
 void readSensor(int *readings)
 {
-    Serial.println("Reading . . .");
+    // Serial.println("Reading . . .");
     warm();
     for (int i = 0; i < 3; i++)
     {
@@ -42,7 +42,7 @@ void readSensor(int *readings)
         digitalWrite(sensorLeds[i], 0);
     }
 
-    Serial.println("Readings");
+    // Serial.println("Readings");
     printTriplet(readings);    
 }
 
@@ -80,7 +80,7 @@ void warm()
 
 void blink()
 {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         digitalWrite(13, 1);
         delay(500);
@@ -93,22 +93,22 @@ void calib()
 {
     Serial.println("Place on White");
     blink();
-    readSensor(calib_data[0]);
-    Serial.println("calib_data[0]");
-    printTriplet(calib_data[0]);    
+    readSensor(calibData[0]);
+    Serial.println("calibData[0]");
+    printTriplet(calibData[0]);    
 
     Serial.println("\nPlace on Black");
     blink();
-    readSensor(calib_data[1]);
-    Serial.println("calib_data[1]");
-    printTriplet(calib_data[1]);
+    readSensor(calibData[1]);
+    Serial.println("calibData[1]");
+    printTriplet(calibData[1]);
 }
 
 void calc(int *readings, int *colors)
 {
     for (int i = 0; i < 3; i++)
     {
-        colors[i] = (float)(readings[i] - calib_data[1][i]) / (calib_data[0][i] - calib_data[1][i]) * 255;
+        colors[i] = (float)(readings[i] - calibData[1][i]) / (calibData[0][i] - calibData[1][i]) * 255;
         if (colors[i] > 255)
             colors[i] = 255;
         else if (colors[i] < 0)
@@ -162,6 +162,11 @@ void showDataset()
         {100, 30, 110}
     };
 
-    
+    for(int *set:color_sets){       
+      printTriplet(set);
+      blink();
+      readSensor(readings);
+      Serial.println();
+    }  
     
 }

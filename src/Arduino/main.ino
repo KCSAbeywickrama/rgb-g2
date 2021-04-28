@@ -1,11 +1,13 @@
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("Sensor Readings");
+    Serial.println("Started");
     initSensor();
+    showDataset();  
 }
 
 void loop()
 { 
-readColors();   
+// readColors();
+ 
 }
