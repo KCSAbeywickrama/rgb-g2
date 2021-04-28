@@ -3,7 +3,7 @@ byte sensorLdr = A2;
 int i = 0;
 int readings[] = {0, 0, 0};
 int colors[] = {0, 0, 0};
-int calib_data[2][3] = {{473, 386, 323}, {150, 131, 94}};
+int calib_data[2][3] = {{482, 396, 332}, {165, 136, 102}};
 
 void initSensor()
 {
@@ -43,12 +43,7 @@ void readSensor(int *readings)
     }
 
     Serial.println("Readings");
-    for (int i = 0; i < 3; i++)
-    {
-        Serial.print(readings[i]);
-        Serial.print(',');
-    }
-    Serial.println();
+    print_triplet(readings);    
 }
 
 void showReadings()
@@ -99,26 +94,14 @@ void calib()
     Serial.println("Place on White");
     blink();
     readSensor(calib_data[0]);
-
     Serial.println("calib_data[0]");
-    for (int reading : calib_data[0])
-    {
-        Serial.print(reading);
-        Serial.print(',');
-    }
+    print_triplet(calib_data[0]);    
 
     Serial.println("\nPlace on Black");
-
     blink();
     readSensor(calib_data[1]);
-
     Serial.println("calib_data[1]");
-    for (int reading : calib_data[1])
-    {
-        Serial.print(reading);
-        Serial.print(',');
-    }
-    Serial.println();
+    print_triplet(calib_data[1]);
 }
 
 void calc(int *readings, int *colors)
@@ -138,11 +121,44 @@ void readColors()
     delay(500);
     readSensor(readings);
     calc(readings, colors);
-    for (int color : colors)
+    send_to_colordisplay(colors);
+}
+
+void send_to_colordisplay(int *colors)
+{
+    for (int i = 0; i < 3; i++)
     {
-        Serial.print(color);
+        Serial.print(colors[i]);
         Serial.print(",");
     }
     Serial.println(" ");
     Serial.println("---------");
+}
+
+void print_triplet(int *triplet)
+{
+    Serial.print(triplet[0]);
+    Serial.print(',');
+    Serial.print(triplet[1]);
+    Serial.print(',');
+    Serial.print(triplet[2]);
+    Serial.println();
+}
+
+void showDataSet()
+{
+    int color_sets[][3] = {
+        {255, 0, 0},
+        {0, 255, 0},
+        {0, 0, 255},
+        {0, 0, 0},
+        {127, 127, 127},
+        {255, 255, 255},
+        {255, 255, 0},
+        {0, 255, 255},
+        {255, 0, 255},
+        {255, 127, 0},
+        {50, 150, 220},
+        {100, 30, 110}
+    }
 }
