@@ -3,7 +3,7 @@ byte sensorLdr = A2;
 int i = 0;
 int readings[3] = {0, 0, 0};
 int colors[3] = {0, 0, 0};
-int calibData[2][3] = {{482, 396, 332}, {165, 136, 102}};
+int calibData[2][3] = {{654,387,318}, {331, 144, 104}};
 
 void initSensor()
 {
@@ -43,7 +43,7 @@ void readSensor(int *readings)
     }
 
     // Serial.println("Readings");
-    printTriplet(readings);    
+    printTriplet(readings);
 }
 
 void showReadings()
@@ -95,7 +95,7 @@ void calib()
     blink();
     readSensor(calibData[0]);
     Serial.println("calibData[0]");
-    printTriplet(calibData[0]);    
+    printTriplet(calibData[0]);
 
     Serial.println("\nPlace on Black");
     blink();
@@ -159,14 +159,13 @@ void showDataset()
         {255, 0, 255},
         {255, 127, 0},
         {50, 150, 220},
-        {100, 30, 110}
-    };
+        {100, 30, 110}};
 
-    for(int *set:color_sets){       
-      printTriplet(set);
-      blink();
-      readSensor(readings);
-      Serial.println();
-    }  
-    
+    for (int *set : color_sets)
+    {
+        printTriplet(set);
+        blink();
+        readSensor(readings);
+        Serial.println();
+    }
 }
