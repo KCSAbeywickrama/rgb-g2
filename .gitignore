@@ -1,6 +1,7 @@
 *
 !*/
-!Testing/**/*.ino
-!Testing/**/*.pdsprj
+!simulation/**/*.ino
+!simulation/**/*.pdsprj
+!src/**/*.ino
 !.gitignore
 !README.md
