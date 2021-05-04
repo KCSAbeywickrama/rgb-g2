@@ -12,33 +12,28 @@ void initSensor()
         pinMode(pin, OUTPUT);
 }
 
-unsigned int analogAvgRead(byte pin, byte samples)
+unsigned int analogLastRead(byte pin, byte samples)
 {
-    unsigned int X = 0;
-    unsigned long Y = 0;
+    unsigned int value;
     for (int i = 0; i < samples; i++)
     {
-        delay(5);
-        unsigned int x = analogRead(pin);
-        X += x;
-        Y += pow(x, 2);
+        delay(100);
+        value = analogRead(pin);
+        Serial.print(value);
+        Serial.print('.');       
     }
-    unsigned int mean = X / samples;
-    // unsigned long s = sqrt(Y / samples - pow(mean, 2));
-    // Serial.print(s);
-    // Serial.print('|');
-    return mean;
+    Serial.println();   
+    return value;
 }
 
 void readSensor(int *readings)
 {
     // Serial.println("Reading . . .");
-    warm();
+    
     for (int i = 0; i < 3; i++)
     {
-        digitalWrite(sensorLeds[i], 1);
-        delay(200);
-        readings[i] = analogAvgRead(sensorLdr, 30);
+        digitalWrite(sensorLeds[i], 1);        
+        readings[i] = analogLastRead(sensorLdr, 20);
         digitalWrite(sensorLeds[i], 0);
     }
 
@@ -73,7 +68,7 @@ void warm()
     {
         digitalWrite(sensorLeds[i], 1);
         delay(200);
-        int j = analogAvgRead(sensorLdr, 30);
+        int j = analogLastRead(sensorLdr, 30);
         digitalWrite(sensorLeds[i], 0);
     }
 }
