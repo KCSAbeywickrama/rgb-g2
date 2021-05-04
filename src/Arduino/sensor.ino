@@ -3,8 +3,9 @@ byte sensorLdr = A2;
 int i = 0;
 int readings[3] = {0, 0, 0};
 int colors[3] = {0, 0, 0};
-int calibData[2][3] = {{482, 396, 332}, {165, 136, 102}};
-
+int calibColors[5][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {0, 0, 0}, {255, 255, 255}};
+int calibData[5][3] = {{655, 120, 121}, {399, 233, 124}, {296, 156, 211}, {295, 94, 95}, {658, 335, 306}};
+int calibConst[3][2];
 void initSensor()
 {
     pinMode(13, OUTPUT);
@@ -18,32 +19,29 @@ unsigned int analogAvgRead(byte pin, byte samples)
     unsigned long Y = 0;
     for (int i = 0; i < samples; i++)
     {
-        delay(5);
+        delay(100);
         unsigned int x = analogRead(pin);
         X += x;
         Y += pow(x, 2);
     }
     unsigned int mean = X / samples;
-    // unsigned long s = sqrt(Y / samples - pow(mean, 2));
-    // Serial.print(s);
-    // Serial.print('|');
     return mean;
 }
 
 void readSensor(int *readings)
 {
-    // Serial.println("Reading . . .");
-    warm();
+    Serial.println("Reading . . .");
+
     for (int i = 0; i < 3; i++)
     {
         digitalWrite(sensorLeds[i], 1);
-        delay(200);
-        readings[i] = analogAvgRead(sensorLdr, 30);
+        delay(2000);
+        readings[i] = analogRead(sensorLdr);
         digitalWrite(sensorLeds[i], 0);
     }
 
     // Serial.println("Readings");
-    printTriplet(readings);    
+    printTriplet(readings);
 }
 
 void showReadings()
@@ -89,19 +87,38 @@ void blink()
     }
 }
 
-void calib()
+void readCalibData()
 {
-    Serial.println("Place on White");
-    blink();
-    readSensor(calibData[0]);
-    Serial.println("calibData[0]");
-    printTriplet(calibData[0]);    
+    Serial.println("Calibarating...");
+    for (int i = 0; i < 5; i++)
+    {
+        Serial.print("Place on ");
+        printTriplet(calibColors[i]);
+        blink();
+        readSensor(calibData[i]);
+    }
+}
 
-    Serial.println("\nPlace on Black");
-    blink();
-    readSensor(calibData[1]);
-    Serial.println("calibData[1]");
-    printTriplet(calibData[1]);
+void calcCalibConst()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        calibConst[i][1] = (calibData[i][i] * 3 + calibData[4][i]) / 4;
+        calibConst[i][0] = (calibData[(i + 1) % 3][i] + calibData[(i + 2) % 3][i] + calibData[3][i] * 3) / 5;
+    }
+}
+
+
+void calcColor(int *readings, int *colors)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        colors[i] = (float)(readings[i] - calibConst[i][0]) / (calibConst[i][1] - calibConst[i][0]) * 255;
+        if (colors[i] > 255)
+            colors[i] = 255;
+        else if (colors[i] < 0)
+            colors[i] = 0;
+    }
 }
 
 void calc(int *readings, int *colors)
@@ -118,9 +135,10 @@ void calc(int *readings, int *colors)
 
 void readColors()
 {
-    delay(500);
+    Serial.println("Place...");
+    delay(4000);
     readSensor(readings);
-    calc(readings, colors);
+    calcColor(readings, colors);
     sendToColorDisp(colors);
 }
 
@@ -159,14 +177,13 @@ void showDataset()
         {255, 0, 255},
         {255, 127, 0},
         {50, 150, 220},
-        {100, 30, 110}
-    };
+        {100, 30, 110}};
 
-    for(int *set:color_sets){       
-      printTriplet(set);
-      blink();
-      readSensor(readings);
-      Serial.println();
-    }  
-    
+    for (int *set : color_sets)
+    {
+        printTriplet(set);
+        blink();
+        readSensor(readings);
+        Serial.println();
+    }
 }
