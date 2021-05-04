@@ -76,7 +76,7 @@ void setup(){
   delay(5000);
   lcd.clear();
   
-  //Serial.begin(9600);
+  Serial.begin(9600);
 }
 
 
@@ -151,13 +151,10 @@ void loop(){
       lightRGB(blackValues);
       if (loopKey=='*'){
         loop();
-      }  
-      
+      }        
       lcd.clear();
     }
   }
-  
-  
 }
 
 //message printing and get input in menu
@@ -194,6 +191,7 @@ void calibration(){
   //make the RGB values for white color
   RGBArray();
   assignArray(blackArray,colorArray); 
+  
   //calibration finished 
   lcd.clear();
   balance=true;
@@ -261,24 +259,39 @@ void printArray(int *valuesArray){
 //get the input RGB values from user
 void getValues(String *array){
       for(int color=0;color<=2;color++){
+        //user interface
         lcd.setCursor(0,0);
         lcd.print("Enter values");
         lcd.setCursor(0,1);
         lcd.print(array[color]);
         char inputKey;
         String value="";
+        //get the inputs
         while(true){
           inputKey=inputKeypad.getKey();
           String key=String(inputKey);
+          //one color value is ok
           if (inputKey=='#'){
             break;
-        }
-          if (inputKey!=NO_KEY){
+          }
+          //wrong input character
+          if (inputKey=='*'){
+            value=deleteChar(value);
+            lcd.clear(); 
+            lcd.setCursor(0,0);
+            lcd.print("Enter values");
+            lcd.setCursor(0,1);
+            lcd.print(array[color]);  
+            lcd.print(value);         
+          }
+          //given characters
+          else if (inputKey!=NO_KEY){
             lcd.print(inputKey);
             value=value+key;
           }
         }
         int Val=value.toInt();
+        
         //valid input
         if (Val>=0 && Val<=255){
           colorValuesArray[color]=Val;
@@ -291,17 +304,15 @@ void getValues(String *array){
           loopKey='0';
           loop();
         }
-        lcd.clear();
-      
+        lcd.clear();      
       }
 }
 
 //light up the output RGB LED
-void lightRGB(int *array){
+void lightRGB(int *Array){
       for(int color=0;color<=2;color++){
-      analogWrite(outputColorArray[color],array[color]);
-      }
-
+      analogWrite(outputColorArray[color],Array[color]);
+      }    
 }
 
 /*void displayValues(int *array){
@@ -316,4 +327,11 @@ void assignArray(int *array1,int *array2){
   for(int value=0;value<=2;value++){
     array1[value]=array2[value];
   }
+}
+
+//delete wrong input characters
+String deleteChar(String number){
+    int len=number.length();
+    number=number.substring(0,len-1);
+    return number;
 }
