@@ -3,5 +3,7 @@
 !simulation/**/*.ino
 !simulation/**/*.pdsprj
 !src/**/*.ino
+!src/**/*.xlsx
+!src/**/*.PNG
 !.gitignore
 !README.md
