@@ -38,7 +38,7 @@ void readSensor(int *readings)
     {
         digitalWrite(sensorLeds[i], 1);
         delay(2000);
-        readings[i] = analogAvgRead(sensorLdr, 3);
+        readings[i] = analogRead(sensorLdr);
         digitalWrite(sensorLeds[i], 0);
     }
 
