@@ -2,9 +2,10 @@ void setup()
 {
     Serial.begin(115200);
     Serial.println("Started");
-    initSensor();    
+    initSensor();
+    calcCalibConst();
 }
 void loop()
-{ 
-showDataset();
+{
+    readColors();
 }
