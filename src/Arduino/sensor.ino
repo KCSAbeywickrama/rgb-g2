@@ -23,10 +23,7 @@ unsigned int analogAvgRead(byte pin, byte samples)
         X += x;
         Y += pow(x, 2);
     }
-    unsigned int mean = X / samples;
-    // unsigned long s = sqrt(Y / samples - pow(mean, 2));
-    // Serial.print(s);
-    // Serial.print('|');
+    unsigned int mean = X / samples;    
     return mean;
 }
 
