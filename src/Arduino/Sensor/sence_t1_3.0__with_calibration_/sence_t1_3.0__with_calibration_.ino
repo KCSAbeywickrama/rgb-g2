@@ -1,7 +1,15 @@
+//display libries
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); 
+
+
 int r_led = 2;
 int g_led = 3;
 int b_led = 4;
 int ldr_p = A0;
+int pwr = 5;
 const int rgb_r = 9;
 const int rgb_g = 10;
 const int rgb_b = 11;
@@ -13,10 +21,19 @@ void setup() {
   pinMode (r_led,OUTPUT);
   pinMode (g_led,OUTPUT);
   pinMode (b_led,OUTPUT);
+  pinMode (pwr,OUTPUT);
   Serial.begin(9600);
+  lcd.begin(16,2);
+  lcd.backlight();
+  digitalWrite(pwr,HIGH);
 }
 
 void loop() {
+  lcd.setCursor(0,0);
+  lcd.print("processing...");
+  lcd.setCursor(0,1);
+  lcd.print("Please Wait.");
+  
   for(int p = 1; p < 4 ; p=p+1){
     Serial.println(p);
     if(p == 1){
@@ -81,6 +98,11 @@ void calib(int red_r, int green_r, int blue_r){
   b_val = (b_val - B_min)*m_b;
   setColor(r_val,g_val,b_val);
   Serial.println((String)r_val+","+ (String)g_val+"," + (String)b_val);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("color RGB val:");
+  lcd.setCursor(0,1);
+  lcd.print((String)r_val+","+ (String)g_val+"," + (String)b_val);
 
 }
 
