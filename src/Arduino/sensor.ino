@@ -3,9 +3,11 @@ byte sensorLdr = A2;
 int i = 0;
 int readings[3] = {0, 0, 0};
 int colors[3] = {0, 0, 0};
+
 int calibColors[5][3] = {{255, 0, 0}, {0, 255, 0}, {0, 0, 255}, {0, 0, 0}, {255, 255, 255}};
 int calibData[5][3] = {{655, 120, 121}, {399, 233, 124}, {296, 156, 211}, {295, 94, 95}, {658, 335, 306}};
 int calibConst[3][2];
+
 void initSensor()
 {
     pinMode(13, OUTPUT);
@@ -30,7 +32,7 @@ unsigned int analogAvgRead(byte pin, byte samples)
 
 void readSensor(int *readings)
 {
-    Serial.println("Reading . . .");
+    // Serial.println("Reading . . .");
 
     for (int i = 0; i < 3; i++)
     {
@@ -41,7 +43,7 @@ void readSensor(int *readings)
     }
 
     // Serial.println("Readings");
-    printTriplet(readings);
+    // printTriplet(readings);
 }
 
 void showReadings()
@@ -184,6 +186,36 @@ void showDataset()
         printTriplet(set);
         blink();
         readSensor(readings);
+        Serial.println();
+    }
+}
+
+void showDiff(){
+     int color_sets[][3] = {
+        {255, 0, 0},
+        {0, 255, 0},
+        {0, 0, 255},
+        {0, 0, 0},
+        {127, 127, 127},
+        {255, 255, 255},
+        {255, 255, 0},
+        {0, 255, 255},
+        {255, 0, 255},
+        {255, 127, 0},
+        {50, 150, 220},
+        {100, 30, 110}};
+
+    for (int *set : color_sets)
+    {
+        printTriplet(set);
+        blink();
+        readSensor(readings);
+        calcColor(readings, colors);
+        printTriplet(colors);
+        int diff[3];
+        for(int i=0;i<3;i++)
+        diff[i]=set[i]-colors[i];
+        printTriplet(diff);
         Serial.println();
     }
 }
