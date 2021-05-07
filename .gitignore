@@ -3,5 +3,6 @@
 !simulation/Project.pdsprj
 !simulation/ARDUINO UNO/main.ino
 !src/**
+src/avr/Debug/*
 !.gitignore
 !README.md
