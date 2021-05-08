@@ -2,8 +2,7 @@
 !*/
 !simulation/**/*.ino
 !simulation/**/*.pdsprj
-!src/**/*.ino
-!src/**/*.xlsx
-!src/**/*.PNG
+!src/**
+src/avr/Debug/*
 !.gitignore
 !README.md
