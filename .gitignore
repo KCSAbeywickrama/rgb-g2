@@ -1,7 +1,8 @@
 *
 !*/
-!simulation/Project.pdsprj
-!simulation/ARDUINO UNO/main.ino
+!simulation/**/*.ino
+!simulation/**/*.pdsprj
 !src/**
+src/avr/Debug/*
 !.gitignore
 !README.mdq
