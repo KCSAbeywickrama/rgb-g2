@@ -1,6 +1,8 @@
 *
 !*/
-!arduino_2.ino
-!RGB color sensor diagram.pdsprj
+!simulation/**/*.ino
+!simulation/**/*.pdsprj
+!src/**
+src/avr/Debug/*
 !.gitignore
-!README.md
+!README.mdq
