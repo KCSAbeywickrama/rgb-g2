@@ -7,11 +7,14 @@
 
 
 #include <avr/io.h>
-
+#include "cores/led.h"
 
 int main(void)
 {
-    /* Replace with your application code */
+	led_init();
+	led_on_args(255,50,0);
+ 
+	
     while (1) 
     {
     }
