@@ -5,14 +5,16 @@
  * Author : CSA
  */ 
 
+#define F_CPU 8000000UL
 #include <avr/io.h>
+#include "cores/lcd.h"
 
 
-int main(void)
+int main()
 {
-    /* Replace with your application code */
-    while (1) 
-    {
-    }
+	LCD_Init();
+	LCD_String("Welcome");
+	LCD_Command(0xC0);
+	LCD_String("Group 2");
+	while(1);
 }
-
