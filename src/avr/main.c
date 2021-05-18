@@ -11,7 +11,7 @@
 int main(void)
 {
 	led_init();
-	led_on_args(0,200,0);
+	led_on_args(255,50,0);
  
 	
     while (1) 

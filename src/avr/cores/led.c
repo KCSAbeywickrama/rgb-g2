@@ -8,9 +8,9 @@
 #include <avr/io.h>
 //#include "led.h"
 
-#define OCR_RED OCR2A
-#define OCR_GREEN OCR0B
-#define OCR_BLUE OCR0A
+#define OCR_RED OCR2A//D11
+#define OCR_GREEN OCR0B//D5
+#define OCR_BLUE OCR0A//D6
 
 void _port_init(){	
 	DDRD |= 1<<DDD5 | 1<<DDD6;
