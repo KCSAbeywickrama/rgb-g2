@@ -6,15 +6,15 @@
 */
 
 #include <avr/io.h>
-#include "led.h"
+//#include "led.h"
 
 #define OCR_RED OCR2A
-#define OCR_GREEN OCR0A
-#define OCR_BLUE OCR0B
+#define OCR_GREEN OCR0B
+#define OCR_BLUE OCR0A
 
 void _port_init(){	
-	DDRD| = 1<<DDD5 | 1<<DDD6;
-	DDRB| = 1<<DDB3;
+	DDRD |= 1<<DDD5 | 1<<DDD6;
+	DDRB |= 1<<DDB3;
 }
 
 void _pwm_init(){
@@ -22,7 +22,7 @@ void _pwm_init(){
 	TCCR0A |= 1<<COM0A1 | 1<<COM0B1  | 1<<WGM01 | 1<<WGM00;
 	
 	//setup Fast PWM on OC2A (timer2)
-	TCCR2A |= 1<<COM2A1 | 1<<WGM21 | 1<<WGM20
+	TCCR2A |= 1<<COM2A1 | 1<<WGM21 | 1<<WGM20;
 }
 
 void _timer_start(){
@@ -54,7 +54,7 @@ void led_on(uint8_t *rgb){
 	_timer_start();
 }
 
-void led_on(uint8_t red,uint8_t green,uint8_t blue){
+void led_on_args(uint8_t red,uint8_t green,uint8_t blue){
 	uint8_t rgb[3]={red,green,blue};
 	led_on(rgb);
 }
