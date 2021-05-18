@@ -9,9 +9,11 @@
 #define F_CPU 8000000UL
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include "cores/keypad.h"
 #include "cores/lcd.h"
-#include <util/delay.h>
+#include "cores/led.h"
+
 
 #define r0 23
 #define r1 24
@@ -28,14 +30,14 @@ char *color_string_array[]={"R = ","G = ","B = "};
 //int columnPins[columns]={c0,c1,c2};
 //Keypad inputKeypad = Keypad(makeKeymap(keys), rowPins, columnPins, rows, columns);
 
-void given_RGB(int *rgbvalue){
+void given_RGB(uint8_t *rgbvalue){
 	//LCD_SetCursor(0,2);
 	//LCD_String("given value");
 	//LCD_SetCursor(1,6);
 	//LCD_String("RGB");
 	//_delay_ms(3000);
 	//LCD_Clear();
-	int arr[3];
+	
 	
 	for (int color=0;color<3;color++){
 		LCD_SetCursor(0,0);
@@ -61,16 +63,18 @@ void given_RGB(int *rgbvalue){
 		}
 		
 		LCD_Clear();
-		arr[color]=val;
+		rgbvalue[color]=val;
+		
 		//char rgb_char[3];
 		//itoa(val,rgb_char,3);
 		//LCD_String(rgb_char);
-		do{
-			char c=(arr[color])%10+'0';
-			LCD_Char(c);
-			arr[color]/=10;
-		}while(arr[color]!=0);
-		_delay_ms(1000);
+		//do{
+		//char c=(rgbvalue[color])%10+'0';
+		//LCD_Char(c);
+		//rgbvalue[color]/=10;
+		//}while(rgbvalue[color]!=0);
+		
+		//_delay_ms(1000);
 		LCD_Clear();
 	}
 }
@@ -89,11 +93,15 @@ int main(void)
 	LCD_Clear();
 	_delay_ms(500);
 
+
+	//led_init();
 	while(1){
 		
-		int rgbvalue[3];
+		uint8_t rgbvalue[3];
 		given_RGB(rgbvalue);
-		break;
+		//led_on(rgbvalue);
+		LCD_Clear();
+		
 	}
 }
 

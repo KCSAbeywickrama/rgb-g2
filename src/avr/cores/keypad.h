@@ -13,8 +13,8 @@
 
 char *key_pins[7];
 
-void led_on(uint8_t *port, uint8_t pin);
-void led_off(uint8_t *port, uint8_t pin);
+//void led_on(uint8_t *port, uint8_t pin);
+//void led_off(uint8_t *port, uint8_t pin);
 char *pin_set(int pin);
 int set_keypad(int *pin_num);
 int set_port(char *bits,char **pins);

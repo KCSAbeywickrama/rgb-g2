@@ -133,7 +133,6 @@
 		 set_port("011",key_pins);
 		 if (set_pin(key_pins[0])){
 			 value='1';
-			 led_on(&PORTC,PORTC0);
 			 break;
 		 }
 		 //input char 2
