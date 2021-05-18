@@ -6,48 +6,22 @@
  */ 
 
 
-#include <avr/io.h>
-#include "cores/led.h"
-
-int main(void)
-{
-	led_init();
-	led_on_args(255,50,0);
- 
-	
-    while (1) 
-    {
-    }
-}
-
-#define F_CPU 8000000UL
-#include <avr/io.h>
-#include "cores/lcd.h"
-
-
-int main()
-{
-	LCD_Init();
-	LCD_String("Welcome");
-	LCD_Command(0xC0);
-	LCD_String("Group 2");
-	while(1);
-} 
-
 #define F_CPU 8000000UL
 
 #include <avr/io.h>
 #include "cores/keypad.h"
+#include "cores/lcd.h"
 #include <util/delay.h>
 
-#define r0 2
-#define r1 3
-#define r2 4
-#define r3 5
-#define c0 6
-#define c1 11
-#define c2 12
+#define r0 23
+#define r1 24
+#define r2 25
+#define r3 26
+#define c0 4
+#define c1 5
+#define c2 6
 
+char *color_string_array[]={"R = ","G = ","B = "};
 
 //char keys[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{'*','0','#'}};	
 //int rowPins[rows]={r0,r1,r2,r3};
@@ -56,16 +30,56 @@ int main()
 
 int main(void)
 {
-	DDRB=255;
-	DDRC=255;
 	int keypadPins[7]={r0,r1,r2,r3,c0,c1,c2};
 	set_keypad(keypadPins);
-	while (1)
-	{	
-		//get the keypad inputs
-		char val=keypad_getKey();
-		led_light(val);		
+	//int lcdPins[]={rs,en,d4,d5,d6,d7};
+	LCD_Init();
+
+	LCD_SetCursor(0,0);
+	LCD_String("Welcome");
+	_delay_ms(1000);
+	LCD_Clear();
+	_delay_ms(500);
+
+	while(1){
 		
+		
+		given_RGB();
+		break;
 	}
 }
+
+void given_RGB(){
+	int rgb_value;
+	LCD_SetCursor(0,2);
+	LCD_String("given value");
+	LCD_SetCursor(1,6);
+	LCD_String("RGB");
+	_delay_ms(3000);
+	LCD_Clear();
+
+	for (int color=0;color<=2;color++){
+		LCD_SetCursor(0,0);
+		LCD_String("Enter values");
+		LCD_SetCursor(1,0);
+		LCD_String(color_string_array[color]);
+		char val;
+		while(1){
+			//val='a';
+			val=keypad_getKey();
+			LCD_Char(val);
+			//rgb_value=strcat(rgb_value,val);
+			
+			if (val=='#'){
+				break;
+			}
+		}
+		LCD_Clear();
+		//LCD_String(rgb_value);
+		_delay_ms(1000);
+		LCD_Clear();
+	}
+}
+
+
 

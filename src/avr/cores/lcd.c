@@ -92,3 +92,14 @@ void LCD_Clear()
 	LCD_Command (0x80);		/* Cursor at home position */
 }
 
+void LCD_SetCursor(int row_index,int col_index){
+	if (row_index==0){
+		LCD_Command(0x80);
+	}
+	if (row_index==1){
+		LCD_Command(0xC0);
+	}
+	for (int temp=0;temp<col_index;temp++){
+		LCD_Command(0x14);
+	}
+}
