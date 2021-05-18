@@ -1,9 +1,9 @@
 /*
- * avr.c
- *
- * Created: 07-May-21 5:12:49 PM
- * Author : CSA
- */ 
+* avr.c
+*
+* Created: 07-May-21 5:12:49 PM
+* Author : CSA
+*/
 
 
 #define F_CPU 8000000UL
@@ -23,10 +23,58 @@
 
 char *color_string_array[]={"R = ","G = ","B = "};
 
-//char keys[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{'*','0','#'}};	
+//char keys[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{'*','0','#'}};
 //int rowPins[rows]={r0,r1,r2,r3};
 //int columnPins[columns]={c0,c1,c2};
 //Keypad inputKeypad = Keypad(makeKeymap(keys), rowPins, columnPins, rows, columns);
+
+void given_RGB(int *rgbvalue){
+	//LCD_SetCursor(0,2);
+	//LCD_String("given value");
+	//LCD_SetCursor(1,6);
+	//LCD_String("RGB");
+	//_delay_ms(3000);
+	//LCD_Clear();
+	int arr[3];
+	
+	for (int color=0;color<3;color++){
+		LCD_SetCursor(0,0);
+		LCD_String("Enter values");
+		LCD_SetCursor(1,0);
+		LCD_String(color_string_array[color]);
+		char ch;
+		int val=0;
+		
+		while(1){
+			
+			ch=keypad_getKey();
+			
+			if (ch=='#'){
+				break;
+			}
+			
+			LCD_Char(ch);
+			int digit=ch-'0';
+			val = val * 10 + digit;
+			
+			
+		}
+		
+		LCD_Clear();
+		arr[color]=val;
+		//char rgb_char[3];
+		//itoa(val,rgb_char,3);
+		//LCD_String(rgb_char);
+		do{
+			char c=(arr[color])%10+'0';
+			LCD_Char(c);
+			arr[color]/=10;
+		}while(arr[color]!=0);
+		_delay_ms(1000);
+		LCD_Clear();
+	}
+}
+
 
 int main(void)
 {
@@ -43,43 +91,12 @@ int main(void)
 
 	while(1){
 		
-		
-		given_RGB();
+		int rgbvalue[3];
+		given_RGB(rgbvalue);
 		break;
 	}
 }
 
-void given_RGB(){
-	int rgb_value;
-	LCD_SetCursor(0,2);
-	LCD_String("given value");
-	LCD_SetCursor(1,6);
-	LCD_String("RGB");
-	_delay_ms(3000);
-	LCD_Clear();
-
-	for (int color=0;color<=2;color++){
-		LCD_SetCursor(0,0);
-		LCD_String("Enter values");
-		LCD_SetCursor(1,0);
-		LCD_String(color_string_array[color]);
-		char val;
-		while(1){
-			//val='a';
-			val=keypad_getKey();
-			LCD_Char(val);
-			//rgb_value=strcat(rgb_value,val);
-			
-			if (val=='#'){
-				break;
-			}
-		}
-		LCD_Clear();
-		//LCD_String(rgb_value);
-		_delay_ms(1000);
-		LCD_Clear();
-	}
-}
 
 
 
