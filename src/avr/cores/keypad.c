@@ -14,13 +14,13 @@
 
 
  //LED on
- void led_on(uint8_t *port, uint8_t pin){
-	 *port |=1<<pin;
- }
- //LED off
- void led_off(uint8_t *port, uint8_t pin){
-	 *port &= ~(1<<pin);
- }
+ //void led_on(uint8_t *port, uint8_t pin){
+	 //*port |=1<<pin;
+ //}
+ ////LED off
+ //void led_off(uint8_t *port, uint8_t pin){
+	 //*port &= ~(1<<pin);
+ //}
 
  //pin configuration in IC
  char *pin_set(int pin){
@@ -127,79 +127,79 @@
 
  //get the input keys
  char keypad_getKey(){
-	 char *value;
+	 char value;
 	 while(1){
 		 //input char 1
 		 set_port("011",key_pins);
 		 if (set_pin(key_pins[0])){
-			 value="1";
+			 value='1';
 			 led_on(&PORTC,PORTC0);
 			 break;
 		 }
 		 //input char 2
 		 set_port("101",key_pins);
 		 if (set_pin(key_pins[0])){
-			 value="2";
+			 value='2';
 			 break;
 		 }
 		 ////input char 3
 		 set_port("110",key_pins);
 		 if (set_pin(key_pins[0])){
-			 value="3";
+			 value='3';
 			 break;
 		 }
 		 ////input char 4
 		 set_port("011",key_pins);
 		 if (set_pin(key_pins[1])){
-			 value="4";
+			 value='4';
 			 break;
 		 }
 		 ////input char 5
 		 set_port("101",key_pins);
 		 if (set_pin(key_pins[1])){
-			 value="5";
+			 value='5';
 			 break;
 		 }
 		 ////input char 6
 		 set_port("110",key_pins);
 		 if (set_pin(key_pins[1])){
-			 value="6";
+			 value='6';
 			 break;
 		 }
 		 ////input char 7
 		 set_port("011",key_pins);
 		 if (set_pin(key_pins[2])){
-			 value="7";
+			 value='7';
 			 break;
 		 }
 		 ////input char 8
 		 set_port("101",key_pins);
 		 if (set_pin(key_pins[2])){
-			 value="8";
+			 value='8';
 			 break;
 		 }
 		 ////input char 9
 		 set_port("110",key_pins);
 		 if (set_pin(key_pins[2])){
-			 value="9";
+			 value='9';
 			 break;
 		 }
 		 ////input char *
 		 set_port("011",key_pins);
 		 if (set_pin(key_pins[3])){
-			 value="*";
+			 value='*';
 			 break;
 		 }
 		 ////input char 0
 		 set_port("101",key_pins);
 		 if (set_pin(key_pins[3])){
-			 value="0";
+			 value='0';
 			 break;
 		 }
 		 ////input char #
 		 set_port("110",key_pins);
 		 if (set_pin(key_pins[3])){
-			 value="#";
+			 value='#';
 			 break;
 		 }
 	 }
