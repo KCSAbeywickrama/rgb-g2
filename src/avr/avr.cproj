@@ -29,6 +29,7 @@
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <EraseKey />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <AsfFrameworkConfig>
       <framework-data xmlns="">
@@ -43,11 +44,16 @@
 </framework-data>
     </AsfFrameworkConfig>
 >>>>>>> 14F
+=======
+>>>>>>> 21A
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 21A
   <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega328p"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
@@ -81,6 +87,7 @@
     </ListValues>
   </avrgcc.assembler.general.IncludePaths>
 </AvrGcc>
+<<<<<<< HEAD
 =======
         <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega328p"</avrgcc.common.Device>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
@@ -116,12 +123,17 @@
         </avrgcc.assembler.general.IncludePaths>
       </AvrGcc>
 >>>>>>> 14F
+=======
+>>>>>>> 21A
     </ToolchainSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 21A
   <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega328p"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
@@ -160,6 +172,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+<<<<<<< HEAD
 =======
         <avrgcc.common.Device>-mmcu=atmega328p -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.6.364\gcc\dev\atmega328p"</avrgcc.common.Device>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
@@ -206,15 +219,20 @@
       <SubType>compile</SubType>
     </Compile>
 >>>>>>> 14F
+=======
+>>>>>>> 21A
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   <ItemGroup>
     <Folder Include="cores" />
   </ItemGroup>
 >>>>>>> 14F
+=======
+>>>>>>> 21A
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
