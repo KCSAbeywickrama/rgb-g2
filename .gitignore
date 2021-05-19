@@ -5,5 +5,8 @@
 !src/**/*.ino
 !src/**/*.xlsx
 !src/**/*.PNG
+!src/**/*.c
+!src/**/*.h
+!src/**/*.hex
 !.gitignore
 !README.md
