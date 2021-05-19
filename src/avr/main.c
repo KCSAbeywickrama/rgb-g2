@@ -25,18 +25,8 @@
 
 char *color_string_array[]={"R = ","G = ","B = "};
 
-//char keys[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{'*','0','#'}};
-//int rowPins[rows]={r0,r1,r2,r3};
-//int columnPins[columns]={c0,c1,c2};
-//Keypad inputKeypad = Keypad(makeKeymap(keys), rowPins, columnPins, rows, columns);
-
 void given_RGB(uint8_t *rgbvalue){
-	//LCD_SetCursor(0,2);
-	//LCD_String("given value");
-	//LCD_SetCursor(1,6);
-	//LCD_String("RGB");
-	//_delay_ms(3000);
-	//LCD_Clear();
+	
 	
 	
 	for (int color=0;color<3;color++){
@@ -64,17 +54,7 @@ void given_RGB(uint8_t *rgbvalue){
 		
 		LCD_Clear();
 		rgbvalue[color]=val;
-		
-		//char rgb_char[3];
-		//itoa(val,rgb_char,3);
-		//LCD_String(rgb_char);
-		//do{
-		//char c=(rgbvalue[color])%10+'0';
-		//LCD_Char(c);
-		//rgbvalue[color]/=10;
-		//}while(rgbvalue[color]!=0);
-		
-		//_delay_ms(1000);
+				
 		LCD_Clear();
 	}
 }
@@ -83,8 +63,7 @@ void given_RGB(uint8_t *rgbvalue){
 int main(void)
 {
 	int keypadPins[7]={r0,r1,r2,r3,c0,c1,c2};
-	set_keypad(keypadPins);
-	//int lcdPins[]={rs,en,d4,d5,d6,d7};
+	set_keypad(keypadPins);	
 	LCD_Init();
 
 	LCD_SetCursor(0,0);
@@ -94,12 +73,12 @@ int main(void)
 	_delay_ms(500);
 
 
-	//led_init();
+	led_init();
 	while(1){
 		
 		uint8_t rgbvalue[3];
 		given_RGB(rgbvalue);
-		//led_on(rgbvalue);
+		led_on(rgbvalue);
 		LCD_Clear();
 		
 	}
