@@ -1,5 +1,6 @@
 *
 !*/
+!calibration/**
 !simulation/**/*.ino
 !simulation/**/*.pdsprj
 !src/**
