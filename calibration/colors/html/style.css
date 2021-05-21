@@ -1,0 +1,16 @@
+.circle {
+    height: 134px;
+    width: 134px;
+    border-radius: 50%;
+    background-color: red;
+    display: inline-block;
+    position: absolute;
+}
+
+.label {
+    height: 134px;
+    width: 134px;
+    line-height: 134px;
+    text-align: center;
+    display: inline-block;
+}
