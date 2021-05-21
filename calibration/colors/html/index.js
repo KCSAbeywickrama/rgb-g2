@@ -3,6 +3,22 @@ const r = d / 2;
 
 var pageColors = {};
 
+function tglLabel() {
+    if (window.label) {
+        var labels = document.querySelectorAll(".label");
+        labels.forEach(label => {
+            label.style.display = "none";
+        })
+        window.label = false;
+    } else {
+        var labels = document.querySelectorAll(".label");
+        labels.forEach(label => {
+            label.style.display = "block";
+        })
+        window.label = true;
+    }
+}
+
 function getColor(color) {
     return `${color[0]},${color[1]},${color[2]}`;
 }
@@ -24,9 +40,10 @@ function drawCircles() {
             var color = getColor(colors[k++]);
             div.style.backgroundColor = `rgb(${color})`;
 
-            label = document.createElement('span');
+            var label = document.createElement('span');
             label.className = "label";
-            label.textContent = (k - 1) + ')' + color;
+            // label.textContent = (k - 1) + ')' + color;
+            label.textContent = color;
             div.appendChild(label);
 
             document.body.appendChild(div);
@@ -43,9 +60,10 @@ function drawCircles() {
             var color = getColor(colors[k++]);
             div.style.backgroundColor = `rgb(${color})`;
 
-            label = document.createElement('span');
+            var label = document.createElement('span');
             label.className = "label";
-            label.textContent = (k - 1) + ')' + color;
+            // label.textContent = (k - 1) + ')' + color;
+            label.textContent = color;
             div.appendChild(label);
 
             document.body.appendChild(div);
@@ -64,9 +82,6 @@ function spliceIntoChunks(arr, chunkSize) {
         i++;
     }
 }
-
-const arr = [1, 2, 3, 4, 5, 6, 7, 8];
-console.log(spliceIntoChunks(arr, 2));
 
 function genColors() {
 
@@ -95,9 +110,6 @@ function arr_sum(arr) {
     for (var i = 0; i < 3; i++)
         s += arr[i];
 
-    // if (arr[0] == 255 && arr[1] == 0 && arr[2] == 0) s = 0;
-    // if (arr[0] == 0 && arr[1] == 255 && arr[2] == 0) s = 0;
-    // if (arr[0] == 0 && arr[1] == 0 && arr[2] == 255) s = 0;
     if (s < 10) s = 0;
     return s;
 }
@@ -112,7 +124,7 @@ function arr_sub(arr1, arr2) {
 
 }
 
-function getRainBow() {
+function genRainBow() {
     rainbow = [
         [255, 0, 0],
         [255, 127, 0],
@@ -141,13 +153,11 @@ function getRainBow() {
 
     }
 
-    var indices = [0, 15, 20, 35];
+    var basicIndices = [0, 15, 20, 35];
 
-
-    indices.forEach(i => {
+    basicIndices.forEach(i => {
         colors[i] = null;
     });
-
 
     colors = colors.filter(function(el) {
         return el != null;
@@ -160,5 +170,5 @@ function getRainBow() {
 
 // genColors();
 // drawCircles();
-getRainBow();
+genRainBow();
 drawCircles();

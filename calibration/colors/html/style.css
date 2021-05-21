@@ -2,15 +2,16 @@
     height: 134px;
     width: 134px;
     border-radius: 50%;
-    background-color: red;
-    display: inline-block;
+    display: flex;
     position: absolute;
+    align-items: center;
+    justify-content: center;
 }
 
 .label {
-    height: 134px;
-    width: 134px;
-    line-height: 134px;
-    text-align: center;
-    display: inline-block;
+    display: none;
+    background-color: white;
+    padding-inline: 5px;
+    border-radius: 10px;
+    font-family: Consolas
 }
