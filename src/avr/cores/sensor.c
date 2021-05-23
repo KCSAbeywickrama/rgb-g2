@@ -9,23 +9,23 @@
 #include "sensor.h"
 
 
-//extra when it use as arduino
-void pin_mode(uint8_t *_port, uint8_t _bit, uint8_t _mode){
-	if (_mode){
-		*_port |= 1<<_bit;
-	}
-}
-
-//extra when it use as arduino
-void digital_write(uint8_t *port, uint8_t bite, uint8_t state){
-	if (state){
-		*port |= 1<<bite;
-	}
+void adc_init(){
+	ADMUX |= (1 << REFS0); 
+	// Initialize ADC reference selection (voltage for ADC) to "VCC +5V with cap"
 	
+	ADCSRA |= (1<<ADEN) | (1<<ADPS0) | (1<<ADPS1) | (1<<ADPS2); 
+	// Eneble ADC & set divition factor to 128(111) ----> F_ADC = F_CPU/d = 125000 (when F_CPU is 16M)
 }
-
-void analog_read (){
+uint16_t analog_read (uint8_t _pin){
+	_pin &= 0b111; // convert pin to binary
 	
+	ADMUX |= _pin; // Initialize pin which is going to ADC
+	
+	ADCSRA |= (1<<ADSC); // begin the ADC
+	
+	while(ADCSRA & (1<<ADSC)); // delay the function till ADC complete
+	
+	return (ADC); // return ADC value
 }
 
 int calib(uint8_t val, uint8_t clr){
