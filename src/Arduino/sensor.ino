@@ -20,25 +20,25 @@ unsigned int analogLastRead(byte pin, byte samples)
         delay(100);
         value = analogRead(pin);
         Serial.print(value);
-        Serial.print('.');       
+        Serial.print('.');
     }
-    Serial.println();   
+    Serial.println();
     return value;
 }
 
 void readSensor(int *readings)
 {
     // Serial.println("Reading . . .");
-    
+
     for (int i = 0; i < 3; i++)
     {
-        digitalWrite(sensorLeds[i], 1);        
+        digitalWrite(sensorLeds[i], 1);
         readings[i] = analogLastRead(sensorLdr, 20);
         digitalWrite(sensorLeds[i], 0);
     }
 
     // Serial.println("Readings");
-    printTriplet(readings);    
+    printTriplet(readings);
 }
 
 void showReadings()
@@ -90,7 +90,7 @@ void calib()
     blink();
     readSensor(calibData[0]);
     Serial.println("calibData[0]");
-    printTriplet(calibData[0]);    
+    printTriplet(calibData[0]);
 
     Serial.println("\nPlace on Black");
     blink();
@@ -154,14 +154,30 @@ void showDataset()
         {255, 0, 255},
         {255, 127, 0},
         {50, 150, 220},
-        {100, 30, 110}
-    };
+        {100, 30, 110}};
 
-    for(int *set:color_sets){       
-      printTriplet(set);
-      blink();
-      readSensor(readings);
-      Serial.println();
-    }  
-    
+    for (int *set : color_sets)
+    {
+        printTriplet(set);
+        blink();
+        readSensor(readings);
+        Serial.println();
+    }
+}
+
+void stableCheck()
+{
+    for (int led = 0; led < 3; led++)
+    {
+        Serial.println(led);
+        digitalWrite(sensorLeds[led], 1);
+        for (int time = 0; time < 5000; time += 100)
+        {
+            String data = String(time) + "," + String(analogRead(sensorLdr)*10);
+            Serial.println(data);
+            delay(100);
+        }
+        digitalWrite(sensorLeds[led], 0);
+        delay(3000);
+    }
 }
