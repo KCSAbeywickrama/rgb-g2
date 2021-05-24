@@ -27,10 +27,14 @@ void _pwm_init(){
 
 void _timer_start(){
 	//start timer0 (no-prescaler)
-	TCCR0B |= 1<<CS00;
+	//TCCR0B |= 1<<CS00;
 	
 	//start timer2 (no-prescaler)
-	TCCR2B |= 1<<CS20;
+	//TCCR2B |= 1<<CS20;
+	
+	TCCR0B |= 1<<CS02 | 1<<CS00;
+	TCCR2B |= 1<<CS22 | 1<<CS20;
+	
 }
 
 void _timer_stop(){
