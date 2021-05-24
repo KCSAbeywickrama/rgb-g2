@@ -168,7 +168,7 @@ function genRainBow() {
 
 }
 
-// genColors();
+genColors();
 // drawCircles();
-genRainBow();
+// genRainBow();
 drawCircles();
