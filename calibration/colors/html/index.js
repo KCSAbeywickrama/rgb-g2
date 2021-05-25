@@ -124,6 +124,15 @@ function arr_sub(arr1, arr2) {
 
 }
 
+function logColorAsArray(colors) {
+    var arrStr="{\n";
+    colors.forEach(color => {
+        arrStr+=(`{${color[0]}, ${color[1]}, ${color[2]}},\n`)
+    });
+    arrStr+="};"
+    console.log(arrStr);
+}
+
 function genRainBow() {
     rainbow = [
         [255, 0, 0],
@@ -159,16 +168,15 @@ function genRainBow() {
         colors[i] = null;
     });
 
-    colors = colors.filter(function(el) {
+    colors = colors.filter(function (el) {
         return el != null;
     });
 
-    console.log(colors)
+    logColorAsArray(colors);
     pageColors[0] = colors;
 
 }
 
-genColors();
-// drawCircles();
-// genRainBow();
+// genColors();
+genRainBow();
 drawCircles();
