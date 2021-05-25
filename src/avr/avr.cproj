@@ -142,10 +142,21 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cores\sensor.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="cores\timer.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cores\timer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libs\usart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libs\usart.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="libs\usart_config.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
@@ -154,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cores" />
+    <Folder Include="libs" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
