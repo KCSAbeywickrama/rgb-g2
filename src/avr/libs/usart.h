@@ -10,6 +10,8 @@
 #include <avr/io.h> // for inline func
 #include "usart_config.h"
 
+#define BUFF_SIZE 25
+
 #ifndef F_CPU
 	#warning F_CPU is undefined, USART may not work correctly without this
 #endif
