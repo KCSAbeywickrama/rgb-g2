@@ -6,5 +6,6 @@ void setup()
 }
 void loop()
 { 
-stableCheck();
+showDataset1();
+showDataset2();
 }

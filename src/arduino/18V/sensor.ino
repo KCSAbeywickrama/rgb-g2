@@ -119,7 +119,7 @@ void readColors()
     Serial.println("Place...");
     delay(4000);
     readSensor(readings);
-    calcColor(readings, colors);
+    calc(readings, colors);
     sendToColorDisp(colors);
 }
 
@@ -144,9 +144,20 @@ void printTriplet(int *triplet)
     Serial.println();
 }
 
-void showDataset()
+void showDataset(int dataset[][3], int count)
 {
-    int color_sets[][3] = {
+    for (int i = 0; i < count; i++)
+    {
+        printTriplet(dataset[i]);
+        blink();
+        readSensor(readings);
+        Serial.println();
+    }
+}
+
+void showDataset1()
+{
+    int dataset1[][3] = {
         {255, 0, 0},
         {0, 255, 0},
         {0, 0, 255},
@@ -160,13 +171,11 @@ void showDataset()
         {50, 150, 220},
         {100, 30, 110}};
 
-    for (int *set : color_sets)
-    {
-        printTriplet(set);
-        blink();
-        readSensor(readings);
-        Serial.println();
-    }
+    showDataset(dataset1, 12);
+}
+
+void showDataset2(){
+
 }
 
 void stableCheck()
@@ -177,7 +186,7 @@ void stableCheck()
         digitalWrite(sensorLeds[led], 1);
         for (int time = 0; time < 5000; time += 100)
         {
-            String data = String(time) + "," + String(analogRead(sensorLdr)*10);
+            String data = String(time) + "," + String(analogRead(sensorLdr) * 10);
             Serial.println(data);
             delay(100);
         }
