@@ -3,8 +3,10 @@ import numpy as np
 with open("calibration\data\calibdata1.txt") as fl:
     calib_data=fl.read().split('\n\n')
 
-ex=np.array([tuple(map(int,line.split('\n')[0].split(','))) for line in calib_data][:3])
-rd=np.array([tuple(map(int,line.split('\n')[1].split(','))) for line in calib_data][:3])
+R,G,B,K,W=calib_data
+sel_calib_data=R,K,W
+ex=np.array([tuple(map(int,line.split('\n')[0].split(','))) for line in sel_calib_data])
+rd=np.array([tuple(map(int,line.split('\n')[1].split(','))) for line in sel_calib_data])
 
 
 # print(ex)
@@ -16,15 +18,20 @@ consts=[np.matmul(np.linalg.inv(rd),arr) for arr in np.split(ex,3,1)]
 # calibration finished
 
 with open("calibration\data\\readdata1.txt") as fl:
-    calib_data=fl.read().split('\n\n')
+    read_data=fl.read().split('\n\n')
 
-ex=np.array([tuple(map(int,line.split('\n')[0].split(','))) for line in calib_data])
-rd=np.array([tuple(map(int,line.split('\n')[1].split(','))) for line in calib_data])
+ex=np.array([tuple(map(int,line.split('\n')[0].split(','))) for line in read_data])
+rd=np.array([tuple(map(int,line.split('\n')[1].split(','))) for line in read_data])
 
 
-print(ex)
-print()
-print(rd)
+# print(ex)
+# print()
+# print(rd)
 
-# for r in rd:
-#     print([round(np.matmul(r,const)[0]) for const in consts])
+for i in range(len(rd)):
+    e=np.array(ex[i])
+    r=np.array([round(np.matmul(rd[i],const)[0]) for const in consts])
+    print(e)
+    print(r)
+    print(e-r)
+    print()
