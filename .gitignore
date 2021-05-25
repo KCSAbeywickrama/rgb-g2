@@ -1,7 +1,11 @@
 *
 !*/
-!simulation/Project.pdsprj
-!simulation/ARDUINO UNO/main.ino
+!calibration/**
+!simulation/**/*.ino
+!simulation/**/*.pdsprj
 !src/**
+src/avr/.vs/avr/v14/.atsuo
+src/avr/avr.cproj
+src/avr/Debug/*
 !.gitignore
-!README.md
+!README.mdq
