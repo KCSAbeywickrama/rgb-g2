@@ -142,6 +142,10 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cores\sensor.h">
+    <Compile Include="cores\timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
