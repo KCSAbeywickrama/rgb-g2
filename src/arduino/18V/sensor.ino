@@ -22,10 +22,10 @@ unsigned int analogLastRead(byte pin, byte samples)
     {
         delay(100);
         value = analogRead(pin);
-        Serial.print(value);
-        Serial.print('.');
+    //     Serial.print(value);
+    //     Serial.print('.');
     }
-    Serial.println();
+    // Serial.println();
     return value;
 }
 
