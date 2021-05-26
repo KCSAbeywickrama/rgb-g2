@@ -5,7 +5,9 @@ void setup()
     initSensor();    
 }
 void loop()
-{ 
+{
+Serial.println("dataset1");
 showDataset1();
-showDataset2();
+// Serial.println("dataset2");
+// showDataset2();
 }

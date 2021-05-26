@@ -22,8 +22,8 @@ unsigned int analogLastRead(byte pin, byte samples)
     {
         delay(100);
         value = analogRead(pin);
-    //     Serial.print(value);
-    //     Serial.print('.');
+        //     Serial.print(value);
+        //     Serial.print('.');
     }
     // Serial.println();
     return value;
@@ -144,9 +144,9 @@ void printTriplet(int *triplet)
     Serial.println();
 }
 
-void showDataset(int dataset[][3], int count)
+void showDataset(int dataset[][3], int from, int to)
 {
-    for (int i = 0; i < count; i++)
+    for (int i = from; i < to; i++)
     {
         printTriplet(dataset[i]);
         blink();
@@ -171,7 +171,7 @@ void showDataset1()
         {50, 150, 220},
         {100, 30, 110}};
 
-    showDataset(dataset1, 12);
+    showDataset(dataset1, 0, 12);
 }
 
 void showDataset2()
@@ -215,7 +215,11 @@ void showDataset2()
         {51, 51, 51},
     };
 
-    showDataset(dataset2, 36);
+    for (int i = 0; i < 36; i += 9)
+    {
+        Serial.println(i / 9);
+        showDataset(dataset2, i,i+9);
+    }
 }
 
 void stableCheck()
