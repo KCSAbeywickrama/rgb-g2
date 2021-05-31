@@ -2,10 +2,12 @@ void setup()
 {
     Serial.begin(115200);
     Serial.println("Started");
-    initSensor();
-    calcCalibConst();
+    initSensor();    
 }
 void loop()
 {
-    showDiff();
+Serial.println("dataset1");
+showDataset1();
+// Serial.println("dataset2");
+// showDataset2();
 }
