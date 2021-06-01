@@ -26,6 +26,7 @@ uint16_t expected[5][3]={
 };
 
 uint16_t readings[5][3];
+double coffs[3][2];
 
 char *colors[5]={"RED","GREEN","BLUE","WHITE","BLACK"};
 
@@ -52,8 +53,7 @@ void print_int_arr(uint16_t *arr){
 	print_int(arr[2]);
 }
 
-void println(){
-	
+void println(){	
 	uart_puts("\r\n");
 }
 
@@ -70,6 +70,15 @@ void blink(){
 	println();
 }
 
+uint16_t max(uint16_t v1,uint16_t v2){
+	if(v1>v2) return v1;
+	return v2;
+}
+
+uint8_t trim(double v){
+	return 0;
+}
+
 void start_calib(){
 	for(uint8_t i=0;i<3;i++){
 		print_string("Place on ");
@@ -82,6 +91,20 @@ void start_calib(){
 		print_int_arr(readings[i]);
 		println();
 	}	
+	
+	for(uint8_t i=0;i<3;i++){
+		uint16_t h=readings[i][i];
+		uint16_t l=max(readings[(i+1)%3][i],readings[(i+2)%3][i]);
+		
+		double m=(double)255/(h-l);
+		double c=-m*l;
+		
+		coffs[i][0]=m;
+		coffs[i][1]=c;
+	}
+	
+	
+	
 	
 }
 
