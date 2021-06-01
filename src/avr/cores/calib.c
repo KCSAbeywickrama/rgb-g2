@@ -18,15 +18,61 @@
 #define BLUE 2
 
 uint16_t expected[5][3]={
-	{255,0,0},
-	{0,255,0},
-	{0,0,255},
-	{0,0,0},
-	{255,255,255}
+	{255, 0, 0},
+	{0, 255, 0},
+	{0, 0, 255},
+	{0, 0, 0},
+	{255, 255, 255}
 };
 
-uint16_t readings[5][3];
-double coffs[3][2];
+uint16_t readings[5][3]={
+	{660, 131, 125},
+	{397, 236, 126},
+	{303, 161, 214},
+	{306, 104, 98},
+	{663, 337, 306},
+};
+
+uint16_t rd_i[36][3]={
+	{579, 113, 111},
+	{506, 111, 103},
+	{414, 104, 98},
+	{354, 93, 92},
+	{658, 180, 108},
+	{590, 149, 100},
+	{513, 130, 97},
+	{430, 115, 100},
+	{357, 105, 92},
+	{661, 326, 121},
+	{623, 293, 118},
+	{528, 220, 104},
+	{420, 152, 95},
+	{333, 115, 90},
+	{367, 223, 120},
+	{360, 212, 116},
+	{341, 178, 112},
+	{310, 124, 101},
+	{297, 138, 186},
+	{295, 127, 153},
+	{294, 112, 122},
+	{293, 103, 101},
+	{325, 129, 182},
+	{323, 120, 164},
+	{304, 110, 128},
+	{302, 106, 112},
+	{308, 104, 104},
+	{401, 136, 189},
+	{390, 133, 189},
+	{351, 119, 176},
+	{321, 117, 145},
+	{305, 104, 104},
+	{611, 286, 262},
+	{528, 216, 194},
+	{414, 144, 129},
+	{334, 109, 100}
+};
+
+float coffs[3][2];
 
 char *colors[5]={"RED","GREEN","BLUE","WHITE","BLACK"};
 
@@ -47,13 +93,23 @@ void print_char(char ch){
 	uart_putc(ch);
 }
 
-void print_int_arr(uint16_t *arr){
+void print_float(float v){
+	uart_putfloat(v);
+}
+
+void print_uint16_arr(uint16_t *arr){
 	print_int(arr[0]);print_char(',');
 	print_int(arr[1]);print_char(',');
 	print_int(arr[2]);
 }
 
-void println(){	
+void print_uint8_arr(uint8_t *arr){
+	print_int(arr[0]);print_char(',');
+	print_int(arr[1]);print_char(',');
+	print_int(arr[2]);
+}
+
+void println(){
 	uart_puts("\r\n");
 }
 
@@ -75,37 +131,61 @@ uint16_t max(uint16_t v1,uint16_t v2){
 	return v2;
 }
 
-uint8_t trim(double v){
-	return 0;
+uint8_t trim(float v){
+	if(v<0) return 0;
+	if(v>255) return 255;
+	return (uint8_t)v;
 }
 
 void start_calib(){
-	for(uint8_t i=0;i<3;i++){
-		print_string("Place on ");
-		print_string(colors[i]);
-		blink();
-		get_readings(readings[i]);		
-	}
+	//for(uint8_t i=0;i<3;i++){
+	//print_string("Place on ");
+	//print_string(colors[i]);
+	//blink();
+	//get_readings(readings[i]);
+	//}
 	
-	for(uint8_t i=0;i<3;i++){
-		print_int_arr(readings[i]);
+	for(uint8_t i=0;i<36;i++){
+		print_uint16_arr(rd_i[i]);
 		println();
-	}	
+	}
+	println();
 	
 	for(uint8_t i=0;i<3;i++){
 		uint16_t h=readings[i][i];
 		uint16_t l=max(readings[(i+1)%3][i],readings[(i+2)%3][i]);
 		
-		double m=(double)255/(h-l);
-		double c=-m*l;
+		float m=255.0/(h-l);
+		float c=-m*l;
 		
 		coffs[i][0]=m;
 		coffs[i][1]=c;
+		
+		print_float(m);
+		print_char(',');
+		print_float(c);
+		println();		
 	}
 	
+	println();		
 	
+}
+
+void calc(uint16_t *reading,uint8_t *color){
 	
-	
+	for(uint8_t i=0;i<3;i++){
+		uint8_t value=trim(coffs[i][0]*reading[i]+coffs[i][1]);		
+		color[i]=value;
+	}	
+}
+
+void get_color(){
+	for(uint8_t i=0;i<36;i++){
+		uint8_t calc_color[3];
+		calc(rd_i[i],calc_color);
+		print_uint8_arr(calc_color);
+		println();
+	}		
 }
 
 void get_readings(uint16_t *reading){

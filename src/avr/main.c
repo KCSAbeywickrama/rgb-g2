@@ -14,6 +14,7 @@ int main(){
 	sensor_init();
 	calib_init();
 	start_calib();
+	get_color();
 	while(1);
 	
 }
