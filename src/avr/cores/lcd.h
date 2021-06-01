@@ -9,9 +9,11 @@
 #ifndef LCD_H_
 #define LCD_H_
 
-void LCD_Char( unsigned char data );
-void LCD_Init (void);
-void LCD_String (char *str);
-void LCD_Clear();
+void lcd_char( unsigned char data );
+void lcd_init(void);
+void lcd_int(uint8_t i);
+void lcd_int_array(uint8_t *arr);
+void lcd_string(char *str);
+void lcd_clear();
 
 #endif /* LCD_H_ */
