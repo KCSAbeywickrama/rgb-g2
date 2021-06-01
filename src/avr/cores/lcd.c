@@ -7,7 +7,6 @@
 
 #define F_CPU 8000000UL
 
-
 #include <avr/io.h>
 #include <util/delay.h>
 #include "lcd.h"
@@ -17,7 +16,6 @@
 #define LCD_EN PORTD
 #define RS PB0				/* Define Register Select pin */
 #define EN PD7				/* Define Enable signal pin */
-
 
 void lcd_command( unsigned char cmnd )
 {
@@ -37,6 +35,33 @@ void lcd_command( unsigned char cmnd )
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
 	_delay_ms(2);
+}
+
+void lcd_init(void)			/* LCD Initialize function */
+{
+	//LCD_Dir = 0xFF;			/* Make LCD port direction as o/p */
+	LCD_Dir |= 0b110111;
+	DDRD |= 1<<EN;
+	_delay_ms(20);			/* Delay to power on the LCD */
+	
+	lcd_command(0x02);				/* send for 4 bit initialization  */
+	lcd_command(0x28);              /* 2 line, 5*7 matrix in 4-bit mode */
+	lcd_command(0x0c);              /* Display on cursor off*/
+	lcd_command(0x06);              /* Increment cursor (shift cursor to right)*/
+	lcd_command(0x01);              /* Clear display screen*/
+	_delay_ms(2);
+}
+
+void lcd_setcursor(int row_index,int col_index){
+	if (row_index==0){
+		lcd_command(0x80);
+	}
+	if (row_index==1){
+		lcd_command(0xC0);
+	}
+	for (int temp=0;temp<col_index;temp++){
+		lcd_command(0x14);
+	}
 }
 
 
@@ -60,29 +85,25 @@ void lcd_char( unsigned char data )
 	_delay_ms(2);
 }
 
-void lcd_init(void)			/* LCD Initialize function */
-{
-	//LCD_Dir = 0xFF;			/* Make LCD port direction as o/p */
-	LCD_Dir |= 0b110111;
-	DDRD |= 1<<EN;
-	_delay_ms(20);			/* Delay to power on the LCD */
-	
-	lcd_command(0x02);				/* send for 4 bit initialization  */
-	lcd_command(0x28);              /* 2 line, 5*7 matrix in 4-bit mode */
-	lcd_command(0x0c);              /* Display on cursor off*/
-	lcd_command(0x06);              /* Increment cursor (shift cursor to right)*/
-	lcd_command(0x01);              /* Clear display screen*/
-	_delay_ms(2);
-}
-
-
 void lcd_string(char *str)		/* Send string to LCD function */
 {
 	int i;
 	for(i=0;str[i]!=0;i++)		/* Send each char */
 	{
-		lcd_char (str[i]);
+		lcd_char(str[i]);
 	}
+}
+
+void lcd_int(uint8_t i)
+{
+	lcd_char(i+'0');
+}
+
+void lcd_int_array(uint8_t *arr)
+{
+	lcd_int(arr[0]);lcd_char(',');
+	lcd_int(arr[1]);lcd_char(',');
+	lcd_int(arr[2]);	
 }
 
 void lcd_clear()
@@ -92,14 +113,3 @@ void lcd_clear()
 	lcd_command (0x80);		/* Cursor at home position */
 }
 
-void lcd_setcursor(int row_index,int col_index){
-	if (row_index==0){
-		lcd_command(0x80);
-	}
-	if (row_index==1){
-		lcd_command(0xC0);
-	}
-	for (int temp=0;temp<col_index;temp++){
-		lcd_command(0x14);
-	}
-}
