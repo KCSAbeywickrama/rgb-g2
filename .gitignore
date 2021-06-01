@@ -2,11 +2,8 @@
 !*/
 !simulation/**/*.ino
 !simulation/**/*.pdsprj
-!src/**/*.ino
-!src/**/*.xlsx
-!src/**/*.PNG
-!src/**/*.c
-!src/**/*.h
-!src/**/*.hex
+!src/**
+src/avr/.vs/avr/v14/.atsuo
+src/avr/Debug/*
 !.gitignore
-!README.md
+!README.mdq
