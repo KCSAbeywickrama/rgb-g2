@@ -11,6 +11,8 @@
 
 void lcd_char( unsigned char data );
 void lcd_init(void);
+void lcd_int(int i);
+void lcd_int_array(uint8_t *arr);
 void lcd_string(char *str);
 void lcd_clear();
 void lcd_setcursor(int row_index,int col_index);
