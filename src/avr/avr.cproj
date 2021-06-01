@@ -120,6 +120,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="cores\calib.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\calib.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="cores\keypad.c">
       <SubType>compile</SubType>
     </Compile>
