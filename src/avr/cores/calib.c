@@ -4,15 +4,15 @@
 * Created: 01-Jun-21 6:45:02 PM
 *  Author: CSA
 */
+#define F_CPU 16000000UL
 
-<<<<<<< HEAD
-=======
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "lib/usart.h"
+#include <util/delay.h>
+#include "../libs/usart.h"
 #include "calib.h"
+#include "sensor.h"
 
->>>>>>> 18V
 #define RED 0
 #define GREEN 1
 #define BLUE 2
@@ -27,33 +27,77 @@ uint16_t expected[5][3]={
 
 uint16_t readings[5][3];
 
-void lcd_init(){
-	uart_init(BAUD_CALC(9600)); // 8n1 transmission is set as default
-	
-	sei(); // enable interrupts, library wouldn't work without this
+char *colors[5]={"RED","GREEN","BLUE","WHITE","BLACK"};
+
+void print_init(){
+	uart_init(BAUD_CALC(9600));
+	sei();
 }
 
-void lcd_string(char *str){
-	uart_puts(str);	
+void print_string(char *str){
+	uart_puts(str);
 }
 
-void lcd_int(uint8_t i){
+void print_int(uint16_t i){
 	uart_putint(i);
 }
 
-void lcd_char(char ch){
+void print_char(char ch){
 	uart_putc(ch);
 }
 
-void lcd_int_arr(uint8_t *arr){
-	lcd_int(arr[0]);lcd_char(',');
-	lcd_int(arr[1]);lcd_char(',');
-	lcd_int(arr[2]);	
+void print_int_arr(uint16_t *arr){
+	print_int(arr[0]);print_char(',');
+	print_int(arr[1]);print_char(',');
+	print_int(arr[2]);
 }
 
-void get_readings(){
-	lcd_init();
-	lcd_init(5);
-	lcd_char('a');
-	lcd_string("hello");
+void println(){
+	
+	uart_puts("\r\n");
+}
+
+void calib_init(){
+	print_init();
+}
+
+void blink(){
+	for(uint8_t i=0;i<5;i++){
+		print_char('.');
+		_delay_ms(1000);
+	}
+	print_char('*');
+	println();
+}
+
+void start_calib(){
+	for(uint8_t i=0;i<3;i++){
+		print_string("Place on ");
+		print_string(colors[i]);
+		blink();
+		get_readings(readings[i]);		
+	}
+	
+	for(uint8_t i=0;i<3;i++){
+		print_int_arr(readings[i]);
+		println();
+	}	
+	
+}
+
+void get_readings(uint16_t *reading){
+	PORTC |= 1<<PORTC4; // high red led
+	_delay_ms(2000);
+	reading[0] = sensor_read(5); // take the ldr value for red
+	PORTC &= ~(1<<PORTC4); // low red led
+	
+	PORTB |= 1<<PORTB4; // high green led
+	_delay_ms(2000);
+	reading[1]  = sensor_read(5); // ldr value for green
+	PORTB &= ~(1<<PORTB4); // low green led
+	
+	PORTB |= 1<<PORTB5; // blue
+	_delay_ms(2000);
+	reading[2]  = sensor_read(5);
+	PORTB &= ~(1<<PORTB5);
 }

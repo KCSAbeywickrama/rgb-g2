@@ -94,7 +94,7 @@ void lcd_string(char *str)		/* Send string to LCD function */
 	}
 }
 
-void lcd_int(uint8_t i)
+void lcd_int(int i)
 {
 	lcd_char(i+'0');
 }
