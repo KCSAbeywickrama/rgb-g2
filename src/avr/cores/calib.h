@@ -9,8 +9,7 @@
 #ifndef CALIB_H_
 #define CALIB_H_
 
-
-
+void get_readings();
 
 
 #endif /* CALIB_H_ */
