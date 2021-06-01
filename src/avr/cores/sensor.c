@@ -29,7 +29,7 @@ void sensor_init(){
 	// ADC result is more accurate in lower frequencies.
 	// Eneble ADC & set divition factor to 128(111) ----> F_ADC = F_CPU/d 
 	// For 16MHz microchip best accurate frequency is 125kHz (when devition factor is 128 [Max])
-	// For 8MHz microchip best accurate frequency is 62.5kH (When devition factor is 128) this ADC result accuracy is more than 16MHz microchip.
+	// For 8MHz microchip best accurate frequency is 62.5kH (When devition factor is 128) this ADC result is more accuracy than 16MHz microchip.
 	
 	
 }
