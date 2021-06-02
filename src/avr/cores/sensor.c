@@ -11,7 +11,7 @@
 
 void sensor_init(){
 	DDRC |= 1<<PORTC4; 					//set the red led PC4 pin as a output
-	DDRB |= (1<<PORTB4) | (1<<PORTB2); 	// set PB5 and PB4 as output pins
+	DDRB |= (1<<PORTB4) | (1<<PORTB2); 	// set PB2 and PB4 as output pins
 	DDRC &= ~(1<<PORTC5); 				// set PC5 as a input pin
 
 	
