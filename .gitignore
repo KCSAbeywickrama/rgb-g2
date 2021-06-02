@@ -6,5 +6,11 @@
 !src/**
 src/avr/.vs/avr/v14/.atsuo
 src/avr/Debug/*
+
+!pcb_design/**
+pcb_design/*/History/*
+pcb_design/*/__Previews/*
+pcb_design/*/Project Logs for RGB_PCB/*
+
 !.gitignore
 !README.mdq
