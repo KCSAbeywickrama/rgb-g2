@@ -138,12 +138,12 @@ uint8_t trim(float v){
 }
 
 void start_calib(){
-	//for(uint8_t i=0;i<3;i++){
-	//print_string("Place on ");
-	//print_string(colors[i]);
-	//blink();
-	//get_readings(readings[i]);
-	//}
+	for(uint8_t i=0;i<3;i++){
+	print_string("Place on ");
+	print_string(colors[i]);
+	blink();
+	get_readings(readings[i]);
+	}
 	
 	for(uint8_t i=0;i<36;i++){
 		print_uint16_arr(rd_i[i]);
