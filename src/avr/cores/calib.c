@@ -214,7 +214,8 @@ void get_color(){
 	uint8_t calc_color[3];
 	calc(reading,calc_color);
 	print_uint8_arr(calc_color);
-	println();
+	print_string(" \r\n");
+	_delay_ms(500);
 	
 }
 
