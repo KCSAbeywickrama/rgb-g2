@@ -229,8 +229,8 @@ void get_reading(uint16_t *reading){
 	reading[1]  = sensor_read(5); // ldr value for green
 	PORTB &= ~(1<<PORTB4); // low green led
 	
-	PORTB |= 1<<PORTB5; // blue
+	PORTB |= 1<<PORTB2; // blue
 	_delay_ms(2000);
 	reading[2]  = sensor_read(5);
-	PORTB &= ~(1<<PORTB5);
+	PORTB &= ~(1<<PORTB2);
 }
