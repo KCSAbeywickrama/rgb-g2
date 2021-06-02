@@ -115,6 +115,12 @@ void println(){
 
 void calib_init(){
 	print_init();
+	//while(1){
+		//print_int(sensor_read(5));
+		//println();
+		//_delay_ms(500);
+	//}
+	
 }
 
 void blink(){
@@ -137,19 +143,23 @@ uint8_t trim(float v){
 	return (uint8_t)v;
 }
 
-void start_calib(){
+void calib_start(){
+	
+	print_string("Calibration started\r\n");
+	
 	for(uint8_t i=0;i<3;i++){
-	print_string("Place on ");
-	print_string(colors[i]);
-	blink();
-	get_readings(readings[i]);
+		print_string("Place on ");
+		print_string(colors[i]);
+		blink();
+		get_readings(readings[i]);
 	}
 	
-	for(uint8_t i=0;i<36;i++){
-		print_uint16_arr(rd_i[i]);
+	for(uint8_t i=0;i<3;i++){
+		print_uint16_arr(readings[i]);
 		println();
 	}
 	println();
+	
 	
 	for(uint8_t i=0;i<3;i++){
 		uint16_t h=readings[i][i];
@@ -164,28 +174,35 @@ void start_calib(){
 		print_float(m);
 		print_char(',');
 		print_float(c);
-		println();		
+		println();
 	}
 	
-	println();		
+	println();
 	
 }
 
 void calc(uint16_t *reading,uint8_t *color){
 	
 	for(uint8_t i=0;i<3;i++){
-		uint8_t value=trim(coffs[i][0]*reading[i]+coffs[i][1]);		
+		uint8_t value=trim(coffs[i][0]*reading[i]+coffs[i][1]);
 		color[i]=value;
-	}	
+	}
 }
 
 void get_color(){
-	for(uint8_t i=0;i<36;i++){
+	//for(uint8_t i=0;i<36;i++){
+	//uint8_t calc_color[3];
+	//calc(rd_i[i],calc_color);
+	//print_uint8_arr(calc_color);
+	//println();
+	//}
+	
+	for(uint8_t i=0;i<5;i++){
 		uint8_t calc_color[3];
-		calc(rd_i[i],calc_color);
+		calc(readings[i],calc_color);
 		print_uint8_arr(calc_color);
 		println();
-	}		
+	}
 }
 
 void get_readings(uint16_t *reading){

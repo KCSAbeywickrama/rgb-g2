@@ -15,7 +15,7 @@ void sensor_init(){
 	DDRC &= ~(1<<PORTC5); 				// set PC5 as a input pin
 
 	
-	ADMUX |= ~((1 << REFS0) | (1 << REFS1)) ; //REFS = 0
+	ADMUX |= (1 << REFS0);  ; //REFS = 1
 	// REFS - Initialize ADC reference selection (Power/ Voltage for the ADC conversation)
 	// REFS = 0 (00) ---> Use internal 5V (AREF off)
 	// REFS = 1 (01) ---> External 5V voltage with cpasitor in AREF pin
