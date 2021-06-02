@@ -9,7 +9,7 @@
 #ifndef CALIB_H_
 #define CALIB_H_
 
-void get_readings();
+void get_reading();
 void calib_init();
 void calib_start();
 void get_color();

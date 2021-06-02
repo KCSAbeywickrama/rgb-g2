@@ -151,7 +151,7 @@ void calib_start(){
 		print_string("Place on ");
 		print_string(colors[i]);
 		blink();
-		get_readings(readings[i]);
+		get_reading(readings[i]);
 	}
 	
 	for(uint8_t i=0;i<3;i++){
@@ -179,6 +179,7 @@ void calib_start(){
 	
 	println();
 	
+	print_string("Calibration finished\r\n");
 }
 
 void calc(uint16_t *reading,uint8_t *color){
@@ -197,15 +198,27 @@ void get_color(){
 	//println();
 	//}
 	
-	for(uint8_t i=0;i<5;i++){
-		uint8_t calc_color[3];
-		calc(readings[i],calc_color);
-		print_uint8_arr(calc_color);
-		println();
-	}
+	//for(uint8_t i=0;i<5;i++){
+		//uint8_t calc_color[3];
+		//calc(readings[i],calc_color);
+		//print_uint8_arr(calc_color);
+		//println();
+	//}
+	print_string("\r\nPlace on a color");
+	
+	blink();
+	
+	uint16_t reading[3];
+	get_reading(reading);
+	
+	uint8_t calc_color[3];
+	calc(reading,calc_color);
+	print_uint8_arr(calc_color);
+	println();
+	
 }
 
-void get_readings(uint16_t *reading){
+void get_reading(uint16_t *reading){
 	PORTC |= 1<<PORTC4; // high red led
 	_delay_ms(2000);
 	reading[0] = sensor_read(5); // take the ldr value for red
