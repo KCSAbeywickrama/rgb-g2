@@ -6,5 +6,6 @@
 src/avr/.vs/avr/v14/.atsuo
 src/avr/Debug/*
 !calibration/**
+!enclosure/**
 !.gitignore
 !README.mdq
