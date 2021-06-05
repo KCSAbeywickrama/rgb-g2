@@ -37,5 +37,20 @@ void lcd_command( unsigned char cmnd )
 	_delay_ms(2);
 }
 
+void lcd_init(void)			/* LCD Initialize function */
+{
+	//LCD_Dir = 0xFF;			/* Make LCD port direction as o/p */
+	LCD_Dir |= 0b110111;
+	DDRD |= 1<<EN;
+	_delay_ms(20);			/* Delay to power on the LCD */
+	
+	lcd_command(0x02);				/* send for 4 bit initialization  */
+	lcd_command(0x28);              /* 2 line, 5*7 matrix in 4-bit mode */
+	lcd_command(0x0c);              /* Display on cursor off*/
+	lcd_command(0x06);              /* Increment cursor (shift cursor to right)*/
+	lcd_command(0x01);              /* Clear display screen*/
+	_delay_ms(2);
+}
+
 
 
