@@ -55,3 +55,12 @@ int calib(uint8_t val, uint8_t clr){
 	
 }
 
+int limit (uint8_t _val, uint8_t _max, uint8_t _min){
+	if (_val > _max)
+	_val = _max;
+	
+	else if (_val < _min)
+	_val = _min;
+	
+	return _val;
+}
