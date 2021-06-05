@@ -9,8 +9,12 @@
 #ifndef SENSOR_H_
 #define SENSOR_H_
 
-void sensor_init();
-void sensor_read(uint16_t *reading);
-uint16_t _adc_read (uint8_t pin);
+void pin_mode(uint8_t *_port, uint8_t _bit, uint8_t _mode);
+void digital_write(uint8_t *port, uint8_t bite, uint8_t state);
+uint16_t analog_read (uint8_t _pin);
+void adc_init();
+int calib(uint8_t val, uint8_t clr);
+int limit (uint8_t _val, uint8_t _max, uint8_t _min);
+
 
 #endif /* SENSOR_H_ */
