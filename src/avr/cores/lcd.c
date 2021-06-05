@@ -85,4 +85,13 @@ void lcd_char( unsigned char data )
 	_delay_ms(2);
 }
 
+void lcd_string(char *str)		/* Send string to LCD function */
+{
+	int i;
+	for(i=0;str[i]!=0;i++)		/* Send each char */
+	{
+		lcd_char(str[i]);
+	}
+}
+
 
