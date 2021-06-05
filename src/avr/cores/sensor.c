@@ -54,3 +54,13 @@ uint16_t _adc_read(uint8_t pin)
 	return (ADC); // return ADC value
 }
 
+void sensor_read(uint16_t *reading)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		*led_ports[i] |= 1 << led_pins[i];	  // Turn on LED
+		_delay_ms(2000);					  // Wait until LDR reading is stable
+		reading[i] = _adc_read(LDR_PIN);	  // Get LDR reading (corresponding function in sensor.c)
+		*led_ports[i] &= ~(1 << led_pins[i]); // Turn off LED
+	}										  // LED pins ---> RED = C4 / GREEN = B4 / BLUE = B2
+}
