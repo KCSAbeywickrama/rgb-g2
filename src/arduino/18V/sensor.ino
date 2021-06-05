@@ -15,19 +15,18 @@ void initSensor()
         pinMode(pin, OUTPUT);
 }
 
-unsigned int analogAvgRead(byte pin, byte samples)
+unsigned int analogLastRead(byte pin, byte samples)
 {
-    unsigned int X = 0;
-    unsigned long Y = 0;
+    unsigned int value;
     for (int i = 0; i < samples; i++)
     {
         delay(100);
-        unsigned int x = analogRead(pin);
-        X += x;
-        Y += pow(x, 2);
+        value = analogRead(pin);
+        //     Serial.print(value);
+        //     Serial.print('.');
     }
-    unsigned int mean = X / samples;
-    return mean;
+    // Serial.println();
+    return value;
 }
 
 void readSensor(int *readings)
@@ -37,13 +36,12 @@ void readSensor(int *readings)
     for (int i = 0; i < 3; i++)
     {
         digitalWrite(sensorLeds[i], 1);
-        delay(2000);
-        readings[i] = analogRead(sensorLdr);
+        readings[i] = analogLastRead(sensorLdr, 20);
         digitalWrite(sensorLeds[i], 0);
     }
 
     // Serial.println("Readings");
-    // printTriplet(readings);
+    printTriplet(readings);
 }
 
 void showReadings()
@@ -73,7 +71,7 @@ void warm()
     {
         digitalWrite(sensorLeds[i], 1);
         delay(200);
-        int j = analogAvgRead(sensorLdr, 30);
+        int j = analogLastRead(sensorLdr, 30);
         digitalWrite(sensorLeds[i], 0);
     }
 }
@@ -91,36 +89,17 @@ void blink()
 
 void readCalibData()
 {
-    Serial.println("Calibarating...");
-    for (int i = 0; i < 5; i++)
-    {
-        Serial.print("Place on ");
-        printTriplet(calibColors[i]);
-        blink();
-        readSensor(calibData[i]);
-    }
-}
+    Serial.println("Place on White");
+    blink();
+    readSensor(calibData[0]);
+    Serial.println("calibData[0]");
+    printTriplet(calibData[0]);
 
-void calcCalibConst()
-{
-    for (int i = 0; i < 3; i++)
-    {
-        calibConst[i][1] = (calibData[i][i] * 3 + calibData[4][i]) / 4;
-        calibConst[i][0] = (calibData[(i + 1) % 3][i] + calibData[(i + 2) % 3][i] + calibData[3][i] * 3) / 5;
-    }
-}
-
-
-void calcColor(int *readings, int *colors)
-{
-    for (int i = 0; i < 3; i++)
-    {
-        colors[i] = (float)(readings[i] - calibConst[i][0]) / (calibConst[i][1] - calibConst[i][0]) * 255;
-        if (colors[i] > 255)
-            colors[i] = 255;
-        else if (colors[i] < 0)
-            colors[i] = 0;
-    }
+    Serial.println("\nPlace on Black");
+    blink();
+    readSensor(calibData[1]);
+    Serial.println("calibData[1]");
+    printTriplet(calibData[1]);
 }
 
 void calc(int *readings, int *colors)
@@ -140,7 +119,7 @@ void readColors()
     Serial.println("Place...");
     delay(4000);
     readSensor(readings);
-    calcColor(readings, colors);
+    calc(readings, colors);
     sendToColorDisp(colors);
 }
 
@@ -165,33 +144,20 @@ void printTriplet(int *triplet)
     Serial.println();
 }
 
-void showDataset()
+void showDataset(int dataset[][3], int from, int to)
 {
-    int color_sets[][3] = {
-        {255, 0, 0},
-        {0, 255, 0},
-        {0, 0, 255},
-        {0, 0, 0},
-        {127, 127, 127},
-        {255, 255, 255},
-        {255, 255, 0},
-        {0, 255, 255},
-        {255, 0, 255},
-        {255, 127, 0},
-        {50, 150, 220},
-        {100, 30, 110}};
-
-    for (int *set : color_sets)
+    for (int i = from; i < to; i++)
     {
-        printTriplet(set);
+        printTriplet(dataset[i]);
         blink();
         readSensor(readings);
         Serial.println();
     }
 }
 
-void showDiff(){
-     int color_sets[][3] = {
+void showDataset1()
+{
+    int dataset1[][3] = {
         {255, 0, 0},
         {0, 255, 0},
         {0, 0, 255},
@@ -205,17 +171,70 @@ void showDiff(){
         {50, 150, 220},
         {100, 30, 110}};
 
-    for (int *set : color_sets)
+    showDataset(dataset1, 0, 12);
+}
+
+void showDataset2()
+{
+    int dataset2[][3]{
+        {204, 0, 0},
+        {153, 0, 0},
+        {102, 0, 0},
+        {51, 0, 0},
+        {255, 127, 0},
+        {204, 102, 0},
+        {153, 77, 0},
+        {102, 52, 0},
+        {51, 27, 0},
+        {255, 255, 0},
+        {204, 204, 0},
+        {153, 153, 0},
+        {102, 102, 0},
+        {51, 51, 0},
+        {0, 204, 0},
+        {0, 153, 0},
+        {0, 102, 0},
+        {0, 51, 0},
+        {0, 0, 204},
+        {0, 0, 153},
+        {0, 0, 102},
+        {0, 0, 51},
+        {75, 0, 130},
+        {60, 0, 104},
+        {45, 0, 78},
+        {30, 0, 52},
+        {15, 0, 26},
+        {148, 0, 211},
+        {118, 0, 169},
+        {88, 0, 127},
+        {58, 0, 85},
+        {28, 0, 43},
+        {204, 204, 204},
+        {153, 153, 153},
+        {102, 102, 102},
+        {51, 51, 51},
+    };
+
+    for (int i = 0; i < 36; i += 9)
     {
-        printTriplet(set);
-        blink();
-        readSensor(readings);
-        calcColor(readings, colors);
-        printTriplet(colors);
-        int diff[3];
-        for(int i=0;i<3;i++)
-        diff[i]=set[i]-colors[i];
-        printTriplet(diff);
-        Serial.println();
+        Serial.println(i / 9);
+        showDataset(dataset2, i,i+9);
+    }
+}
+
+void stableCheck()
+{
+    for (int led = 0; led < 3; led++)
+    {
+        Serial.println(led);
+        digitalWrite(sensorLeds[led], 1);
+        for (int time = 0; time < 5000; time += 100)
+        {
+            String data = String(time) + "," + String(analogRead(sensorLdr) * 10);
+            Serial.println(data);
+            delay(100);
+        }
+        digitalWrite(sensorLeds[led], 0);
+        delay(3000);
     }
 }
