@@ -65,4 +65,24 @@ void lcd_setcursor(int row_index,int col_index){
 }
 
 
+void lcd_char( unsigned char data )
+{
+	//LCD_Port = (LCD_Port & 0x0F) | (data & 0xF0); /* sending upper nibble */
+	LCD_Port = (LCD_Port & 0b1001) | (data & 0b110000)>>3 | (data & 0b11000000)>>2;
+	LCD_Port |= (1<<RS);		/* RS=1 */
+	LCD_EN|= (1<<EN);
+	_delay_us(1);
+	LCD_EN &= ~ (1<<EN);
+
+	_delay_us(200);
+
+	//LCD_Port = (LCD_Port & 0x0F) | (data << 4); /* sending lower nibble */
+	data<<=4;
+	LCD_Port = (LCD_Port & 0b1001) | (data & 0b110000)>>3 | (data & 0b11000000)>>2;
+	LCD_EN |= (1<<EN);
+	_delay_us(1);
+	LCD_EN &= ~ (1<<EN);
+	_delay_ms(2);
+}
+
 
