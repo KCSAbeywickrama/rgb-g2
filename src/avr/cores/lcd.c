@@ -99,4 +99,10 @@ void lcd_int(uint8_t i)
 	lcd_char(i+'0');
 }
 
+void lcd_int_array(uint8_t *arr)
+{
+	lcd_int(arr[0]);lcd_char(',');
+	lcd_int(arr[1]);lcd_char(',');
+	lcd_int(arr[2]);	
+}
 
