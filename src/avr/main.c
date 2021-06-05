@@ -1,21 +1,22 @@
 /*
- * avr.c
- *
- * Created: 07-May-21 5:12:49 PM
- * Author : CSA
- */ 
+* avr.c
+*
+* Created: 07-May-21 5:12:49 PM
+* Author : CSA
+*/
+
+
+#define F_CPU 16000000UL
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include "cores/led.h"
 
 int main(void)
 {
-	led_init();
-	led_on_args(255,50,0);
- 
 	
-    while (1) 
-    {
-    }
 }
+
+
+
 
