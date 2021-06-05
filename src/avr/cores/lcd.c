@@ -106,3 +106,9 @@ void lcd_int_array(uint8_t *arr)
 	lcd_int(arr[2]);	
 }
 
+void lcd_clear()
+{
+	lcd_command (0x01);		/* Clear display */
+	_delay_ms(2);
+	lcd_command (0x80);		/* Cursor at home position */
+}
