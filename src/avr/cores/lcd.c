@@ -52,5 +52,17 @@ void lcd_init(void)			/* LCD Initialize function */
 	_delay_ms(2);
 }
 
+void lcd_setcursor(int row_index,int col_index){
+	if (row_index==0){
+		lcd_command(0x80);
+	}
+	if (row_index==1){
+		lcd_command(0xC0);
+	}
+	for (int temp=0;temp<col_index;temp++){
+		lcd_command(0x14);
+	}
+}
+
 
 
