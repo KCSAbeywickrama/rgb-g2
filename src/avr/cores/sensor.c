@@ -40,4 +40,17 @@ void sensor_init()
 	// For 16MHz microchip best accurate frequency is 125kHz (when devition factor is 128 [Max])
 	// For 8MHz microchip best accurate frequency is 62.5kH (When devition factor is 128) this ADC result is more accuracy than 16MHz microchip.
 }
+uint16_t _adc_read(uint8_t pin)
+{
+	pin &= 0b111; // convert pin value to binary
+
+	ADMUX |= pin; // Initialize pin which is going to ADC (active the pin which we are going top get analog reading)
+
+	ADCSRA |= (1 << ADSC); // begin the ADC
+
+	while (ADCSRA & (1 << ADSC))
+		; // delay the function till ADC complete (ADSC = 1 until ADC circule complete)
+
+	return (ADC); // return ADC value
+}
 
