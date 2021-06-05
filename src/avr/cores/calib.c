@@ -76,3 +76,40 @@ float coffs[3][2];
 
 char *colors[5]={"RED","GREEN","BLUE","WHITE","BLACK"};
 
+void print_init(){
+	uart_init(BAUD_CALC(9600));
+	sei();
+}
+
+void print_string(char *str){
+	uart_puts(str);
+}
+
+void print_int(uint16_t i){
+	uart_putint(i);
+}
+
+void print_char(char ch){
+	uart_putc(ch);
+}
+
+void print_float(float v){
+	uart_putfloat(v);
+}
+
+void print_uint16_arr(uint16_t *arr){
+	print_int(arr[0]);print_char(',');
+	print_int(arr[1]);print_char(',');
+	print_int(arr[2]);
+}
+
+void print_uint8_arr(uint8_t *arr){
+	print_int(arr[0]);print_char(',');
+	print_int(arr[1]);print_char(',');
+	print_int(arr[2]);
+}
+
+void println(){
+	uart_puts("\r\n");
+}
+
