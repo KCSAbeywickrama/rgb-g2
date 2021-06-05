@@ -9,6 +9,8 @@
 #ifndef CALIB_H_
 #define CALIB_H_
 
-
+void calib_init();
+void calib_start();
+void get_color();
 
 #endif /* CALIB_H_ */
