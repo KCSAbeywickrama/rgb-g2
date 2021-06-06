@@ -6,5 +6,6 @@
 src/avr/Debug/*
 src/avr/.vs/avr/v14/.atsuo
 src/avr/avr.cproj
+!enclosure/**
 !.gitignore
 !README.mdq
