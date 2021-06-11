@@ -17,6 +17,13 @@
     font-size: 12px;
 }
 
+.index{
+    position: absolute;
+    margin-top: -115px;
+    font-family: Consolas;
+    font-size: 12px;
+}
+
 #outline{
     position: absolute;
     width: 8.1in;

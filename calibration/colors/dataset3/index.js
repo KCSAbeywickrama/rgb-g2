@@ -21,10 +21,10 @@ function tglLabel() {
 
 function drawCircles() {
     var x = 44;
-    var y = 60;
+    var y = 70;
 
     k = 0;
-    var colors = pageColors[document.title];
+    var colors = pageColors[0];
 
     for (var i = 0; i < 6; i++) {
         for (var j = 0; j < 7; j++) {
@@ -37,10 +37,14 @@ function drawCircles() {
             div.style.backgroundColor = `rgb(${color})`;
 
             var label = document.createElement('span');
-            label.className = "label";
-            label.textContent = (k - 1) + ')' + color;
-            // label.textContent = color;
+            label.className = "label";           
+            label.textContent = color;
             div.appendChild(label);
+
+            var index = document.createElement('span');
+            index.className = "index";
+            index.textContent = (k - 1);
+            div.appendChild(index);
 
             document.body.appendChild(div);
             x += d + 1;
@@ -61,9 +65,13 @@ function drawCircles() {
 
             var label = document.createElement('span');
             label.className = "label";
-            label.textContent = (k - 1) + ')' + color;
-            // label.textContent = color;
+            label.textContent = color;
             div.appendChild(label);
+
+            var index = document.createElement('span');
+            index.className = "index";
+            index.textContent = (k - 1);
+            div.appendChild(index);
 
             document.body.appendChild(div);
             x -= d + 1;
@@ -120,9 +128,9 @@ function logColorsForPlot(colors) {
     var x = [];
     var y = [];
     var z = [];
-    var csv="";
+    var csv = "";
     colors.forEach(color_str => {
-        csv+=color_str+"\n";
+        csv += color_str + "\n";
         var color = color_str.split(",");
         x.push(parseInt(color[0]));
         y.push(parseInt(color[1]));
@@ -135,7 +143,7 @@ function logColorsForPlot(colors) {
     console.log(csv);
 }
 
-function genRainBow() {
+function genColors() {
     rainbow = [
         [255, 0, 0],
         [0, 255, 0],
@@ -190,15 +198,14 @@ function genRainBow() {
 
     colors_set.delete("51,33,0");
 
-    var extra=["50,150,150","100,200,200","220,60,120","160,80,80"]
+    var extra = ["50,150,150", "100,200,200", "220,60,120", "160,80,80"]
 
-    pageColors[0] = [...colors_set,...extra];
+    pageColors[0] = [...colors_set, ...extra];
 
     console.log(colors_set)
 
     logColorsForPlot(pageColors[0]);
 }
 
-
-genRainBow();
+genColors();
 drawCircles();
