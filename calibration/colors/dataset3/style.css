@@ -18,7 +18,7 @@
 }
 
 .index{
-    position: absolute;
+    position: relative;
     margin-top: -115px;
     font-family: Consolas;
     font-size: 12px;
