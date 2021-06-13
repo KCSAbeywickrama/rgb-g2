@@ -27,3 +27,37 @@
 	COL_DDR |= 0x1c;
 	ROW_PORT |= 0x0f;
  }
+
+ void set_port(char *str){
+	for (int bit=0;bit<3;bit++){
+		if (str[bit]=='1'){
+			COL_PORT |= 1<<COL_PINS[bit];
+		}
+		else{
+			COL_PORT &= ~(1<<COL_PINS[bit]);
+		}
+	}
+ }
+
+ char keypad_get_key(){
+	char value='a';
+	while (value=='a'){
+		for (int row=0;row<4;row++){
+			set_port("011");
+			if(~ROW_PIN & 1<<ROW_PINS[row]){
+				value=KEYS[row][0];
+			}
+			set_port("101");
+			if(~ROW_PIN & 1<<ROW_PINS[row]){
+				value=KEYS[row][1];
+			}
+			set_port("110");
+			if(~ROW_PIN & 1<<ROW_PINS[row]){
+				value=KEYS[row][2];
+			}
+		}
+	}
+	_delay_ms(275);
+	return value;
+ }
+
