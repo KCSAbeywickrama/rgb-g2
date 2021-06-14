@@ -1,12 +1,17 @@
 *
 !*/
 !calibration/**
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45d99ea28987d56593656d27a9a25dc98af0201c
 !simulation/**/*.ino
 !simulation/**/*.pdsprj
+
 !src/**
 src/avr/.vs/avr/v14/.atsuo
 src/avr/Debug/*
 src/avr/.vs/avr/v14/.atsuo
 src/avr/avr.cproj
 !.gitignore
-!README.mdq
+!README.md

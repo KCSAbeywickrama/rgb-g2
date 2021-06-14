@@ -1,0 +1,41 @@
+.circle {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+}
+
+.label {
+    display: none;
+    background-color: white;
+    padding-inline: 5px;
+    border-radius: 10px;
+    font-family: Consolas;
+    font-size: 12px;
+}
+
+.index{
+    position: relative;
+    margin-top: -115px;
+    font-family: Consolas;
+    font-size: 12px;
+}
+
+#outline{
+    position: absolute;
+    width: 8.1in;
+    height: 11.5in;
+    border: 1px solid black;
+}
+
+#border{
+    position: absolute;
+    margin-left: 0.5in;
+    margin-top: 0.5in;
+    width: 7.1in;
+    height: 10.5in;
+    border: 1px solid blue;
+}
