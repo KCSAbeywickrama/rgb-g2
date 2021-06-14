@@ -12,16 +12,22 @@
 #include <util/delay.h>
 #include "lcd.h"
 
+#define DATA_PORT0 PORTB
+#define DATA_PORT1 PORTD
+#define DATA_DDR0 DDRB
+#define DATA_DDR1 DDRD
+#define EN_DDR DDRD
 #define LCD_EN PORTD
+#define LCD_RS PORTB
 #define RS PB0				/* Define Register Select pin */
 #define EN PD7				/* Define Enable signal pin */
 
 
 void LCD_Command( unsigned char cmnd )
 {
-	PORTB = (PORTB & 0b11111001) | (cmnd & 0b110000)>>3;
-	PORTD = (PORTD & 0b11111100)| (cmnd & 0b11000000)>>6;
-	PORTB &= ~ (1<<RS);		/* RS=0*/
+	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (cmnd & 0b110000)>>3;
+	DATA_PORT1 = (DATA_PORT1 & 0b11111100) | (cmnd & 0b11000000)>>6;
+	LCD_RS &= ~ (1<<RS);		/* RS=0*/
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
@@ -29,8 +35,8 @@ void LCD_Command( unsigned char cmnd )
 	_delay_us(200);
 
 	cmnd<<=4;
-	PORTB = (PORTB & 0b11111001) | (cmnd & 0b110000)>>3;
-	PORTD = (PORTD & 0b11111100)| (cmnd & 0b11000000)>>6;
+	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (cmnd & 0b110000)>>3;
+	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (cmnd & 0b11000000)>>6;
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
@@ -40,9 +46,9 @@ void LCD_Command( unsigned char cmnd )
 
 void LCD_Char( unsigned char data )
 {
-	PORTB = (PORTB & 0b11111001) | (data & 0b110000)>>3;
-	PORTD = (PORTD & 0b11111100)| (data & 0b11000000)>>6;
-	PORTB |= (1<<RS);		/* RS=1 */
+	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (data & 0b110000)>>3;
+	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (data & 0b11000000)>>6;
+	LCD_RS |= (1<<RS);		/* RS=1 */
 	LCD_EN|= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
@@ -50,8 +56,8 @@ void LCD_Char( unsigned char data )
 	_delay_us(200);
 
 	data<<=4;
-	PORTB = (PORTB & 0b11111001) | (data & 0b110000)>>3;
-	PORTD = (PORTD & 0b11111100)| (data & 0b11000000)>>6;
+	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (data & 0b110000)>>3;
+	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (data & 0b11000000)>>6;
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
@@ -60,9 +66,9 @@ void LCD_Char( unsigned char data )
 
 void LCD_Init (void)			/* LCD Initialize function */
 {
-	DDRB |= 0b0111;
-	DDRD |= 0b0011;
-	DDRD |= 1<<EN;
+	DATA_DDR0 |= 0b0111;
+	DATA_DDR1 |= 0b0011;
+	EN_DDR |= 1<<EN;
 	_delay_ms(20);			/* Delay to power on the LCD */
 	
 	LCD_Command(0x02);				/* send for 4 bit initialization  */
