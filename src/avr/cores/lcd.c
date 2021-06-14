@@ -12,8 +12,6 @@
 #include <util/delay.h>
 #include "lcd.h"
 
-#define LCD_Dir  DDRB			/* Define LCD data port direction */
-#define LCD_Port PORTB			/* Define LCD data port */
 #define LCD_EN PORTD
 #define RS PB0				/* Define Register Select pin */
 #define EN PD7				/* Define Enable signal pin */
@@ -21,18 +19,18 @@
 
 void LCD_Command( unsigned char cmnd )
 {
-	//LCD_Port = (LCD_Port & 0x0F) | (cmnd & 0xF0); /* sending upper nibble */
-	LCD_Port = (LCD_Port & 0b1001) | (cmnd & 0b110000)>>3 | (cmnd & 0b11000000)>>2;
-	LCD_Port &= ~ (1<<RS);		/* RS=0*/
+	PORTB = (PORTB & 0b11111001) | (cmnd & 0b110000)>>3;
+	PORTD = (PORTD & 0b11111100)| (cmnd & 0b11000000)>>6;
+	PORTB &= ~ (1<<RS);		/* RS=0*/
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
 
 	_delay_us(200);
 
-	//LCD_Port = (LCD_Port & 0x0F) | (cmnd << 4);  /* sending lower nibble */
 	cmnd<<=4;
-	LCD_Port = (LCD_Port & 0b1001) | (cmnd & 0b110000)>>3 | (cmnd & 0b11000000)>>2;
+	PORTB = (PORTB & 0b11111001) | (cmnd & 0b110000)>>3;
+	PORTD = (PORTD & 0b11111100)| (cmnd & 0b11000000)>>6;
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
@@ -42,18 +40,18 @@ void LCD_Command( unsigned char cmnd )
 
 void LCD_Char( unsigned char data )
 {
-	//LCD_Port = (LCD_Port & 0x0F) | (data & 0xF0); /* sending upper nibble */
-	LCD_Port = (LCD_Port & 0b1001) | (data & 0b110000)>>3 | (data & 0b11000000)>>2;
-	LCD_Port |= (1<<RS);		/* RS=1 */
+	PORTB = (PORTB & 0b11111001) | (data & 0b110000)>>3;
+	PORTD = (PORTD & 0b11111100)| (data & 0b11000000)>>6;
+	PORTB |= (1<<RS);		/* RS=1 */
 	LCD_EN|= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
 
 	_delay_us(200);
 
-	//LCD_Port = (LCD_Port & 0x0F) | (data << 4); /* sending lower nibble */
 	data<<=4;
-	LCD_Port = (LCD_Port & 0b1001) | (data & 0b110000)>>3 | (data & 0b11000000)>>2;
+	PORTB = (PORTB & 0b11111001) | (data & 0b110000)>>3;
+	PORTD = (PORTD & 0b11111100)| (data & 0b11000000)>>6;
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
 	LCD_EN &= ~ (1<<EN);
@@ -62,8 +60,8 @@ void LCD_Char( unsigned char data )
 
 void LCD_Init (void)			/* LCD Initialize function */
 {
-	//LCD_Dir = 0xFF;			/* Make LCD port direction as o/p */
-	LCD_Dir |= 0b110111;
+	DDRB |= 0b0111;
+	DDRD |= 0b0011;
 	DDRD |= 1<<EN;
 	_delay_ms(20);			/* Delay to power on the LCD */
 	
@@ -90,16 +88,4 @@ void LCD_Clear()
 	LCD_Command (0x01);		/* Clear display */
 	_delay_ms(2);
 	LCD_Command (0x80);		/* Cursor at home position */
-}
-
-void LCD_SetCursor(int row_index,int col_index){
-	if (row_index==0){
-		LCD_Command(0x80);
-	}
-	if (row_index==1){
-		LCD_Command(0xC0);
-	}
-	for (int temp=0;temp<col_index;temp++){
-		LCD_Command(0x14);
-	}
 }
