@@ -14,6 +14,6 @@ void lcd_char( unsigned char data );
 void lcd_init (void);
 void lcd_string (char *str);
 void lcd_clear();
-void LCD_SetCursor(int row_index,int col_index);
+void lcd_setcursor(int row_index,int col_index);
 
 #endif /* LCD_H_ */

@@ -95,3 +95,15 @@ void lcd_clear()
 	_delay_ms(2);
 	lcd_command (0x80);		/* Cursor at home position */
 }
+
+void lcd_setcursor(int row_index,int col_index){
+	if (row_index==0){
+		lcd_command(0x80);
+	}
+	if (row_index==1){
+		lcd_command(0xC0);
+	}
+	for (int temp=0;temp<col_index;temp++){
+		lcd_command(0x14);
+	}
+}
