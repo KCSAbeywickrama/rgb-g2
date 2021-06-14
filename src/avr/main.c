@@ -55,7 +55,6 @@ void given_RGB(uint8_t *rgbvalue){
 	}
 }
 
-
 int main()
 {
 	int keypadPins[7]={r0,r1,r2,r3,c0,c1,c2};

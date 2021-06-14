@@ -9,6 +9,7 @@
 #ifndef LCD_H_
 #define LCD_H_
 
+void LCD_Command( unsigned char cmnd );
 void LCD_Char( unsigned char data );
 void LCD_Init (void);
 void LCD_String (char *str);
