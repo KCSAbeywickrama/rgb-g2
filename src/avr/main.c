@@ -11,9 +11,9 @@
 
 int main()
 {
-	LCD_Init();
-	LCD_String("Welcome");
-	LCD_Command(0xC0);
-	LCD_String("Group 2");
+	lcd_init();
+	lcd_string("Welcome");
+	lcd_command(0xC0);
+	lcd_string("Group 2");
 	while(1);
 }
