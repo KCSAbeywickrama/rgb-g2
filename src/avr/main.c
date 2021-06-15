@@ -10,11 +10,16 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "cores/led.h"
+#include "cores/pwm.h"
 
 int main(void)
 {
-	
+	pwm_init();
+	//check_init();
+	//while(1){
+		//check();
+	//}
+	while(1);
 }
 
 
