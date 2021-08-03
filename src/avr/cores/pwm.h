@@ -11,6 +11,7 @@
 
 void pwm_init();
 void check();
+void check_tr();
 void check_init();
 
 #endif /* PWM_H_ */
