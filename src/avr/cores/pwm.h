@@ -10,6 +10,11 @@
 #define PWM_H_
 
 void pwm_init();
+void pwm_start();
+void pwm_stop();
+void pwm_set(uint8_t *rgb);
+void pwm_set_args(uint8_t red,uint8_t green,uint8_t blue);
+
 void check();
 void check_tr();
 void check_init();

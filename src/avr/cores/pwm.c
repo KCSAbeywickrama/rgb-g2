@@ -19,11 +19,8 @@
 #define DEMUX_PORT PORTD
 #define DEMUX_DDR DDRD
 
-
-volatile uint16_t led_pins[3]={PORTD4,PORTD5,PORTD6};
-//volatile uint8_t *led_ports[3]={&PORTB,&PORTB,&PORTB};
 volatile uint8_t pin=0;
-volatile uint8_t gbr[3]={255,0,255};
+volatile uint8_t gbr[3]={0,0,50};
 
 ISR(TIMER2_OVF_vect){
 	
@@ -33,55 +30,66 @@ ISR(TIMER2_OVF_vect){
 	
 }
 
-void pwm_init(){
+void pwm_init(){	
+	//define output pins
 	PWM_DDR |= 1<< PWM_PIN;
 	DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
-	
+}
+
+void pwm_start(){
 	//timer2 A inverting mode fast PWM | TOV on 0xff
 	TCCR2A |= 1<<COM2A1 | 1<<COM2A0 | 1<< WGM21 | 1<< WGM20;
 	
-	//setup Fast PWM on OC2A (timer2)
-	//TCCR2A |= 1<<COM2A1 | 1<<WGM21 | 1<<WGM20;
-	
-	PWM_OCR=100;
-	
 	//enable overflow interrupt
 	TIMSK2 |= 1<<TOIE2;
-	
-	//start timer0 (no-prescaler)
-	//TCCR0B |= 1<<CS00;
-	
-	//start timer2 (64 prescaler)
-	//TCCR2B |= 1<<CS22;
-	
-	//start timer2 (1024 prescaler)
-	//TCCR0B |= 1<<CS22 | 1<<CS21 | 1<<CS20;
-	
 	sei();
 	
+	//start timer2
 	
-	//start timer2 (128 prescaler)
-	TCCR2B |= 1<<CS22 | 1<<CS20;
-	//DEMUX_PORT|=1<<PORTD4;
+	//TCCR2B |= 1<<CS22; //(64 prescaler)	
+	TCCR2B |= 1<<CS22 | 1<<CS20; //(128 prescaler)
+	//TCCR0B |= 1<<CS22 | 1<<CS21 | 1<<CS20; //(1024 prescaler)	
+}
+
+void pwm_stop(){
+	cli();
+	
+	TCCR2B=0;
+	TIMSK2 =0;
+	TCCR2A =0;	
+	
+	PWM_PORT|=1<<PWM_PIN;
 	
 }
 
-void check_init(){
-	PWM_DDR |= 1<< PWM_PIN;
-	DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
-	PWM_PORT &=~(1<<PWM_PIN);
+void pwm_set(uint8_t *rgb){
+	gbr[0]=rgb[1];
+	gbr[1]=rgb[2];
+	gbr[2]=rgb[0];
 }
 
-void check(){
-	uint8_t prv_pin=(pin+2)%3;
-	DEMUX_PORT &= ~(1<<led_pins[prv_pin]);
-	DEMUX_PORT |= 1<<led_pins[pin];
-	pin=(pin+1)%3;
-	_delay_ms(1000);
+void pwm_set_args(uint8_t red,uint8_t green,uint8_t blue){
+	gbr[0]=green;
+	gbr[1]=blue;
+	gbr[2]=red;
 }
 
-void check_tr(){	
-	DEMUX_PORT = (DEMUX_PORT & 0b10011111) | pin<<5 ;
-	pin = (pin+1)%3;
-	_delay_ms(1000);
-}
+//void check_init(){
+	//PWM_DDR |= 1<< PWM_PIN;
+	//DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
+	//PWM_PORT &=~(1<<PWM_PIN);
+//}
+//
+//void check(){
+	//uint8_t prv_pin=(pin+2)%3;
+	//DEMUX_PORT &= ~(1<<led_pins[prv_pin]);
+	//DEMUX_PORT |= 1<<led_pins[pin];
+	//pin=(pin+1)%3;
+	//_delay_ms(1000);
+//}
+//
+//void check_tr(){	
+	//DEMUX_PORT = (DEMUX_PORT & 0b10011111) | pin<<5 ;
+	//pin = (pin+1)%3;
+	//_delay_ms(1000);
+//}
