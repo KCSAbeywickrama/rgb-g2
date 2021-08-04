@@ -120,10 +120,34 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="cores\calib.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\calib.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\keypad.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\keypad.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\lcd.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="cores\led.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cores\led.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\sensor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cores\sensor.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cores\pwm.c">
