@@ -14,39 +14,8 @@
 
 int main(void)
 {
-	pwm_init();
-	
-	pwm_start();	
-	
-	pwm_set_args(255,0,0);
-	_delay_ms(1000);	
-	
-	
-	pwm_set_args(255,127,0);
-	_delay_ms(1000);
-	
-	pwm_set_args(100,30,110);
-	_delay_ms(1000);
-	
-	pwm_stop();
-	_delay_ms(1000);
-	
-	pwm_start();
-	pwm_set_args(255,0,0);
-	_delay_ms(1000);
-	
-	pwm_stop();
-	_delay_ms(1000);
-	
-	pwm_start();
-	pwm_set_args(255,100,0);
-	_delay_ms(1000);
-	
-	pwm_stop();
-	//check_init();
-	//while(1){
-		//check();
-	//}
+	pwm_init();	
+	pwm_check();
 	while(1);
 }
 
