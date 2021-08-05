@@ -30,7 +30,7 @@ ISR(TIMER2_OVF_vect){
 	
 }
 
-void pwm_init(){	
+void pwm_init(){
 	//define output pins
 	PWM_DDR |= 1<< PWM_PIN;
 	DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
@@ -46,9 +46,9 @@ void pwm_start(){
 	
 	//start timer2
 	
-	//TCCR2B |= 1<<CS22; //(64 prescaler)	
+	//TCCR2B |= 1<<CS22; //(64 prescaler)
 	TCCR2B |= 1<<CS22 | 1<<CS20; //(128 prescaler)
-	//TCCR0B |= 1<<CS22 | 1<<CS21 | 1<<CS20; //(1024 prescaler)	
+	//TCCR0B |= 1<<CS22 | 1<<CS21 | 1<<CS20; //(1024 prescaler)
 }
 
 void pwm_stop(){
@@ -56,7 +56,7 @@ void pwm_stop(){
 	
 	TCCR2B=0;
 	TIMSK2 =0;
-	TCCR2A =0;	
+	TCCR2A =0;
 	
 	PWM_PORT|=1<<PWM_PIN;
 	
@@ -74,22 +74,36 @@ void pwm_set_args(uint8_t red,uint8_t green,uint8_t blue){
 	gbr[2]=red;
 }
 
+void pwm_check(){
+	uint8_t _colors[7][3]={{255,0,0},{0,255,0},{0,0,255},
+	{255,255,0},{0,255,255},{255,0,255},{255,165,0}};
+	
+	pwm_start();
+	
+	for(uint8_t i=0;i<7;i++){
+		pwm_set(_colors[i]);
+		_delay_ms(500);
+	}
+	
+	pwm_stop();
+}
+
 //void check_init(){
-	//PWM_DDR |= 1<< PWM_PIN;
-	//DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
-	//PWM_PORT &=~(1<<PWM_PIN);
+//PWM_DDR |= 1<< PWM_PIN;
+//DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
+//PWM_PORT &=~(1<<PWM_PIN);
 //}
 //
 //void check(){
-	//uint8_t prv_pin=(pin+2)%3;
-	//DEMUX_PORT &= ~(1<<led_pins[prv_pin]);
-	//DEMUX_PORT |= 1<<led_pins[pin];
-	//pin=(pin+1)%3;
-	//_delay_ms(1000);
+//uint8_t prv_pin=(pin+2)%3;
+//DEMUX_PORT &= ~(1<<led_pins[prv_pin]);
+//DEMUX_PORT |= 1<<led_pins[pin];
+//pin=(pin+1)%3;
+//_delay_ms(1000);
 //}
 //
-//void check_tr(){	
-	//DEMUX_PORT = (DEMUX_PORT & 0b10011111) | pin<<5 ;
-	//pin = (pin+1)%3;
-	//_delay_ms(1000);
+//void check_tr(){
+//DEMUX_PORT = (DEMUX_PORT & 0b10011111) | pin<<5 ;
+//pin = (pin+1)%3;
+//_delay_ms(1000);
 //}
