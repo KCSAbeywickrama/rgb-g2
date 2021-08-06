@@ -3,64 +3,64 @@
  *
  * Created: 19/05/2021 03:18:54
  *  Author: Lakdilu
- */ 
+ */
+
+#define F_CPU 16000000UL
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include "sensor.h"
 
+#define LDR_PIN 5
 
-void adc_init(){
-	ADMUX |= (1 << REFS0); 
-	// Initialize ADC reference selection (voltage for ADC) to "VCC +5V with cap"
-	
-	ADCSRA |= (1<<ADEN) | (1<<ADPS0) | (1<<ADPS1) | (1<<ADPS2); 
-	// Eneble ADC & set divition factor to 128(111) ----> F_ADC = F_CPU/d = 125000 (when F_CPU is 16M)
+volatile uint8_t *led_ddrs[3] = {&DDRC, &DDRB, &DDRB};
+volatile uint8_t *led_ports[3] = {&PORTC, &PORTB, &PORTB};
+uint8_t led_pins[3] = {PORTC4, PORTB4, PORTB5};
+
+void sensor_init()
+{	
+	for (uint8_t i = 0; i < 3; i++)
+		*led_ddrs[i] |= 1 << led_pins[i]; //set led_pins as output
+
+	DDRC &= ~(1 << LDR_PIN); // set LDR_PIN as a input pin
+
+	ADMUX |= (1 << REFS0);
+	; //REFS = 1
+	// REFS - Initialize ADC reference selection (Power/ Voltage for the ADC conversation)
+	// REFS = 0 (00) ---> Use internal 5V (AREF off)
+	// REFS = 1 (01) ---> External 5V voltage with cpasitor in AREF pin
+	// REFS = 2 (10) ---> Reserved
+	// REFS = 3 (11) ---> Internal 2.56V with external capasitor in AREF pin
+
+	ADCSRA |= (1 << ADEN) | (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2);
+	// ADEN ---> Enable ADC
+	// ADC clock frequency must be in a range of 50kHz - 200kHz
+	// ADC result is more accurate in lower frequencies.
+	// Eneble ADC & set divition factor to 128(111) ----> F_ADC = F_CPU/d
+	// For 16MHz microchip best accurate frequency is 125kHz (when devition factor is 128 [Max])
+	// For 8MHz microchip best accurate frequency is 62.5kH (When devition factor is 128) this ADC result is more accuracy than 16MHz microchip.
 }
-uint16_t analog_read (uint8_t _pin){
-	_pin &= 0b111; // convert pin to binary
-	
-	ADMUX |= _pin; // Initialize pin which is going to ADC
-	
-	ADCSRA |= (1<<ADSC); // begin the ADC
-	
-	while(ADCSRA & (1<<ADSC)); // delay the function till ADC complete
-	
+uint16_t _adc_read(uint8_t pin)
+{
+	pin &= 0b111; // convert pin value to binary
+
+	ADMUX |= pin; // Initialize pin which is going to ADC (active the pin which we are going top get analog reading)
+
+	ADCSRA |= (1 << ADSC); // begin the ADC
+
+	while (ADCSRA & (1 << ADSC))
+		; // delay the function till ADC complete (ADSC = 1 until ADC circule complete)
+
 	return (ADC); // return ADC value
 }
 
-int calib(uint8_t val, uint8_t clr){
-	const float R_MAX = 400;
-	const float R_MIN = 150;
-	const float G_MAX = 365;
-	const float G_MIN = 98;
-	const float B_MAX = 517;
-	const float B_MIN = 175;
-	
-	if (clr == 0){
-		val = limit(val,R_MAX,R_MIN);
-		val = (val - R_MIN)*(255/(R_MAX - R_MIN));
-	}
-	
-	else if (clr == 1){
-		val = limit(val,G_MAX,G_MIN);
-		val = (val - G_MIN)*(255/(G_MAX - G_MIN));
-	}
-	
-	else if (clr == 2){
-		val = limit(val,B_MAX,B_MIN);
-		val = (val - B_MIN)*(255/(B_MAX - B_MIN));
-	}
-	
-	return val;
-	
-}
-
-int limit (uint8_t _val, uint8_t _max, uint8_t _min){
-	if (_val > _max)
-	_val = _max;
-	
-	else if (_val < _min)
-	_val = _min;
-	
-	return _val;
+void sensor_read(uint16_t *reading)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		*led_ports[i] |= 1 << led_pins[i];	  // Turn on LED
+		_delay_ms(2000);					  // Wait until LDR reading is stable
+		reading[i] = _adc_read(LDR_PIN);	  // Get LDR reading (corresponding function in sensor.c)
+		*led_ports[i] &= ~(1 << led_pins[i]); // Turn off LED
+	}										  // LED pins ---> RED = C4 / GREEN = B4 / BLUE = B2
 }
