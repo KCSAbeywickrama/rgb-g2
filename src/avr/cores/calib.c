@@ -11,7 +11,7 @@
 #include <util/delay.h>
 #include "../libs/usart.h"
 #include "calib.h"
-#include "sensor.h"
+//#include "sensor.h"
 
 #define RED 0
 #define GREEN 1
