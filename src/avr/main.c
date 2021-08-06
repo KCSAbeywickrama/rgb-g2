@@ -85,3 +85,70 @@ int main(void)
 
     }
 }
+
+
+void given_rgb(){
+	//display a message to enter values
+	lcd_clear();
+	lcd_set_cursor(0,0);
+	lcd_string("Enter values");
+
+	//get RGB values for three colors
+	for (int color=0;color<3;color++){
+		lcd_clear_line(1);
+		lcd_string(color_array[color]);		//display the color name
+		
+		//get values
+		int rgb_value=0;		//given rgb value
+		int len_value=0;		//length of the input rgb value
+		while(1){
+			char key=keypad_get_key();
+
+			//break and go to next color
+			if (key=='#'){
+				_delay_ms(delay_time);
+				break;
+			}
+			//delete a wrong input character
+			else if (key=='*'){
+				if (len_value!=0){
+					lcd_delete();
+					_delay_ms(delay_time);
+					rgb_value/=10;
+					len_value-=1;
+				}
+			}
+
+			else{
+				lcd_char(key);			//display input keys on lcd display
+				_delay_ms(delay_time);
+				rgb_value=rgb_value*10+(key-'0');		//calculate the integer value from given character keys
+				len_value+=1;
+			}
+		}
+
+
+
+		//check whether the input value is wrong
+		if (rgb_value>255){
+			lcd_clear();
+			lcd_set_cursor(0,2);
+			lcd_string("Invalid input");		//display an invalid message
+			_delay_ms(2000);
+			lcd_clear();
+			lcd_set_cursor(0,0);
+			lcd_string("Enter values");
+			color-=1;
+		}
+		//if inputs are ok, then add them to the color values array
+		else{
+			color_values_array[color]=rgb_value;
+		}
+	}
+	//display a "Successfully" end message and options for continue or not
+	lcd_clear();
+	lcd_set_cursor(0,2);
+	lcd_string("Successfully");
+	lcd_set_cursor(1,0);
+	lcd_string("menu=*     RGB=#");
+}
