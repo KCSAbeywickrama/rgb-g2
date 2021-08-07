@@ -5,7 +5,7 @@
  *  Author: Dulanjana
  */ 
 
- #define F_CPU 8000000UL
+ #define F_CPU 16000000UL
  #include <avr/io.h>
  #include <util/delay.h>
  #include "keypad.h"
@@ -17,10 +17,12 @@
  #define COL_PORT PORTD
  #define COL_PIN PIND
 
+
+
  const uint8_t ROW_PINS[4]={PORTC0,PORTC1,PORTC2,PORTC3};
  const uint8_t COL_PINS[4]={PORTD2,PORTD3,PORTD4};
 
-const char KEYS[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{'*','0','#'}};
+ const char KEYS[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{BACK_KEY,'0',OK_KEY}};
 
  void keypad_init(){
 	ROW_DDR &= ~(0x0f);
@@ -37,4 +39,26 @@ const char KEYS[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{'*','0','#'}};
 			COL_PORT &= ~(1<<COL_PINS[bit]);
 		}
 	}
+ }
+
+ char keypad_get_key(){
+	char value='a';
+	while (value=='a'){
+		for (int row=0;row<4;row++){
+			set_port("011");
+			if(~ROW_PIN & 1<<ROW_PINS[row]){
+				value=KEYS[row][0];
+			}
+			set_port("101");
+			if(~ROW_PIN & 1<<ROW_PINS[row]){
+				value=KEYS[row][1];
+			}
+			set_port("110");
+			if(~ROW_PIN & 1<<ROW_PINS[row]){
+				value=KEYS[row][2];
+			}
+		}
+	}
+	//_delay_ms(275);
+	return value;
  }

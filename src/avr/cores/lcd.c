@@ -96,7 +96,7 @@ void lcd_clear()
 	lcd_command (0x80);		/* Cursor at home position */
 }
 
-void lcd_setcursor(int row_index,int col_index){
+void lcd_set_cursor(int row_index,int col_index){
 	if (row_index==0){
 		lcd_command(0x80);
 	}

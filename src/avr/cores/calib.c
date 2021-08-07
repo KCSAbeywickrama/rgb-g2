@@ -11,7 +11,8 @@
 #include <util/delay.h>
 #include "../libs/usart.h"
 #include "calib.h"
-//#include "sensor.h"
+#include "lcd.h"
+#include "sensor.h"
 
 #define RED 0
 #define GREEN 1
@@ -151,7 +152,7 @@ void calib_start(){
 		print_string("Place on ");
 		print_string(colors[i]);
 		blink();
-		get_reading(readings[i]);
+		//get_reading(readings[i]);
 	}
 	
 	for(uint8_t i=0;i<3;i++){
@@ -209,7 +210,7 @@ void get_color(){
 	blink();
 	
 	uint16_t reading[3];
-	get_reading(reading);
+	//get_reading(reading);
 	
 	uint8_t calc_color[3];
 	calc(reading,calc_color);
@@ -218,3 +219,27 @@ void get_color(){
 	_delay_ms(500);
 	
 }
+
+
+
+
+//new from here
+ uint16_t calib_read[3][3];
+
+ void calib_run(){
+	 for(uint8_t i=0;i<3;i++){
+		 lcd_clear();
+		 lcd_string("Place on ");
+		 lcd_string(colors[i]);
+		 lcd_string_blink("...Waiting...",5,1,1);
+		 sensor_read(calib_read[i]);
+	 }
+
+	 //finish the calibration
+	 lcd_clear();
+	 lcd_set_cursor(0,2);
+	 lcd_string("Calibration");
+	 lcd_set_cursor(1,4);
+	 lcd_string("finished");
+	 _delay_ms(1000);
+ }

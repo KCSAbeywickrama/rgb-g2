@@ -8,7 +8,7 @@
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <util/delay.h>
-#include "cores/lcd_my.h"
+#include "cores/lcd.h"
 #include "cores/keypad.h"
 #include "cores/pwm.h"
 #include "cores/calib.h"
@@ -28,12 +28,6 @@ int main(void)
 	keypad_init();		//initialize the keypad
 	lcd_init();			//initialize the lcd display
 	sensor_init();		//initialize the sensor
-
-
-	lcd_string("welcome");
-	lcd_set_cursor(1,0);
-	lcd_string("group");
-	_delay_ms(2000);
 
 
 	//display a welcome message
@@ -142,7 +136,7 @@ void calibration(){
 	_delay_ms(1000);
 
 	//start calibration for colors
-	calib_start();
+	calib_run();
 }
 
 void given_rgb(){
