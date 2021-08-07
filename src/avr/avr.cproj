@@ -138,12 +138,6 @@
     <Compile Include="cores\lcd.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="cores\led.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="cores\led.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="cores\sensor.c">
       <SubType>compile</SubType>
     </Compile>
@@ -154,12 +148,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cores\pwm.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="cores\timer.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="cores\timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="libs\usart.c">
