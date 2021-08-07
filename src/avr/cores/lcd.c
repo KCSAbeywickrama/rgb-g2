@@ -20,12 +20,12 @@
 #define LCD_EN PORTD
 #define LCD_RS PORTB
 #define RS PB0				/* Define Register Select pin */
-#define EN PD7				/* Define Enable signal pin */
+#define EN PB1				/* Define Enable signal pin */
 
 
 void lcd_command( unsigned char cmnd )
 {
-	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (cmnd & 0b110000)>>3;
+	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (cmnd & 0b110000)>>2;
 	DATA_PORT1 = (DATA_PORT1 & 0b11111100) | (cmnd & 0b11000000)>>6;
 	LCD_RS &= ~ (1<<RS);		/* RS=0*/
 	LCD_EN |= (1<<EN);
@@ -35,7 +35,7 @@ void lcd_command( unsigned char cmnd )
 	_delay_us(200);
 
 	cmnd<<=4;
-	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (cmnd & 0b110000)>>3;
+	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (cmnd & 0b110000)>>2;
 	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (cmnd & 0b11000000)>>6;
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
@@ -46,7 +46,7 @@ void lcd_command( unsigned char cmnd )
 
 void lcd_char( unsigned char data )
 {
-	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (data & 0b110000)>>3;
+	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (cmnd & 0b110000)>>2;
 	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (data & 0b11000000)>>6;
 	LCD_RS |= (1<<RS);		/* RS=1 */
 	LCD_EN|= (1<<EN);
@@ -56,7 +56,7 @@ void lcd_char( unsigned char data )
 	_delay_us(200);
 
 	data<<=4;
-	DATA_PORT0 = (DATA_PORT0 & 0b11111001) | (data & 0b110000)>>3;
+	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (cmnd & 0b110000)>>2;
 	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (data & 0b11000000)>>6;
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
@@ -66,7 +66,7 @@ void lcd_char( unsigned char data )
 
 void lcd_init (void)			/* LCD Initialize function */
 {
-	DATA_DDR0 |= 0b0111;
+	DATA_DDR0 |= 0b1111;
 	DATA_DDR1 |= 0b0011;
 	EN_DDR |= 1<<EN;
 	_delay_ms(20);			/* Delay to power on the LCD */
