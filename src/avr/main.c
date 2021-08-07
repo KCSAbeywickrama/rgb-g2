@@ -16,7 +16,15 @@ int main(void)
 {
 	pwm_init();	
 	pwm_check();
-	while(1);
+	//pwm_start();
+	//pwm_set_args(255,255,0);
+	//
+	
+	//while(1){
+		//check_tr();
+	//}
+	
+	while(1) pwm_check();
 }
 
 
