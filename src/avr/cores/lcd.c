@@ -16,8 +16,8 @@
 #define DATA_PORT1 PORTD
 #define DATA_DDR0 DDRB
 #define DATA_DDR1 DDRD
-#define EN_DDR DDRD
-#define LCD_EN PORTD
+#define EN_DDR DDRB
+#define LCD_EN PORTB
 #define LCD_RS PORTB
 #define RS PORTB0				/* Define Register Select pin */
 #define EN PORTB1				/* Define Enable signal pin */
