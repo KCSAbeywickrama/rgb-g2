@@ -156,3 +156,11 @@ void lcd_string_blink(char *word,int iter,int row,int column){
 		_delay_ms(500);
 	}
 }
+
+void lcd_int_set(int *values){
+	for (int color=0;color<2;color++){
+		lcd_int(values[color]);
+		lcd_char(',');
+	}
+	lcd_int(values[2]);
+}

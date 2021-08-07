@@ -14,6 +14,7 @@
 #include "cores/calib.h"
 #include "cores/sensor.h"
 
+uint16_t sensor_read_values[3];
 char *color_array[3]={"R = ","G = ","B = "};		//given rgb output color names
 uint8_t color_values_array[3]={0,0,0};			//given rgb color values
 
@@ -92,6 +93,20 @@ int main(void)
     }
 }
 
+void calibration(){
+	//display a message
+	lcd_clear();
+	lcd_set_cursor(0,2);
+	lcd_string("Calibration");
+	lcd_set_cursor(1,4);
+	lcd_string("started");
+	_delay_ms(2000);
+
+	//start calibration for colors
+	calib_run();
+	_delay_ms(2000);
+}
+
 void color_sensor(){
 	//display a "color sensor" message
 	lcd_clear();
@@ -125,7 +140,16 @@ void color_sensor(){
 			}
 
 			else if (value=='2'){
-				_delay_ms(300);
+				lcd_clear();
+				lcd_string("Place on color");
+				lcd_string_blink("...Waiting...",5,1,1);
+				sensor_read(sensor_read_values);
+				lcd_clear();
+				lcd_set_cursor(0,3);
+				lcd_string("Reading");
+				lcd_set_cursor(1,2);
+				lcd_string("finished");
+				_delay_ms(2000);
 			}
 		}
 		if (value==BACK_KEY){
@@ -134,19 +158,6 @@ void color_sensor(){
 	}
 }
 
-void calibration(){
-	//display a message
-	lcd_clear();
-	lcd_set_cursor(0,2);
-	lcd_string("Calibration");
-	lcd_set_cursor(1,4);
-	lcd_string("started");
-	_delay_ms(2000);
-
-	//start calibration for colors
-	calib_run();
-	_delay_ms(2000);
-}
 
 void given_rgb(){
 	//display a message to enter values
