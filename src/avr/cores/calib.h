@@ -11,6 +11,7 @@
 
 void calib_init();
 void calib_start();
+void calib_run();
 void get_color();
 
 #endif /* CALIB_H_ */

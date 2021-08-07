@@ -99,29 +99,37 @@ void color_sensor(){
 	lcd_string("color sensor");
 	_delay_ms(2000);
 
-	//display a menu for calibration or reading color values
-	lcd_clear();
-	lcd_set_cursor(0,0);
-	lcd_string("1-calib   2-read");
-	lcd_set_cursor(1,0);
-	lcd_string("menu=<-");
+	while (1){
+		//display a menu for calibration or reading color values
+		lcd_clear();
+		lcd_set_cursor(0,0);
+		lcd_string("1-calib   2-read");
+		lcd_set_cursor(1,0);
+		lcd_string("menu=<-");
 
-	char value;
-	while(1){
-		value=keypad_get_key();
+		char value='a';
+		while(value=='a'){
+			value=keypad_get_key();
 
+			if (value==BACK_KEY){
+				_delay_ms(300);
+				break;
+			}
+
+			else if (value=='1'){
+				_delay_ms(300);
+				lcd_clear();
+				lcd_string("calibration");
+				_delay_ms(2000);
+				//calibration();
+			}
+
+			else if (value=='2'){
+				_delay_ms(300);
+			}
+		}
 		if (value==BACK_KEY){
-			_delay_ms(300);
 			break;
-		}
-
-		else if (value=='1'){
-			_delay_ms(300);
-			calibration();
-		}
-
-		else if (value=='2'){
-			_delay_ms(300);
 		}
 	}
 }
@@ -133,10 +141,11 @@ void calibration(){
 	lcd_string("Calibration");
 	lcd_set_cursor(1,4);
 	lcd_string("started");
-	_delay_ms(1000);
+	_delay_ms(2000);
 
 	//start calibration for colors
 	calib_run();
+	_delay_ms(2000);
 }
 
 void given_rgb(){
