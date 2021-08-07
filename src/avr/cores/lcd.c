@@ -107,3 +107,52 @@ void lcd_setcursor(int row_index,int col_index){
 		lcd_command(0x14);
 	}
 }
+
+
+void lcd_clear_line(int row){
+	lcd_set_cursor(row,0);
+	for (int position=0;position<16;position++){
+		lcd_char(' ');
+	}
+	lcd_set_cursor(row,0);
+}
+
+void lcd_int(uint8_t value){
+	int length;
+	int divider;
+	if (value>=100){
+		length=3;
+		divider=100;
+	}
+	else if(value>=10){
+		length=2;
+		divider=10;
+	}
+	else if(value>=0){
+		length=1;
+		divider=1;
+	}
+	for (int bit=0;bit<length;bit++){
+		int quocient=value/divider;
+		lcd_char(quocient+'0');
+		value%=(quocient*divider);
+		divider/=10;
+	}
+}
+
+void lcd_delete(){
+	lcd_command(0x10);
+	lcd_char(' ');
+	lcd_command(0x10);
+}
+
+void lcd_string_blink(char *word,int iter,int row,int column){
+	lcd_clear_line(row);
+	for (int blink_iter=0;blink_iter<iter;blink_iter++){
+		lcd_set_cursor(row,column);
+		lcd_string(word);
+		_delay_ms(500);
+		lcd_clear_line(row);
+		_delay_ms(500);
+	}
+}
