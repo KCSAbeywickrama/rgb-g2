@@ -16,11 +16,11 @@
 #define DATA_PORT1 PORTD
 #define DATA_DDR0 DDRB
 #define DATA_DDR1 DDRD
-#define EN_DDR DDRD
-#define LCD_EN PORTD
+#define EN_DDR DDRB
+#define LCD_EN PORTB
 #define LCD_RS PORTB
-#define RS PB0				/* Define Register Select pin */
-#define EN PB1				/* Define Enable signal pin */
+#define RS PORTB0				/* Define Register Select pin */
+#define EN PORTB1				/* Define Enable signal pin */
 
 
 void lcd_command( unsigned char cmnd )
@@ -157,7 +157,7 @@ void lcd_string_blink(char *word,int iter,int row,int column){
 	}
 }
 
-void lcd_int_set(int *values){
+void lcd_uint8_arr(uint8_t *values){
 	for (int color=0;color<2;color++){
 		lcd_int(values[color]);
 		lcd_char(',');

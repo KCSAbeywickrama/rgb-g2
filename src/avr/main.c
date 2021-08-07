@@ -132,11 +132,11 @@ void color_sensor(){
 			}
 
 			else if (value=='1'){
-				_delay_ms(300);
-				lcd_clear();
-				lcd_string("calibration");
-				_delay_ms(2000);
-				//calibration();
+				//_delay_ms(300);
+				//lcd_clear();
+				//lcd_string("calibration");
+				//_delay_ms(2000);
+				calibration();
 			}
 
 			else if (value=='2'){
