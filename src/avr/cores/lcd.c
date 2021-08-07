@@ -19,8 +19,8 @@
 #define EN_DDR DDRD
 #define LCD_EN PORTD
 #define LCD_RS PORTB
-#define RS PB0				/* Define Register Select pin */
-#define EN PB1				/* Define Enable signal pin */
+#define RS PORTB0				/* Define Register Select pin */
+#define EN PORTB1				/* Define Enable signal pin */
 
 
 void lcd_command( unsigned char cmnd )
@@ -46,7 +46,7 @@ void lcd_command( unsigned char cmnd )
 
 void lcd_char( unsigned char data )
 {
-	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (cmnd & 0b110000)>>2;
+	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (data & 0b110000)>>2;
 	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (data & 0b11000000)>>6;
 	LCD_RS |= (1<<RS);		/* RS=1 */
 	LCD_EN|= (1<<EN);
@@ -56,7 +56,7 @@ void lcd_char( unsigned char data )
 	_delay_us(200);
 
 	data<<=4;
-	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (cmnd & 0b110000)>>2;
+	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (data & 0b110000)>>2;
 	DATA_PORT1 = (DATA_PORT1 & 0b11111100)| (data & 0b11000000)>>6;
 	LCD_EN |= (1<<EN);
 	_delay_us(1);
