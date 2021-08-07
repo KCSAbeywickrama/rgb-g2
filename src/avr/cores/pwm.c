@@ -11,10 +11,10 @@
 #include <util/delay.h>
 #include "pwm.h"
 
-#define PWM_PIN DDB3
-#define PWM_DDR DDRB
-#define PWM_PORT PORTB
-#define PWM_OCR OCR2A
+#define PWM_PIN DDD5
+#define PWM_DDR DDRD
+#define PWM_PORT PORTD
+#define PWM_OCR OCR0B
 
 #define DEMUX_PORT PORTD
 #define DEMUX_DDR DDRD
@@ -22,9 +22,9 @@
 volatile uint8_t pin=0;
 volatile uint8_t gbr[3]={0,0,50};
 
-ISR(TIMER2_OVF_vect){
+ISR(TIMER0_OVF_vect){
 	
-	DEMUX_PORT = (DEMUX_PORT & 0b10011111) | pin<<5 ;
+	DEMUX_PORT = (DEMUX_PORT & 0b00111111) | pin<<6 ;
 	pin=(pin+1)%3;
 	PWM_OCR=gbr[pin];
 	
@@ -33,30 +33,31 @@ ISR(TIMER2_OVF_vect){
 void pwm_init(){
 	//define output pins
 	PWM_DDR |= 1<< PWM_PIN;
-	DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
+	DEMUX_DDR |= 1<< DDD6 | 1<< DDD7;
 }
 
 void pwm_start(){
-	//timer2 A inverting mode fast PWM | TOV on 0xff
-	TCCR2A |= 1<<COM2A1 | 1<<COM2A0 | 1<< WGM21 | 1<< WGM20;
+	//timer0 B inverting mode fast PWM | TOV on 0xff
+	TCCR0A |= 1<<COM0B1 | 1<<COM0B0 | 1<< WGM01 | 1<< WGM00;
 	
 	//enable overflow interrupt
-	TIMSK2 |= 1<<TOIE2;
+	TIMSK0 |= 1<<TOIE0;
 	sei();
 	
 	//start timer2
 	
-	//TCCR2B |= 1<<CS22; //(64 prescaler)
-	TCCR2B |= 1<<CS22 | 1<<CS20; //(128 prescaler)
-	//TCCR0B |= 1<<CS22 | 1<<CS21 | 1<<CS20; //(1024 prescaler)
+	TCCR0B |= 1<<CS00; //(no prescaler)
+	TCCR0B |= 1<<CS01 | 1<<CS00; //(64 prescaler)
+	//TCCR0B |= 1<<CS02; //(256 prescaler)
+	//TCCR0B |= 1<<CS02 | 1<<CS00; //(1024 prescaler)
 }
 
 void pwm_stop(){
 	cli();
 	
-	TCCR2B=0;
-	TIMSK2 =0;
-	TCCR2A =0;
+	TCCR0B=0;
+	TIMSK0 =0;
+	TCCR0A =0;
 	
 	PWM_PORT|=1<<PWM_PIN;
 	
@@ -82,7 +83,7 @@ void pwm_check(){
 	
 	for(uint8_t i=0;i<7;i++){
 		pwm_set(_colors[i]);
-		_delay_ms(500);
+		_delay_ms(1000);
 	}
 	
 	pwm_stop();
@@ -102,8 +103,8 @@ void pwm_check(){
 //_delay_ms(1000);
 //}
 //
-//void check_tr(){
-//DEMUX_PORT = (DEMUX_PORT & 0b10011111) | pin<<5 ;
-//pin = (pin+1)%3;
-//_delay_ms(1000);
-//}
+void check_tr(){
+DEMUX_PORT = (DEMUX_PORT & 0b00111111) | pin<<6 ;
+pin = (pin+1)%3;
+_delay_ms(1000);
+}
