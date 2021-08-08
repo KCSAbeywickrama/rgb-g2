@@ -126,22 +126,10 @@
     <Compile Include="cores\calib.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="cores\led.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="cores\led.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="cores\pwm.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cores\pwm.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="cores\timer.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="cores\timer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="libs\usart.c">
