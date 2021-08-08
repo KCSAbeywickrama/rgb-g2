@@ -9,6 +9,7 @@
  #include <avr/io.h>
  #include <util/delay.h>
  #include "keypad.h"
+ #include "lcd.h"
 
  #define ROW_DDR DDRC
  #define ROW_PORT PORTC
@@ -61,4 +62,23 @@
 	}
 	//_delay_ms(275);
 	return value;
+ }
+
+ void keypad_check(){
+	lcd_clear();
+	lcd_set_cursor(0,0);
+	lcd_string("Keypad checking");
+	lcd_set_cursor(1,0);
+	char value;
+	while (1){
+		value=keypad_get_key();
+
+		lcd_char(value);
+		_delay_ms(300);
+
+		if (value==OK_KEY){
+			_delay_ms(1000);
+			break;
+		}
+	}
  }

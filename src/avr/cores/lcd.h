@@ -21,5 +21,6 @@ void lcd_int(uint8_t value);
 void lcd_delete();
 void lcd_string_blink(char *word,int iter,int row,int column);
 void lcd_uint8_arr(uint8_t *values);
+void lcd_check();
 
 #endif /* LCD_H_ */

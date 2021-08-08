@@ -15,5 +15,6 @@
 
 void keypad_init();
 char keypad_get_key();
+void keypad_check();
 
 #endif /* KEYPAD_H_ */

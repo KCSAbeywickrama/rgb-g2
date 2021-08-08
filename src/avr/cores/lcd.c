@@ -5,7 +5,7 @@
  *  Author: Yohan Abeysinghe 1
  */ 
 
-#define F_CPU 8000000UL
+#define F_CPU 16000000UL
 
 
 #include <avr/io.h>
@@ -179,4 +179,13 @@ void lcd_uint8_arr(uint8_t *values){
 		lcd_char(',');
 	}
 	lcd_int(values[2]);
+}
+
+void lcd_check(){
+	lcd_clear();
+	lcd_set_cursor(0,5);
+	lcd_string("LCD is");
+	lcd_set_cursor(1,7);
+	lcd_string("OK");
+	_delay_ms(2000);
 }

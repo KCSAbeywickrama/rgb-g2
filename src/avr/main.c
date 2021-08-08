@@ -30,6 +30,9 @@ int main(void)
 	lcd_init();			//initialize the lcd display
 	sensor_init();		//initialize the sensor
 
+	lcd_check();
+	keypad_check();
+
 	//display a welcome message
 	lcd_clear();
 	//lcd_set_cursor(0,4);
