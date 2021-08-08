@@ -1,5 +1,5 @@
 /*
- * avr_keypad.c
+ * main.c
  *
  * Created: 6/12/2021 11:27:28 PM
  * Author : Dulanjana
@@ -36,7 +36,7 @@ int main(void)
 	//display a welcome message
 	lcd_clear();
 	//lcd_set_cursor(0,4);
-	//lcd_string("Welcome");
+	//lcd_string("RGB Color Sensor");
 	//lcd_set_cursor(1,4);
 	//lcd_string("Group 2");
 	//_delay_ms(3000);
@@ -45,12 +45,12 @@ int main(void)
 		//display the main menu
 		lcd_clear();
 		lcd_set_cursor(0,0);
-		lcd_string("1 - color sensor");		//input key 1 for the color sensor
+		lcd_string("1 - Color Sensor");		//input key 1 for the color sensor
 		lcd_set_cursor(1,0);
-		lcd_string("2 - given RGB");		//input key 2 for the given value RGB output
+		lcd_string("2 - Given RGB");		//input key 2 for the given value RGB output
 
 		//get the input key to select options from main menu
-		char mainmenu_key=' ';
+		char mainmenu_key;
 		mainmenu_key=keypad_get_key();
 		_delay_ms(300);
 		lcd_clear();
@@ -61,11 +61,11 @@ int main(void)
 		}
 
 		//given value RGB output
-		if (mainmenu_key=='2'){
+		else if (mainmenu_key=='2'){
 			//display a startup message
 			lcd_clear();
 			lcd_set_cursor(0,2);
-			lcd_string("given value");
+			lcd_string("Given Value");
 			lcd_set_cursor(1,6);
 			lcd_string("RGB");
 			_delay_ms(2000);
@@ -101,7 +101,7 @@ void calibration(){
 	lcd_set_cursor(0,2);
 	lcd_string("Calibration");
 	lcd_set_cursor(1,4);
-	lcd_string("started");
+	lcd_string("Started");
 	_delay_ms(2000);
 
 	//start calibration for colors
@@ -113,16 +113,16 @@ void color_sensor(){
 	//display a "color sensor" message
 	lcd_clear();
 	lcd_set_cursor(0,2);
-	lcd_string("color sensor");
+	lcd_string("Color Sensor");
 	_delay_ms(2000);
 
 	while (1){
 		//display a menu for calibration or reading color values
 		lcd_clear();
 		lcd_set_cursor(0,0);
-		lcd_string("1-calib   2-read");
+		lcd_string("1-Calib   2-Read");
 		lcd_set_cursor(1,0);
-		lcd_string("menu=<-");
+		lcd_string("Menu=<-");
 
 		char value='a';
 		while(value=='a'){
@@ -150,7 +150,7 @@ void color_sensor(){
 				lcd_set_cursor(0,3);
 				lcd_string("Reading");
 				lcd_set_cursor(1,2);
-				lcd_string("finished");
+				lcd_string("Finished");
 				_delay_ms(2000);
 			}
 		}
@@ -226,17 +226,3 @@ void given_rgb(){
 	lcd_set_cursor(1,0);
 	lcd_string("menu=<-   RGB=->");
 }
-
-
-
-
-
-//int main(){
-	//while (1){
-		//char value='a';
-		//value=keypad_get_key();
-		//lcd_char(value);
-		//_delay_ms(300);
-//
-	//}
-//}
