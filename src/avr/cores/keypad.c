@@ -43,8 +43,8 @@
  }
 
  char keypad_get_key(){
-	char value='a';
-	while (value=='a'){
+	char value='\0';
+	while (value=='\0'){
 		for (int row=0;row<4;row++){
 			set_port("011");
 			if(~ROW_PIN & 1<<ROW_PINS[row]){

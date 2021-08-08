@@ -1,11 +1,12 @@
 /*
- * main.c
- *
- * Created: 6/12/2021 11:27:28 PM
- * Author : Dulanjana
- */ 
+* main.c
+*
+* Created: 6/12/2021 11:27:28 PM
+* Author : Dulanjana
+*/
 
 #define F_CPU 16000000UL
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include "cores/lcd.h"
@@ -14,14 +15,17 @@
 #include "cores/calib.h"
 #include "cores/sensor.h"
 
-uint16_t sensor_read_values[3];
-char *color_array[3]={"R = ","G = ","B = "};		//given rgb output color names
-uint8_t color_values_array[3]={0,0,0};			//given rgb color values
+uint16_t sensor_reading[3];
+
+uint8_t rgb[3]={0,0,0};						//rgb values
+char *rgb_str[3]={"R = ","G = ","B = "};	//rgb strings
 
 
-void color_sensor();
-void calibration();
-void given_rgb();
+void sensor_mode();
+void calib_mode();
+void read_mode();
+
+void rgb_mode();
 
 
 int main(void)
@@ -41,7 +45,7 @@ int main(void)
 	//lcd_string("Group 2");
 	//_delay_ms(3000);
 	
-    while (1){
+	while (1){
 		//display the main menu
 		lcd_clear();
 		lcd_set_cursor(0,0);
@@ -57,7 +61,7 @@ int main(void)
 
 		//color sensor
 		if (mainmenu_key=='1'){
-			color_sensor();
+			sensor_mode();
 		}
 
 		//given value RGB output
@@ -72,7 +76,7 @@ int main(void)
 
 			while(1){
 				//call the function
-				given_rgb();
+				rgb_mode();
 
 				//ask for continue or stop the feature
 				char con_key;
@@ -92,10 +96,10 @@ int main(void)
 			}
 		}
 
-    }
+	}
 }
 
-void calibration(){
+void calib_mode(){
 	//display a message
 	lcd_clear();
 	lcd_set_cursor(0,2);
@@ -109,7 +113,17 @@ void calibration(){
 	_delay_ms(2000);
 }
 
-void color_sensor(){
+void read_mode(){
+	lcd_clear();
+	lcd_string("Place on color");
+	lcd_string_blink("...Waiting...",5,1,1);
+	sensor_read(sensor_reading);
+	lcd_set_cursor(1,2);
+	lcd_string("Finished");
+	_delay_ms(2000);
+}
+
+void sensor_mode(){
 	//display a "color sensor" message
 	lcd_clear();
 	lcd_set_cursor(0,2);
@@ -133,26 +147,8 @@ void color_sensor(){
 				break;
 			}
 
-			else if (value=='1'){
-				//_delay_ms(300);
-				//lcd_clear();
-				//lcd_string("calibration");
-				//_delay_ms(2000);
-				calibration();
-			}
-
-			else if (value=='2'){
-				lcd_clear();
-				lcd_string("Place on color");
-				lcd_string_blink("...Waiting...",5,1,1);
-				sensor_read(sensor_read_values);
-				lcd_clear();
-				lcd_set_cursor(0,3);
-				lcd_string("Reading");
-				lcd_set_cursor(1,2);
-				lcd_string("Finished");
-				_delay_ms(2000);
-			}
+			else if (value=='1') calib_mode();
+			else if (value=='2') read_mode();
 		}
 		if (value==BACK_KEY){
 			break;
@@ -161,7 +157,7 @@ void color_sensor(){
 }
 
 
-void given_rgb(){
+void rgb_mode(){
 	//display a message to enter values
 	lcd_clear();
 	lcd_set_cursor(0,0);
@@ -170,7 +166,7 @@ void given_rgb(){
 	//get RGB values for three colors
 	for (int color=0;color<3;color++){
 		lcd_clear_line(1);
-		lcd_string(color_array[color]);		//display the color name
+		lcd_string(rgb_str[color]);		//display the color name
 		
 		//get values
 		int rgb_value=0;		//given rgb value
@@ -216,7 +212,7 @@ void given_rgb(){
 		}
 		//if inputs are ok, then add them to the color values array
 		else{
-			color_values_array[color]=rgb_value;
+			rgb[color]=rgb_value;
 		}
 	}
 	//display a "Successfully" end message and options for continue or not
