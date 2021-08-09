@@ -133,7 +133,7 @@ void lcd_clear_line(int row){
 	lcd_set_cursor(row,0);
 }
 
-void lcd_int(uint8_t value){
+void lcd_int(int value){
 	int length;
 	int divider;
 	if (value>=100){
@@ -156,6 +156,14 @@ void lcd_int(uint8_t value){
 	}
 }
 
+void lcd_float(float value){
+	int a=value;
+	int b=(value-a)*1000;
+	lcd_int(a);
+	lcd_char('.');
+	lcd_int(b);
+}
+
 void lcd_delete(){
 	lcd_command(0x10);
 	lcd_char(' ');
@@ -174,6 +182,14 @@ void lcd_string_blink(char *word,int iter,int row,int column){
 }
 
 void lcd_uint8_arr(uint8_t *values){
+	for (int color=0;color<2;color++){
+		lcd_int(values[color]);
+		lcd_char(',');
+	}
+	lcd_int(values[2]);
+}
+
+void lcd_uint16_arr(uint16_t *values){
 	for (int color=0;color<2;color++){
 		lcd_int(values[color]);
 		lcd_char(',');

@@ -117,9 +117,9 @@ void println(){
 void calib_init(){
 	print_init();
 	//while(1){
-		//print_int(sensor_read(5));
-		//println();
-		//_delay_ms(500);
+	//print_int(sensor_read(5));
+	//println();
+	//_delay_ms(500);
 	//}
 	
 }
@@ -146,20 +146,15 @@ uint8_t trim(float v){
 
 void calib_start(){
 	
-	print_string("Calibration started\r\n");
-	
-	for(uint8_t i=0;i<3;i++){
-		print_string("Place on ");
-		print_string(colors[i]);
-		blink();
-		//get_reading(readings[i]);
-	}
-	
-	for(uint8_t i=0;i<3;i++){
-		print_uint16_arr(readings[i]);
-		println();
-	}
-	println();
+	for(uint8_t i=0;i<3;i++){		
+		lcd_clear();
+		lcd_string("Place on ");
+		lcd_string(colors[i]);
+		lcd_string_blink("...Waiting...",5,1,1);
+		sensor_read(readings[i]);
+		lcd_uint16_arr(readings[i]);
+		_delay_ms(1000);
+	}	
 	
 	
 	for(uint8_t i=0;i<3;i++){
@@ -172,15 +167,13 @@ void calib_start(){
 		coffs[i][0]=m;
 		coffs[i][1]=c;
 		
-		print_float(m);
-		print_char(',');
-		print_float(c);
-		println();
-	}
+		lcd_clear();		
+		lcd_float(m);
+		lcd_char(',');
+		lcd_float(c);
+		_delay_ms(1000);
+	}	
 	
-	println();
-	
-	print_string("Calibration finished\r\n");
 }
 
 void calc(uint16_t *reading,uint8_t *color){
@@ -200,10 +193,10 @@ void get_color(){
 	//}
 	
 	//for(uint8_t i=0;i<5;i++){
-		//uint8_t calc_color[3];
-		//calc(readings[i],calc_color);
-		//print_uint8_arr(calc_color);
-		//println();
+	//uint8_t calc_color[3];
+	//calc(readings[i],calc_color);
+	//print_uint8_arr(calc_color);
+	//println();
 	//}
 	print_string("\r\nPlace on a color");
 	
@@ -224,22 +217,22 @@ void get_color(){
 
 
 //new from here
- uint16_t calib_read[3][3];
+uint16_t calib_read[3][3];
 
- void calib_run(){
-	 for(uint8_t i=0;i<3;i++){
-		 lcd_clear();
-		 lcd_string("Place on ");
-		 lcd_string(colors[i]);
-		 lcd_string_blink("...Waiting...",5,1,1);
-		 sensor_read(calib_read[i]);
-	 }
+void calib_run(){
+	for(uint8_t i=0;i<3;i++){
+		lcd_clear();
+		lcd_string("Place on ");
+		lcd_string(colors[i]);
+		lcd_string_blink("...Waiting...",5,1,1);
+		sensor_read(calib_read[i]);
+	}
 
-	 //finish the calibration
-	 lcd_clear();
-	 lcd_set_cursor(0,2);
-	 lcd_string("Calibration");
-	 lcd_set_cursor(1,4);
-	 lcd_string("finished");
-	 _delay_ms(1000);
- }
+	//finish the calibration
+	lcd_clear();
+	lcd_set_cursor(0,2);
+	lcd_string("Calibration");
+	lcd_set_cursor(1,4);
+	lcd_string("finished");
+	_delay_ms(1000);
+}

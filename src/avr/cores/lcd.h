@@ -17,10 +17,12 @@ void lcd_clear();
 void lcd_custom_char(unsigned char loc, unsigned char *msg);
 void lcd_set_cursor(int row_index,int col_index);
 void lcd_clear_line(int row);
-void lcd_int(uint8_t value);
+void lcd_int(int value);
+void lcd_float(float value);
 void lcd_delete();
 void lcd_string_blink(char *word,int iter,int row,int column);
 void lcd_uint8_arr(uint8_t *values);
+void lcd_uint16_arr(uint16_t *values);
 void lcd_check();
 
 #endif /* LCD_H_ */

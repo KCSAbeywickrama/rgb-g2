@@ -17,9 +17,8 @@
 
 uint16_t sensor_reading[3];
 
-uint8_t rgb[3]={255,0,0};						//rgb values
-char *rgb_str[3]={"R = ","G = ","B = "};	//rgb strings
-
+uint8_t rgb[3]={255,10,10};						//rgb values
+char *rgb_str[3]={"RED = ","GREEN = ","BLUE = "};	//rgb strings
 
 void sensor_mode();
 void calib_mode();
@@ -30,11 +29,11 @@ void rgb_mode();
 int main(void)
 {
 	lcd_init();			//initialize the lcd display
-	keypad_init();		//initialize the keypad	
+	keypad_init();		//initialize the keypad
 	sensor_init();		//initialize the sensor
-	pwm_init();
-	
+	//pwm_init();
 
+	
 	//display a welcome message
 	//lcd_clear();
 	//lcd_set_cursor(0,4);
@@ -52,7 +51,7 @@ int main(void)
 		lcd_string("2 - Given RGB");		//input key 2 for the given value RGB output
 
 		//get the input key to select options from main menu
-		char mainmenu_key=keypad_get_key();		
+		char mainmenu_key=keypad_get_key();
 		if (mainmenu_key=='1')sensor_mode();
 		else if (mainmenu_key=='2')rgb_mode();
 		
@@ -70,15 +69,22 @@ void calib_mode(){
 	_delay_ms(2000);
 
 	//start calibration for colors
-	calib_run();
-	_delay_ms(2000);
+	calib_start();
+	
+	
+	lcd_clear();
+	lcd_set_cursor(0,2);
+	lcd_string("Calibration");
+	lcd_set_cursor(1,4);
+	lcd_string("Done");
+	
 }
 
 void read_mode(){
 	lcd_clear();
 	lcd_string("Place on color");
 	lcd_string_blink("...Waiting...",5,1,1);
-	sensor_read(sensor_reading);	
+	sensor_read(sensor_reading);
 	lcd_set_cursor(1,2);
 	lcd_string("Done");
 	_delay_ms(2000);
@@ -99,8 +105,8 @@ void sensor_mode(){
 		lcd_set_cursor(1,5);
 		lcd_string("Menu=<-");
 
-		char value='a';
-		while(value=='a'){
+		char value='\0';
+		while(value=='\0'){
 			value=keypad_get_key();
 
 			if (value==BACK_KEY){
@@ -129,9 +135,9 @@ void rgb_input(){
 		lcd_string(rgb_str[color]);		//display the color name
 		
 		//get values
-		int rgb_value=0;		//given rgb value
-		int len_value=0;		//length of the input rgb value
-				
+		int rgb_value=0;	//given rgb value
+		int len_value=0;	//length of the input rgb value
+		
 		while(1){
 			char key=keypad_get_key();
 
@@ -199,14 +205,14 @@ void rgb_mode(){
 		lcd_clear();
 		lcd_set_cursor(0,2);
 		lcd_string("@");
-		lcd_uint8_arr(rgb);		
+		lcd_uint8_arr(rgb);
 		lcd_set_cursor(1,0);
 		lcd_string("Menu=<-   RGB=->");
 
 		//ask for continue or stop the feature
 		char con_key;
 		while (1){
-			con_key=keypad_get_key();			
+			con_key=keypad_get_key();
 			if (con_key==OK_KEY || con_key==BACK_KEY){
 				break;
 			}

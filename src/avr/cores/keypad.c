@@ -32,6 +32,9 @@
  }
 
  void set_port(char *str){
+	 //uint8_t tmp=COL_PORT|0b00011100;	 
+	 //return;
+	 
 	for (int bit=0;bit<3;bit++){
 		if (str[bit]=='1'){
 			COL_PORT |= 1<<COL_PINS[bit];
