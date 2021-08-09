@@ -26,21 +26,21 @@
  const char KEYS[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{BACK_KEY,'0',OK_KEY}};
 
  void keypad_init(){
-	ROW_DDR &= ~(0x0f);
-	COL_DDR |= 0x1c;
-	ROW_PORT |= 0x0f;
+	//ROW_DDR &= ~(0x0f);
+	//COL_DDR |= 0x1c;
+	//ROW_PORT |= 0x0f;
+	COL_DDR &= ~(0x1c);
+	COL_PORT |= 0x1c;
+	ROW_DDR |= 0x0f;
  }
 
  void set_port(char *str){
-	 //uint8_t tmp=COL_PORT|0b00011100;	 
-	 //return;
-	 
-	for (int bit=0;bit<3;bit++){
+	for (int bit=0;bit<4;bit++){
 		if (str[bit]=='1'){
-			COL_PORT |= 1<<COL_PINS[bit];
+			ROW_PORT |= 1<<ROW_PINS[bit];
 		}
 		else{
-			COL_PORT &= ~(1<<COL_PINS[bit]);
+			ROW_PORT &= ~(1<<ROW_PINS[bit]);
 		}
 	}
  }
@@ -48,18 +48,22 @@
  char keypad_get_key(){
 	char value='\0';
 	while (value=='\0'){
-		for (int row=0;row<4;row++){
-			set_port("011");
-			if(~ROW_PIN & 1<<ROW_PINS[row]){
-				value=KEYS[row][0];
+		for (int col=0;col<3;col++){
+			set_port("0111");
+			if(~COL_PIN & 1<<COL_PINS[col]){
+				value=KEYS[0][col];
 			}
-			set_port("101");
-			if(~ROW_PIN & 1<<ROW_PINS[row]){
-				value=KEYS[row][1];
+			set_port("1011");
+			if(~COL_PIN & 1<<COL_PINS[col]){
+				value=KEYS[1][col];
 			}
-			set_port("110");
-			if(~ROW_PIN & 1<<ROW_PINS[row]){
-				value=KEYS[row][2];
+			set_port("1101");
+			if(~COL_PIN & 1<<COL_PINS[col]){
+				value=KEYS[2][col];
+			}
+			set_port("1110");
+			if(~COL_PIN & 1<<COL_PINS[col]){
+				value=KEYS[3][col];
 			}
 		}
 	}
