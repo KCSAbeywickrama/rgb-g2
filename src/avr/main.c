@@ -15,8 +15,7 @@
 #include "cores/calib.h"
 #include "cores/sensor.h"
 
-uint16_t sensor_reading[3];
-
+uint16_t reading[3];
 uint8_t rgb[3]={255,10,10};						//rgb values
 char *rgb_str[3]={"RED = ","GREEN = ","BLUE = "};	//rgb strings
 
@@ -31,16 +30,24 @@ int main(void)
 	lcd_init();			//initialize the lcd display
 	keypad_init();		//initialize the keypad
 	sensor_init();		//initialize the sensor
-	//pwm_init();
+	pwm_init();
+	
+	//pwm_set(rgb);
+	//pwm_start();
 
 	
-	//display a welcome message
-	//lcd_clear();
-	//lcd_set_cursor(0,4);
-	//lcd_string("RGB Color Sensor");
-	//lcd_set_cursor(1,4);
-	//lcd_string("Group 2");
-	//_delay_ms(3000);
+	//display a startup message
+	lcd_clear();
+	lcd_string("RGB Color Sensor");
+	lcd_set_cursor(1,4);
+	lcd_string("Group 2");
+	_delay_ms(3000);
+	
+	//unsigned char ch_bulbon[8] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x0E, 0x04, 0x1F };
+	//lcd_custom_char(0,ch_bulbon);
+//
+	//while(1);
+	
 	
 	while (1){
 		//display the main menu
@@ -75,19 +82,54 @@ void calib_mode(){
 	lcd_clear();
 	lcd_set_cursor(0,2);
 	lcd_string("Calibration");
-	lcd_set_cursor(1,4);
+	lcd_set_cursor(1,5);
 	lcd_string("Done");
-	
+	_delay_ms(2000);
 }
 
 void read_mode(){
-	lcd_clear();
-	lcd_string("Place on color");
-	lcd_string_blink("...Waiting...",5,1,1);
-	sensor_read(sensor_reading);
-	lcd_set_cursor(1,2);
-	lcd_string("Done");
-	_delay_ms(2000);
+	uint8_t wait=1;
+	while (1)
+	{
+		lcd_clear();
+		
+		if(wait){
+			lcd_string("Place on color");
+			lcd_string_blink("...Waiting...",5,1,1);
+			wait=0;
+		}
+		
+		//get readings and calculate the color
+		sensor_read(reading);
+		calib_calc(reading,rgb);
+
+		//display color code
+		lcd_clear();
+		lcd_set_cursor(0,2);
+		lcd_string("@");
+		lcd_uint8_arr(rgb);
+		lcd_set_cursor(1,0);
+		lcd_string("Menu=<-   Read=->");
+
+
+		pwm_set(rgb);
+		pwm_start();
+		//ask for continue or stop the feature
+		
+		while (1){
+			char con_key=keypad_get_key();
+			if (con_key==OK_KEY){
+				pwm_stop();				
+				break;
+			}
+			if(con_key==BACK_KEY){
+				pwm_stop();
+				_delay_ms(300);
+				return;
+			}
+		}
+	}
+	
 }
 
 void sensor_mode(){
@@ -197,9 +239,6 @@ void rgb_mode(){
 	while(1){
 		//call the function
 		rgb_input();
-		
-		pwm_set(rgb);
-		pwm_start();
 
 		//display a "Successfully" end message and options for continue or not
 		lcd_clear();
@@ -208,6 +247,10 @@ void rgb_mode(){
 		lcd_uint8_arr(rgb);
 		lcd_set_cursor(1,0);
 		lcd_string("Menu=<-   RGB=->");
+		
+		//display color in RGB LED
+		pwm_set(rgb);
+		pwm_start();
 
 		//ask for continue or stop the feature
 		char con_key;

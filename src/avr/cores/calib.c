@@ -152,8 +152,9 @@ void calib_start(){
 		lcd_string(colors[i]);
 		lcd_string_blink("...Waiting...",5,1,1);
 		sensor_read(readings[i]);
+		lcd_set_cursor(1,0);
 		lcd_uint16_arr(readings[i]);
-		_delay_ms(1000);
+		_delay_ms(2000);
 	}	
 	
 	
@@ -171,16 +172,16 @@ void calib_start(){
 		lcd_float(m);
 		lcd_char(',');
 		lcd_float(c);
-		_delay_ms(1000);
+		_delay_ms(2000);
 	}	
 	
 }
 
-void calc(uint16_t *reading,uint8_t *color){
+void calib_calc(uint16_t *reading,uint8_t *rgb){
 	
 	for(uint8_t i=0;i<3;i++){
 		uint8_t value=trim(coffs[i][0]*reading[i]+coffs[i][1]);
-		color[i]=value;
+		rgb[i]=value;
 	}
 }
 
@@ -206,33 +207,9 @@ void get_color(){
 	//get_reading(reading);
 	
 	uint8_t calc_color[3];
-	calc(reading,calc_color);
+	calib_calc(reading,calc_color);
 	print_uint8_arr(calc_color);
 	print_string(" \r\n");
 	_delay_ms(500);
 	
-}
-
-
-
-
-//new from here
-uint16_t calib_read[3][3];
-
-void calib_run(){
-	for(uint8_t i=0;i<3;i++){
-		lcd_clear();
-		lcd_string("Place on ");
-		lcd_string(colors[i]);
-		lcd_string_blink("...Waiting...",5,1,1);
-		sensor_read(calib_read[i]);
-	}
-
-	//finish the calibration
-	lcd_clear();
-	lcd_set_cursor(0,2);
-	lcd_string("Calibration");
-	lcd_set_cursor(1,4);
-	lcd_string("finished");
-	_delay_ms(1000);
 }
