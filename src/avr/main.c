@@ -17,28 +17,26 @@
 
 uint16_t sensor_reading[3];
 
-uint8_t rgb[3]={0,0,0};						//rgb values
+uint8_t rgb[3]={255,0,0};						//rgb values
 char *rgb_str[3]={"R = ","G = ","B = "};	//rgb strings
 
 
 void sensor_mode();
 void calib_mode();
 void read_mode();
-
 void rgb_mode();
 
 
 int main(void)
 {
-	keypad_init();		//initialize the keypad
 	lcd_init();			//initialize the lcd display
+	keypad_init();		//initialize the keypad	
 	sensor_init();		//initialize the sensor
-
-	lcd_check();
-	keypad_check();
+	pwm_init();
+	
 
 	//display a welcome message
-	lcd_clear();
+	//lcd_clear();
 	//lcd_set_cursor(0,4);
 	//lcd_string("RGB Color Sensor");
 	//lcd_set_cursor(1,4);
@@ -54,48 +52,11 @@ int main(void)
 		lcd_string("2 - Given RGB");		//input key 2 for the given value RGB output
 
 		//get the input key to select options from main menu
-		char mainmenu_key;
-		mainmenu_key=keypad_get_key();
+		char mainmenu_key=keypad_get_key();		
+		if (mainmenu_key=='1')sensor_mode();
+		else if (mainmenu_key=='2')rgb_mode();
+		
 		_delay_ms(300);
-		lcd_clear();
-
-		//color sensor
-		if (mainmenu_key=='1'){
-			sensor_mode();
-		}
-
-		//given value RGB output
-		else if (mainmenu_key=='2'){
-			//display a startup message
-			lcd_clear();
-			lcd_set_cursor(0,2);
-			lcd_string("Given Value");
-			lcd_set_cursor(1,6);
-			lcd_string("RGB");
-			_delay_ms(2000);
-
-			while(1){
-				//call the function
-				rgb_mode();
-
-				//ask for continue or stop the feature
-				char con_key;
-				while (1){
-					con_key=keypad_get_key();
-					_delay_ms(300);
-					if (con_key==OK_KEY || con_key==BACK_KEY){
-						break;
-					}
-				}
-				if (con_key==OK_KEY){			//input key # for continue
-					continue;
-				}
-				else if(con_key==BACK_KEY){		//input key * for go back to main menu
-					break;
-				}
-			}
-		}
-
 	}
 }
 
@@ -117,14 +78,14 @@ void read_mode(){
 	lcd_clear();
 	lcd_string("Place on color");
 	lcd_string_blink("...Waiting...",5,1,1);
-	sensor_read(sensor_reading);
+	sensor_read(sensor_reading);	
 	lcd_set_cursor(1,2);
-	lcd_string("Finished");
+	lcd_string("Done");
 	_delay_ms(2000);
 }
 
 void sensor_mode(){
-	//display a "color sensor" message
+	//display a "Color Sensor" message
 	lcd_clear();
 	lcd_set_cursor(0,2);
 	lcd_string("Color Sensor");
@@ -135,7 +96,7 @@ void sensor_mode(){
 		lcd_clear();
 		lcd_set_cursor(0,0);
 		lcd_string("1-Calib   2-Read");
-		lcd_set_cursor(1,0);
+		lcd_set_cursor(1,5);
 		lcd_string("Menu=<-");
 
 		char value='a';
@@ -156,8 +117,7 @@ void sensor_mode(){
 	}
 }
 
-
-void rgb_mode(){
+void rgb_input(){
 	//display a message to enter values
 	lcd_clear();
 	lcd_set_cursor(0,0);
@@ -171,6 +131,7 @@ void rgb_mode(){
 		//get values
 		int rgb_value=0;		//given rgb value
 		int len_value=0;		//length of the input rgb value
+				
 		while(1){
 			char key=keypad_get_key();
 
@@ -181,7 +142,7 @@ void rgb_mode(){
 			}
 			//delete a wrong input character
 			else if (key==BACK_KEY){
-				if (len_value!=0){
+				if (len_value){
 					lcd_delete();
 					_delay_ms(300);
 					rgb_value/=10;
@@ -210,15 +171,52 @@ void rgb_mode(){
 			lcd_string("Enter values");
 			color-=1;
 		}
-		//if inputs are ok, then add them to the color values array
+		//if inputs are OK, then add them to the rgb array
 		else{
 			rgb[color]=rgb_value;
 		}
 	}
-	//display a "Successfully" end message and options for continue or not
+}
+
+
+void rgb_mode(){
+	//display a startup message
 	lcd_clear();
-	lcd_set_cursor(0,5);
-	lcd_string("@");
-	lcd_set_cursor(1,0);
-	lcd_string("menu=<-   RGB=->");
+	lcd_set_cursor(0,2);
+	lcd_string("Given Value");
+	lcd_set_cursor(1,6);
+	lcd_string("RGB");
+	_delay_ms(2000);
+
+	while(1){
+		//call the function
+		rgb_input();
+		
+		pwm_set(rgb);
+		pwm_start();
+
+		//display a "Successfully" end message and options for continue or not
+		lcd_clear();
+		lcd_set_cursor(0,2);
+		lcd_string("@");
+		lcd_uint8_arr(rgb);		
+		lcd_set_cursor(1,0);
+		lcd_string("Menu=<-   RGB=->");
+
+		//ask for continue or stop the feature
+		char con_key;
+		while (1){
+			con_key=keypad_get_key();			
+			if (con_key==OK_KEY || con_key==BACK_KEY){
+				break;
+			}
+		}
+		
+		if(con_key==BACK_KEY){		//input key * for go back to main menu
+			pwm_stop();
+			break;
+		}
+		
+		_delay_ms(300);
+	}
 }

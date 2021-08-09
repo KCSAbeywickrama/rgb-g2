@@ -34,6 +34,7 @@ void pwm_init(){
 	//define output pins
 	PWM_DDR |= 1<< PWM_PIN;
 	DEMUX_DDR |= 1<< DDD6 | 1<< DDD7;
+	PWM_PORT|=1<<PWM_PIN;
 }
 
 void pwm_start(){
