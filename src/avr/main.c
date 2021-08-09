@@ -32,7 +32,7 @@ int main(void)
 	lcd_init();			//initialize the lcd display
 	keypad_init();		//initialize the keypad	
 	sensor_init();		//initialize the sensor
-	pwm_init();
+	//pwm_init();
 	
 
 	//display a welcome message
