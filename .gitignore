@@ -1,11 +1,4 @@
 *
-!*/
-!calibration/**
-!simulation/**/*.ino
-!simulation/**/*.pdsprj
-!src/**
-src/avr/.vs/avr/v14/.atsuo
-src/avr/Debug/*
 
 !pcb_design/**
 pcb_design/*/History/*
