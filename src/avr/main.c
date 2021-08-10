@@ -1,31 +1,27 @@
 /*
- * avr.c
+ * avr_keypad.c
  *
- * Created: 07-May-21 5:12:49 PM
- * Author : CSA
+ * Created: 6/12/2021 11:27:28 PM
+ * Author : Dulanjana
  */ 
 
-#define F_CPU 8000000UL
+#define F_CPU 16000000UL
 #include <avr/io.h>
+#include <util/delay.h>
 #include "cores/lcd.h"
 
-int main()
+unsigned char ch_correction[8] = { 0x00, 0x00,	0x01, 0x13,	0x16, 0x1C,	0x18, 0x10 };
+unsigned char ch_for[8] = { 0x00, 0x04, 0x02, 0x1F,	0x1F, 0x02,	0x04, 0x00 };
+unsigned char ch_back[8] = { 0x00, 0x04,	0x08, 0x1F,	0x1F, 0x08,	0x04, 0x00 };
+unsigned char ch_bulbon[8] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x0E, 0x04, 0x1F };
+unsigned char ch_bulboff[8] = { 0x0E, 0x1F, 0x1F, 0x1F, 0x1F, 0x0E, 0x04, 0x1F };
+
+int main(void)
 {
-					
 	lcd_init();
-	
-	lcd_custom_char(0, ch_correction);
-	lcd_custom_char(1, ch_for);
+
 	lcd_custom_char(2, ch_back);
-	lcd_custom_char(3, ch_bulbon);
-	lcd_custom_char(4, ch_bulboff);
-	
-	lcd_command(0xC0);
-	lcd_char(0);
-	lcd_char(1);
-	lcd_char(2);
-	lcd_char(3);
-	lcd_char(4);
-	
-	while(1);
+
+while (1);
+
 }
