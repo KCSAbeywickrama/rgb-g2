@@ -116,74 +116,78 @@ DocumentPath=Project Outputs for RGB_PCB\Design Rule Check - PCB_Main.html
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Project Outputs for RGB_PCB\Design Rule Check - PCB_Sensor.html
+DocumentPath=Project Outputs for RGB_PCB\Design Rule Check - PCB_Sensor2.html
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for RGB_PCB\PCB1.EXTREP
+DocumentPath=Project Outputs for RGB_PCB\Design Rule Check - PCB_Sensor.html
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for RGB_PCB\PCB1.REP
+DocumentPath=Project Outputs for RGB_PCB\PCB1.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for RGB_PCB\PCB1.RUL
+DocumentPath=Project Outputs for RGB_PCB\PCB1.REP
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Copper_Signal_Bot.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1.RUL
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Copper_Signal_Top.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Copper_Signal_Bot.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Legend_Top.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Copper_Signal_Top.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_1.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Legend_Top.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_5.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_1.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_7.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_5.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_13.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_7.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_15.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_13.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Pads_Bot.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Mechanical_15.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Pads_Top.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Pads_Bot.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Paste_Bot.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Pads_Top.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Profile.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Paste_Bot.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Project Outputs for RGB_PCB\PCB1_Soldermask_Bot.gbr
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Profile.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument20]
+DocumentPath=Project Outputs for RGB_PCB\PCB1_Soldermask_Bot.gbr
+DItemRevisionGUID=
+
+[GeneratedDocument21]
 DocumentPath=Project Outputs for RGB_PCB\PCB1_Soldermask_Top.gbr
 DItemRevisionGUID=
 
