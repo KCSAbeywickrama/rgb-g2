@@ -1,9 +1,9 @@
 /*
- * lcd.c
- *
- * Created: 5/19/2021 12:49:00 AM
- *  Author: Yohan Abeysinghe 1
- */ 
+* lcd.c
+*
+* Created: 5/19/2021 12:49:00 AM
+*  Author: Yohan Abeysinghe 1
+*/
 
 #define F_CPU 16000000UL
 
@@ -21,6 +21,12 @@
 #define LCD_RS PORTB
 #define RS PORTB0				/* Define Register Select pin */
 #define EN PORTB1				/* Define Enable signal pin */
+
+unsigned char ch_ok[8] = { 0x00, 0x00,	0x01, 0x13,	0x16, 0x1C,	0x18, 0x10 };
+unsigned char ch_for[8] = { 0x00, 0x04, 0x02, 0x1F,	0x1F, 0x02,	0x04, 0x00 };
+unsigned char ch_back[8] = { 0x00, 0x04, 0x08, 0x1F, 0x1F, 0x08, 0x04, 0x00 };
+unsigned char ch_bulbon[8] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x0E, 0x04, 0x1F };
+unsigned char ch_bulboff[8] = { 0x0E, 0x1F, 0x1F, 0x1F, 0x1F, 0x0E, 0x04, 0x1F };
 
 void lcd_command( unsigned char cmnd )
 {

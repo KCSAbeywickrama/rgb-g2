@@ -31,9 +31,12 @@ int main(void)
 	keypad_init();		//initialize the keypad
 	sensor_init();		//initialize the sensor
 	pwm_init();
-	
+	pwm_check();
 	//pwm_set(rgb);
 	//pwm_start();
+
+
+
 
 	
 	//display a startup message
@@ -45,7 +48,7 @@ int main(void)
 	
 	//unsigned char ch_bulbon[8] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x0E, 0x04, 0x1F };
 	//lcd_custom_char(0,ch_bulbon);
-//
+	//
 	//while(1);
 	
 	
@@ -88,16 +91,12 @@ void calib_mode(){
 }
 
 void read_mode(){
-	uint8_t wait=1;
+	
 	while (1)
 	{
-		lcd_clear();
-		
-		if(wait){
-			lcd_string("Place on color");
-			lcd_string_blink("...Waiting...",5,1,1);
-			wait=0;
-		}
+		lcd_clear();				
+		lcd_string("Place on color");
+		lcd_string_blink("...Waiting...",2,1,1);		
 		
 		//get readings and calculate the color
 		sensor_read(reading);
@@ -106,10 +105,10 @@ void read_mode(){
 		//display color code
 		lcd_clear();
 		lcd_set_cursor(0,2);
-		lcd_string("@");
+		lcd_string("@ ");
 		lcd_uint8_arr(rgb);
 		lcd_set_cursor(1,0);
-		lcd_string("Menu=<-   Read=->");
+		lcd_string("Menu=<-  Read=->");
 
 
 		pwm_set(rgb);
@@ -119,7 +118,7 @@ void read_mode(){
 		while (1){
 			char con_key=keypad_get_key();
 			if (con_key==OK_KEY){
-				pwm_stop();				
+				pwm_stop();
 				break;
 			}
 			if(con_key==BACK_KEY){
@@ -243,7 +242,7 @@ void rgb_mode(){
 		//display a "Successfully" end message and options for continue or not
 		lcd_clear();
 		lcd_set_cursor(0,2);
-		lcd_string("@");
+		lcd_string("@ ");
 		lcd_uint8_arr(rgb);
 		lcd_set_cursor(1,0);
 		lcd_string("Menu=<-   RGB=->");

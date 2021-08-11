@@ -84,7 +84,7 @@ void pwm_check(){
 	
 	for(uint8_t i=0;i<7;i++){
 		pwm_set(_colors[i]);
-		_delay_ms(1000);
+		_delay_ms(3000);
 	}
 	
 	pwm_stop();
