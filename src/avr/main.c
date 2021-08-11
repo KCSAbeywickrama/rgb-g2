@@ -1,93 +1,171 @@
 /*
-* avr.c
+* main.c
 *
-* Created: 07-May-21 5:12:49 PM
-* Author : CSA
+* Created: 6/12/2021 11:27:28 PM
+* Author : Dulanjana
 */
 
-#define F_CPU 8000000UL
+#define F_CPU 16000000UL
+
 #include <avr/io.h>
 #include <util/delay.h>
-#include "cores/lcd_my.h"
+#include "cores/lcd.h"
 #include "cores/keypad.h"
-#include "cores/led.h"
+#include "cores/pwm.h"
+#include "cores/calib.h"
+#include "cores/sensor.h"
 
-char *color_array[3]={"R = ","G = ","B = "};		//given rgb output color names
-uint8_t color_values_array[3]={0,0,0};			//given rgb color values
+uint16_t reading[3];
+uint8_t rgb[3]={255,10,10};						//rgb values
+char *rgb_str[3]={"RED = ","GREEN = ","BLUE = "};	//rgb strings
 
-void given_rgb();
+void sensor_mode();
+void calib_mode();
+void read_mode();
+void rgb_mode();
 
-int delay_time=300;
 
 int main(void)
 {
-	keypad_init();		//initialize the keypad
 	lcd_init();			//initialize the lcd display
+	keypad_init();		//initialize the keypad
+	sensor_init();		//initialize the sensor
+	pwm_init();
+	
+	//pwm_set(rgb);
+	//pwm_start();
 
-	//display a welcome message
-	lcd_set_cursor(0,4);
-	lcd_string("Welcome");
+	
+	//display a startup message
+	lcd_clear();
+	lcd_string("RGB Color Sensor");
 	lcd_set_cursor(1,4);
 	lcd_string("Group 2");
 	_delay_ms(3000);
 	
-    while (1){
+	//unsigned char ch_bulbon[8] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x0E, 0x04, 0x1F };
+	//lcd_custom_char(0,ch_bulbon);
+//
+	//while(1);
+	
+	
+	while (1){
 		//display the main menu
 		lcd_clear();
 		lcd_set_cursor(0,0);
-		lcd_string("1 - color sensor");		//input key 1 for the color sensor
+		lcd_string("1 - Color Sensor");		//input key 1 for the color sensor
 		lcd_set_cursor(1,0);
-		lcd_string("2 - given RGB");		//input key 2 for the given value RGB output
+		lcd_string("2 - Given RGB");		//input key 2 for the given value RGB output
 
 		//get the input key to select options from main menu
-		char mainmenu_key=' ';
-		mainmenu_key=keypad_get_key();
-		_delay_ms(delay_time);
-		lcd_clear();
-
-		//color sensor
-		if (mainmenu_key=='1'){
-			lcd_string("sensor");
-			_delay_ms(1000);
-		}
-
-		//given value RGB output
-		if (mainmenu_key=='2'){
-			//display a startup message
-			lcd_clear();
-			lcd_set_cursor(0,2);
-			lcd_string("given value");
-			lcd_set_cursor(1,6);
-			lcd_string("RGB");
-			_delay_ms(2000);
-
-			while(1){
-				//call the function
-				given_rgb();
-
-				//ask for continue or stop the feature
-				char con_key;
-				while (1){
-					con_key=keypad_get_key();
-					_delay_ms(delay_time);
-					if (con_key=='#' || con_key=='*'){
-						break;
-					}
-				}
-				if (con_key=='#'){			//input key # for continue
-					continue;
-				}
-				else if(con_key=='*'){		//input key * for go back to main menu
-					break;
-				}
-			}
-		}
-
-    }
+		char mainmenu_key=keypad_get_key();
+		if (mainmenu_key=='1')sensor_mode();
+		else if (mainmenu_key=='2')rgb_mode();
+		
+		_delay_ms(300);
+	}
 }
 
+void calib_mode(){
+	//display a message
+	lcd_clear();
+	lcd_set_cursor(0,2);
+	lcd_string("Calibration");
+	lcd_set_cursor(1,4);
+	lcd_string("Started");
+	_delay_ms(2000);
 
-void given_rgb(){
+	//start calibration for colors
+	calib_start();
+	
+	
+	lcd_clear();
+	lcd_set_cursor(0,2);
+	lcd_string("Calibration");
+	lcd_set_cursor(1,5);
+	lcd_string("Done");
+	_delay_ms(2000);
+}
+
+void read_mode(){
+	uint8_t wait=1;
+	while (1)
+	{
+		lcd_clear();
+		
+		if(wait){
+			lcd_string("Place on color");
+			lcd_string_blink("...Waiting...",5,1,1);
+			wait=0;
+		}
+		
+		//get readings and calculate the color
+		sensor_read(reading);
+		calib_calc(reading,rgb);
+
+		//display color code
+		lcd_clear();
+		lcd_set_cursor(0,2);
+		lcd_string("@");
+		lcd_uint8_arr(rgb);
+		lcd_set_cursor(1,0);
+		lcd_string("Menu=<-   Read=->");
+
+
+		pwm_set(rgb);
+		pwm_start();
+		//ask for continue or stop the feature
+		
+		while (1){
+			char con_key=keypad_get_key();
+			if (con_key==OK_KEY){
+				pwm_stop();				
+				break;
+			}
+			if(con_key==BACK_KEY){
+				pwm_stop();
+				_delay_ms(300);
+				return;
+			}
+		}
+	}
+	
+}
+
+void sensor_mode(){
+	//display a "Color Sensor" message
+	lcd_clear();
+	lcd_set_cursor(0,2);
+	lcd_string("Color Sensor");
+	_delay_ms(2000);
+
+	while (1){
+		//display a menu for calibration or reading color values
+		lcd_clear();
+		lcd_set_cursor(0,0);
+		lcd_string("1-Calib   2-Read");
+		lcd_set_cursor(1,5);
+		lcd_string("Menu=<-");
+
+		char value='\0';
+		while(value=='\0'){
+			value=keypad_get_key();
+
+			if (value==BACK_KEY){
+				_delay_ms(300);
+				break;
+			}
+
+			else if (value=='1') calib_mode();
+			else if (value=='2') read_mode();
+		}
+		if (value==BACK_KEY){
+			break;
+		}
+	}
+}
+
+void rgb_input(){
 	//display a message to enter values
 	lcd_clear();
 	lcd_set_cursor(0,0);
@@ -96,24 +174,25 @@ void given_rgb(){
 	//get RGB values for three colors
 	for (int color=0;color<3;color++){
 		lcd_clear_line(1);
-		lcd_string(color_array[color]);		//display the color name
+		lcd_string(rgb_str[color]);		//display the color name
 		
 		//get values
-		int rgb_value=0;		//given rgb value
-		int len_value=0;		//length of the input rgb value
+		int rgb_value=0;	//given rgb value
+		int len_value=0;	//length of the input rgb value
+		
 		while(1){
 			char key=keypad_get_key();
 
 			//break and go to next color
-			if (key=='#'){
-				_delay_ms(delay_time);
+			if (key==OK_KEY){
+				_delay_ms(300);
 				break;
 			}
 			//delete a wrong input character
-			else if (key=='*'){
-				if (len_value!=0){
+			else if (key==BACK_KEY){
+				if (len_value){
 					lcd_delete();
-					_delay_ms(delay_time);
+					_delay_ms(300);
 					rgb_value/=10;
 					len_value-=1;
 				}
@@ -121,7 +200,7 @@ void given_rgb(){
 
 			else{
 				lcd_char(key);			//display input keys on lcd display
-				_delay_ms(delay_time);
+				_delay_ms(300);
 				rgb_value=rgb_value*10+(key-'0');		//calculate the integer value from given character keys
 				len_value+=1;
 			}
@@ -140,15 +219,53 @@ void given_rgb(){
 			lcd_string("Enter values");
 			color-=1;
 		}
-		//if inputs are ok, then add them to the color values array
+		//if inputs are OK, then add them to the rgb array
 		else{
-			color_values_array[color]=rgb_value;
+			rgb[color]=rgb_value;
 		}
 	}
-	//display a "Successfully" end message and options for continue or not
+}
+
+
+void rgb_mode(){
+	//display a startup message
 	lcd_clear();
 	lcd_set_cursor(0,2);
-	lcd_string("Successfully");
-	lcd_set_cursor(1,0);
-	lcd_string("menu=*     RGB=#");
+	lcd_string("Given Value");
+	lcd_set_cursor(1,6);
+	lcd_string("RGB");
+	_delay_ms(2000);
+
+	while(1){
+		//call the function
+		rgb_input();
+
+		//display a "Successfully" end message and options for continue or not
+		lcd_clear();
+		lcd_set_cursor(0,2);
+		lcd_string("@");
+		lcd_uint8_arr(rgb);
+		lcd_set_cursor(1,0);
+		lcd_string("Menu=<-   RGB=->");
+		
+		//display color in RGB LED
+		pwm_set(rgb);
+		pwm_start();
+
+		//ask for continue or stop the feature
+		char con_key;
+		while (1){
+			con_key=keypad_get_key();
+			if (con_key==OK_KEY || con_key==BACK_KEY){
+				break;
+			}
+		}
+		
+		if(con_key==BACK_KEY){		//input key * for go back to main menu
+			pwm_stop();
+			break;
+		}
+		
+		_delay_ms(300);
+	}
 }

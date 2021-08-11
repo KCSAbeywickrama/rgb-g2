@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "sensor.h"
+#include "lcd.h"
 
 #define LDR_PIN 5
 
@@ -24,8 +25,8 @@ void sensor_init()
 
 	DDRC &= ~(1 << LDR_PIN); // set LDR_PIN as a input pin
 
-	ADMUX |= (1 << REFS0);
-	; //REFS = 1
+	ADMUX |= (1 << REFS0); //REFS = 1
+	
 	// REFS - Initialize ADC reference selection (Power/ Voltage for the ADC conversation)
 	// REFS = 0 (00) ---> Use internal 5V (AREF off)
 	// REFS = 1 (01) ---> External 5V voltage with cpasitor in AREF pin
@@ -59,11 +60,16 @@ uint16_t _adc_read(uint8_t pin)
 
 void sensor_read(uint16_t *reading)
 {
+	lcd_clear();
+	lcd_set_cursor(0,0);
+	lcd_string("Reading");
 	for (int i = 0; i < 3; i++)
 	{
 		*led_ports[i] |= 1 << led_pins[i];	  // Turn on LED
+		lcd_char('.');
 		_delay_ms(2000);					  // Wait until LDR reading is stable
 		reading[i] = _adc_read(LDR_PIN);	  // Get LDR reading (corresponding function in sensor.c)
 		*led_ports[i] &= ~(1 << led_pins[i]); // Turn off LED
 	}										  // LED pins ---> RED = C4 / GREEN = B4 / BLUE = B2
+	
 }
