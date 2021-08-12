@@ -139,8 +139,8 @@ uint16_t max(uint16_t v1,uint16_t v2){
 }
 
 uint8_t trim(float v){
-	if(v<0) return 0;
-	if(v>255) return 255;
+	if(v<15) return 0;
+	if(v>240) return 255;
 	return (uint8_t)v;
 }
 

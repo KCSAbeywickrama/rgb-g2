@@ -41,6 +41,8 @@ int main(void)
 	
 	//display a startup message
 	lcd_clear();
+	
+	_delay_ms(5000);
 	lcd_string("RGB Color Sensor");
 	lcd_set_cursor(1,4);
 	lcd_string("Group 2");
