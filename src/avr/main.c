@@ -31,7 +31,7 @@ int main(void)
 	keypad_init();		//initialize the keypad
 	sensor_init();		//initialize the sensor
 	pwm_init();
-	pwm_check();
+	//pwm_check();
 	//pwm_set(rgb);
 	//pwm_start();
 
