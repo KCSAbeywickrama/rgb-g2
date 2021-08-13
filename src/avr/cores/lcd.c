@@ -22,12 +22,6 @@
 #define RS PORTB0				/* Define Register Select pin */
 #define EN PORTB1				/* Define Enable signal pin */
 
-unsigned char ch_ok[8] = { 0x00, 0x00,	0x01, 0x13,	0x16, 0x1C,	0x18, 0x10 };
-unsigned char ch_for[8] = { 0x00, 0x04, 0x02, 0x1F,	0x1F, 0x02,	0x04, 0x00 };
-unsigned char ch_back[8] = { 0x00, 0x04, 0x08, 0x1F, 0x1F, 0x08, 0x04, 0x00 };
-unsigned char ch_bulbon[8] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x0E, 0x04, 0x1F };
-unsigned char ch_bulboff[8] = { 0x0E, 0x1F, 0x1F, 0x1F, 0x1F, 0x0E, 0x04, 0x1F };
-
 void lcd_command( unsigned char cmnd )
 {
 	DATA_PORT0 = (DATA_PORT0 & 0b11110011) | (cmnd & 0b110000)>>2;
@@ -101,17 +95,6 @@ void lcd_clear()
 	lcd_command (0x80);		/* Cursor at home position */
 }
 
-void lcd_custom_char(unsigned char loc, unsigned char *symb)
-{
-	unsigned char j;
-	if(loc<8)
-	{
-		lcd_command(0x40 + (loc*8));
-		for(j=0;j<8;j++)
-		lcd_char(symb[j]);
-	}
-}
-
 void lcd_set_cursor(int row_index,int col_index){
 	if (row_index==0){
 		lcd_command(0x80);
@@ -123,7 +106,6 @@ void lcd_set_cursor(int row_index,int col_index){
 		lcd_command(0x14);
 	}
 }
-
 
 void lcd_clear_line(int row){
 	lcd_set_cursor(row,0);

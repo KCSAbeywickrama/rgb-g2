@@ -9,12 +9,6 @@
 #ifndef LCD_H_
 #define LCD_H_
 
-extern unsigned char ch_ok[8];
-extern unsigned char ch_for[8];
-extern unsigned char ch_back[8];
-extern unsigned char ch_bulbon[8];
-extern unsigned char ch_bulboff[8];
-
 void lcd_command( unsigned char cmnd );
 void lcd_char( unsigned char data );
 void lcd_init (void);

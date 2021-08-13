@@ -25,23 +25,10 @@ void sensor_init()
 
 	DDRC &= ~(1 << LDR_PIN); // set LDR_PIN as a input pin
 
-	ADMUX |= (1 << REFS0); //REFS = 1
+	ADMUX |= (1 << REFS0); //REFS = 1 : External 5V voltage with cpasitor in AREF pin
 	
-	// REFS - Initialize ADC reference selection (Power/ Voltage for the ADC conversation)
-	// REFS = 0 (00) ---> Use internal 5V (AREF off)
-	// REFS = 1 (01) ---> External 5V voltage with cpasitor in AREF pin
-	// REFS = 2 (10) ---> Reserved
-	// REFS = 3 (11) ---> Internal 2.56V with external capasitor in AREF pin
-
-	ADCSRA |= (1 << ADEN) | (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2) | (1 << ADIE);
-	// ADEN ---> Enable ADC
-	// ADC clock frequency must be in a range of 50kHz - 200kHz
-	// ADC result is more accurate in lower frequencies.
-	// Eneble ADC & set divition factor to 128(111) ----> F_ADC = F_CPU/d
-	// For 16MHz microchip best accurate frequency is 125kHz (when devition factor is 128 [Max])
-	// For 8MHz microchip best accurate frequency is 62.5kH (When devition factor is 128) this ADC result is more accuracy than 16MHz microchip.
-	// ADIE - enable interrupt
-	
+	ADCSRA |= (1 << ADEN) | (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2); // Enable ADC,	Frequency is 125kHz	
+		
 	DIDR0 = (1 << LDR_PIN); // Digital input buffer is disabled
 }
 uint16_t _adc_read(uint8_t pin)
@@ -52,8 +39,8 @@ uint16_t _adc_read(uint8_t pin)
 
 	ADCSRA |= (1 << ADSC); // begin the ADC
 
-	while (ADCSRA & (1 << ADSC))
-		; // delay the function till ADC complete (ADSC = 1 until ADC circule complete)
+	// delay the function till ADC complete (ADSC = 1 until ADC circule complete)
+	while (ADCSRA & (1 << ADSC));	
 
 	return (ADC); // return ADC value
 }

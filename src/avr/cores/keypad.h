@@ -10,8 +10,8 @@
 #ifndef KEYPAD_H_
 #define KEYPAD_H_
 
- #define BACK_KEY '*'
- #define OK_KEY '#'
+#define BACK_KEY '*'
+#define OK_KEY '#'
 
 void keypad_init();
 char keypad_get_key();

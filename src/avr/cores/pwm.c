@@ -89,23 +89,3 @@ void pwm_check(){
 	
 	pwm_stop();
 }
-
-//void check_init(){
-//PWM_DDR |= 1<< PWM_PIN;
-//DEMUX_DDR |= 1<< DDD4| 1<<DDD5| 1<<DDD6;
-//PWM_PORT &=~(1<<PWM_PIN);
-//}
-//
-//void check(){
-//uint8_t prv_pin=(pin+2)%3;
-//DEMUX_PORT &= ~(1<<led_pins[prv_pin]);
-//DEMUX_PORT |= 1<<led_pins[pin];
-//pin=(pin+1)%3;
-//_delay_ms(1000);
-//}
-//
-void check_tr(){
-DEMUX_PORT = (DEMUX_PORT & 0b00111111) | pin<<6 ;
-pin = (pin+1)%3;
-_delay_ms(1000);
-}

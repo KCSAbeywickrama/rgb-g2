@@ -26,9 +26,6 @@
  const char KEYS[4][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'},{BACK_KEY,'0',OK_KEY}};
 
  void keypad_init(){
-	//ROW_DDR &= ~(0x0f);
-	//COL_DDR |= 0x1c;
-	//ROW_PORT |= 0x0f;
 	COL_DDR &= ~(0x1c);
 	COL_PORT |= 0x1c;
 	ROW_DDR |= 0x0f;
@@ -67,7 +64,6 @@
 			}
 		}
 	}
-	//_delay_ms(275);
 	return value;
  }
 
