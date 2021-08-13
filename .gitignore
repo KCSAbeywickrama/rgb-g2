@@ -10,5 +10,13 @@ src/avr/.vs/avr/v14/.atsuo
 src/avr/Debug/*
 src/avr/.vs/avr/v14/.atsuo
 src/avr/avr.cproj
+
+!pcb_design/**
+!pcb_design/STEP files/**
+pcb_design/*/History/*
+pcb_design/*/__Previews/*
+pcb_design/*/Project Logs for RGB_PCB/*
+pcb_design/*/Project Outputs for RGB_PCB/*
+
 !.gitignore
 !README.mdq
