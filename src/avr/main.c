@@ -15,10 +15,11 @@
 #include "cores/calib.h"
 #include "cores/sensor.h"
 
-uint16_t reading[3];
-uint8_t rgb[3]={255,10,10};						//rgb values
-char *rgb_str[3]={"RED = ","GREEN = ","BLUE = "};	//rgb strings
+uint16_t reading[3]; //sensor readings
+uint8_t rgb[3];		 //rgb values
+char *rgb_str[3]={"RED = ","GREEN = ","BLUE = "};
 
+//declaring fucnitons for modes
 void sensor_mode();
 void calib_mode();
 void read_mode();
@@ -27,52 +28,43 @@ void rgb_mode();
 
 int main(void)
 {
-	lcd_init();			//initialize the lcd display
-	keypad_init();		//initialize the keypad
-	sensor_init();		//initialize the sensor
+	//init cores
+	lcd_init();	
+	keypad_init();
+	sensor_init();
 	pwm_init();
-	//pwm_check();
-	//pwm_set(rgb);
-	//pwm_start();
-
-
-
-
 	
 	//display a startup message
 	lcd_clear();
-	
-	_delay_ms(5000);
 	lcd_string("RGB Color Sensor");
 	lcd_set_cursor(1,4);
 	lcd_string("Group 2");
-	_delay_ms(3000);
-	
-	//unsigned char ch_bulbon[8] = { 0x0E, 0x11, 0x11, 0x11, 0x11, 0x0E, 0x04, 0x1F };
-	//lcd_custom_char(0,ch_bulbon);
-	//
-	//while(1);
-	
+	_delay_ms(3000);	
 	
 	while (1){
+
 		//display the main menu
 		lcd_clear();
 		lcd_set_cursor(0,0);
-		lcd_string("1 - Color Sensor");		//input key 1 for the color sensor
+		lcd_string("1 - Color Sensor");	
 		lcd_set_cursor(1,0);
-		lcd_string("2 - Given RGB");		//input key 2 for the given value RGB output
+		lcd_string("2 - Given RGB");
 
 		//get the input key to select options from main menu
 		char mainmenu_key=keypad_get_key();
+		
+		//key1: goto color sensor mode
 		if (mainmenu_key=='1')sensor_mode();
+
+		//key2: goto given value RGB mode
 		else if (mainmenu_key=='2')rgb_mode();
 		
+		//debounce delay
 		_delay_ms(300);
 	}
 }
 
-void calib_mode(){
-	//display a message
+void calib_mode(){		
 	lcd_clear();
 	lcd_set_cursor(0,2);
 	lcd_string("Calibration");
@@ -81,8 +73,7 @@ void calib_mode(){
 	_delay_ms(2000);
 
 	//start calibration for colors
-	calib_start();
-	
+	calib_start();	
 	
 	lcd_clear();
 	lcd_set_cursor(0,2);
@@ -112,11 +103,11 @@ void read_mode(){
 		lcd_set_cursor(1,0);
 		lcd_string("Menu=<-  Read=->");
 
-
+		//ligt up RGB led with respective color
 		pwm_set(rgb);
 		pwm_start();
-		//ask for continue or stop the feature
-		
+
+		//ask for continue or stop 		
 		while (1){
 			char con_key=keypad_get_key();
 			if (con_key==OK_KEY){
@@ -134,14 +125,15 @@ void read_mode(){
 }
 
 void sensor_mode(){
-	//display a "Color Sensor" message
+	
 	lcd_clear();
 	lcd_set_cursor(0,2);
 	lcd_string("Color Sensor");
 	_delay_ms(2000);
 
 	while (1){
-		//display a menu for calibration or reading color values
+
+		//display a menu for calibrating or reading color values
 		lcd_clear();
 		lcd_set_cursor(0,0);
 		lcd_string("1-Calib   2-Read");
@@ -151,15 +143,20 @@ void sensor_mode(){
 		char value='\0';
 		while(value=='\0'){
 			value=keypad_get_key();
-
+			
 			if (value==BACK_KEY){
 				_delay_ms(300);
 				break;
 			}
 
+			//key1: goto calibraiton mode
 			else if (value=='1') calib_mode();
+			
+			//key2: goto color reading mode
 			else if (value=='2') read_mode();
 		}
+
+		//back key: exit from sensor mode
 		if (value==BACK_KEY){
 			break;
 		}
@@ -172,14 +169,14 @@ void rgb_input(){
 	lcd_set_cursor(0,0);
 	lcd_string("Enter values");
 
-	//get RGB values for three colors
+	//get RGB values
 	for (int color=0;color<3;color++){
 		lcd_clear_line(1);
 		lcd_string(rgb_str[color]);		//display the color name
 		
-		//get values
-		int rgb_value=0;	//given rgb value
-		int len_value=0;	//length of the input rgb value
+		
+		int rgb_value=0;	//given value
+		int len_value=0;	//length of the input value
 		
 		while(1){
 			char key=keypad_get_key();
@@ -189,6 +186,7 @@ void rgb_input(){
 				_delay_ms(300);
 				break;
 			}
+
 			//delete a wrong input character
 			else if (key==BACK_KEY){
 				if (len_value){
@@ -200,26 +198,30 @@ void rgb_input(){
 			}
 
 			else{
-				lcd_char(key);			//display input keys on lcd display
+				//display pressed key on lcd display
+				lcd_char(key);			
 				_delay_ms(300);
-				rgb_value=rgb_value*10+(key-'0');		//calculate the integer value from given character keys
+
+				//calculate the integer value from pressed keys
+				rgb_value=rgb_value*10+(key-'0');
 				len_value+=1;
 			}
 		}
 
-
-
-		//check whether the input value is wrong
+		//check whether the entered value is valid
 		if (rgb_value>255){
 			lcd_clear();
 			lcd_set_cursor(0,2);
-			lcd_string("Invalid input");		//display an invalid message
+			lcd_string("Invalid input");
 			_delay_ms(2000);
+
+			//if the value is invalid allow to enter that value again
 			lcd_clear();
 			lcd_set_cursor(0,0);
 			lcd_string("Enter values");
 			color-=1;
 		}
+
 		//if inputs are OK, then add them to the rgb array
 		else{
 			rgb[color]=rgb_value;
@@ -229,7 +231,7 @@ void rgb_input(){
 
 
 void rgb_mode(){
-	//display a startup message
+	
 	lcd_clear();
 	lcd_set_cursor(0,2);
 	lcd_string("Given Value");
@@ -238,10 +240,11 @@ void rgb_mode(){
 	_delay_ms(2000);
 
 	while(1){
-		//call the function
+		
+		//get rgb color code input
 		rgb_input();
 
-		//display a "Successfully" end message and options for continue or not
+		//display the entered color values
 		lcd_clear();
 		lcd_set_cursor(0,2);
 		lcd_string("@ ");
@@ -249,11 +252,11 @@ void rgb_mode(){
 		lcd_set_cursor(1,0);
 		lcd_string("Menu=<-   RGB=->");
 		
-		//display color in RGB LED
+		//ligt up RGB led with the enterd color
 		pwm_set(rgb);
 		pwm_start();
 
-		//ask for continue or stop the feature
+		//ask for continue with this mode or go back to menu
 		char con_key;
 		while (1){
 			con_key=keypad_get_key();
@@ -261,12 +264,14 @@ void rgb_mode(){
 				break;
 			}
 		}
-		
-		if(con_key==BACK_KEY){		//input key * for go back to main menu
+
+		//exit from given value rgb mode
+		if(con_key==BACK_KEY){		
 			pwm_stop();
 			break;
 		}
 		
+		//debounce delay
 		_delay_ms(300);
 	}
 }
