@@ -15,3 +15,7 @@ a keypad is used to get user inputs and light is illuminated according to those 
 |  190021A  | Adikari A.M.A.D.     | 21A, enclosure |  
 +-----------+----------------------+----------------+  
 </pre>
+
+
+https://user-images.githubusercontent.com/81417619/202612575-ead0735a-a69e-47e2-82ca-92c3c0942de2.mp4
+
